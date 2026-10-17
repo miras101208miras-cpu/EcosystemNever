@@ -882,6 +882,715 @@
       font-size: 0.85rem;
     }
 
+    /* ==============================================================
+       ЯЗЫКОВОЙ ПЕРЕКЛЮЧАТЕЛЬ (RU / EN / 日本語)
+       ============================================================== */
+    .lang-switch-wrap {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .lang-btn:hover {
+      color: #fff;
+    }
+
+    .lang-btn.active {
+      background: var(--neon-cyan);
+      color: #04060a;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    }
+
+    /* ==============================================================
+       СЕКЦИЯ: 3D-КАЛЬКУЛЯТОР СТОИМОСТИ ПРОЕКТОВ
+       ============================================================== */
+    .calculator-section {
+      background: linear-gradient(180deg, #04060a 0%, #0a0e17 50%, #04060a 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .calc-layout-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .calc-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      backdrop-filter: blur(20px);
+    }
+
+    .calc-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .calc-step-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .calc-step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    /* Выбор типа проекта */
+    .calc-type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .calc-type-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calc-type-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-3px);
+    }
+
+    .calc-type-card.active {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+    }
+
+    .calc-type-icon {
+      font-size: 1.8rem;
+    }
+
+    .calc-type-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .calc-type-base {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--neon-cyan);
+    }
+
+    /* Опции и модули */
+    .calc-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .calc-feature-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .calc-feature-label:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .calc-feature-label.selected {
+      border-color: var(--neon-purple);
+      background: rgba(168, 85, 247, 0.12);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+    }
+
+    .calc-feat-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .calc-feat-price {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--neon-purple);
+      font-weight: 700;
+    }
+
+    /* Сроки выполнения */
+    .calc-timeline-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .timeline-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .timeline-pill.active {
+      border-color: var(--neon-gold);
+      background: rgba(245, 158, 11, 0.12);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+    }
+
+    .timeline-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .timeline-desc {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Правая колонка: 3D-голограмма и итоговая смета */
+    .calc-summary-panel {
+      position: sticky;
+      top: 100px;
+      background: linear-gradient(165deg, rgba(16, 23, 38, 0.95), rgba(8, 12, 20, 0.98));
+      border: 2px solid rgba(0, 240, 255, 0.3);
+      border-radius: 24px;
+      padding: 30px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.2);
+    }
+
+    /* 3D Изометрическая карточка превью */
+    .calc-3d-scene {
+      perspective: 800px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .calc-3d-card {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(168, 85, 247, 0.15));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform-style: preserve-3d;
+      transform: rotateX(15deg) rotateY(-15deg);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .calc-3d-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: sweepGlass 3.5s infinite;
+    }
+
+    @keyframes sweepGlass {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
+    }
+
+    .hologram-icon {
+      font-size: 2.8rem;
+      filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.8));
+    }
+
+    .hologram-project-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 4px;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    /* Валюты */
+    .currency-selector-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .cur-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .cur-btn.active {
+      background: rgba(0, 240, 255, 0.2);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    .calc-total-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed rgba(0, 240, 255, 0.35);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .calc-total-lbl {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .calc-total-val {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+      margin: 4px 0;
+    }
+
+    .calc-days-val {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--neon-gold);
+    }
+
+    /* Теги технологий */
+    .calc-tech-stack-wrap {
+      margin-bottom: 20px;
+    }
+
+    .calc-tech-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .calc-tech-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tech-chip {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #94a3b8;
+    }
+
+    .calc-input-field {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .calc-input-field:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+    }
+
+    .btn-calc-submit {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+      color: #04060a;
+      font-weight: 800;
+      font-size: 0.92rem;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-calc-submit:hover {
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.75);
+      transform: translateY(-2px);
+    }
+
+    /* ==============================================================
+       СЕКЦИЯ: ИНТЕРАКТИВНЫЙ NEVERMESSENGER (КИБЕР-ЧАТ)
+       ============================================================== */
+    .messenger-section {
+      background: #04060a;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-card-wrap {
+      max-width: 1050px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: 580px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.15);
+      backdrop-filter: blur(20px);
+    }
+
+    .chat-sidebar {
+      background: rgba(6, 9, 15, 0.85);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 14px;
+    }
+
+    .chat-sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-logo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+    }
+
+    .chat-channel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .chat-room-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .chat-room-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    .chat-room-btn.active {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: rgba(0, 240, 255, 0.3);
+      color: var(--neon-cyan);
+    }
+
+    .chat-badge-counter {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 10px;
+      color: #94a3b8;
+    }
+
+    .chat-security-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-main-window {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: rgba(4, 7, 12, 0.5);
+    }
+
+    .chat-top-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 14, 23, 0.6);
+    }
+
+    .chat-room-cur-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-room-cur-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .chat-messages-area {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .chat-msg-row {
+      display: flex;
+      gap: 12px;
+      animation: fadeIn 0.25s forwards;
+    }
+
+    .chat-avatar-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .chat-msg-content {
+      display: flex;
+      flex-direction: column;
+      max-width: 82%;
+    }
+
+    .chat-msg-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .chat-author {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .chat-role-pill {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      padding: 1px 6px;
+      border-radius: 6px;
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--neon-cyan);
+    }
+
+    .chat-time {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+    }
+
+    .chat-bubble-txt {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+
+    .chat-reactions-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 5px;
+    }
+
+    .reaction-pill {
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .reaction-pill:hover {
+      background: rgba(0, 240, 255, 0.15);
+      color: #fff;
+    }
+
+    .chat-composer-bar {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(10, 14, 23, 0.8);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .chat-user-input {
+      flex-grow: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 16px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .chat-user-input:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    .btn-send-chat {
+      background: var(--neon-cyan);
+      border: none;
+      border-radius: 12px;
+      padding: 11px 18px;
+      font-weight: 800;
+      color: #04060a;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+
+    .btn-send-chat:hover {
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 900px) {
+      .calc-layout-grid { grid-template-columns: 1fr; }
+      .calc-summary-panel { position: static; }
+      .chat-card-wrap { grid-template-columns: 1fr; height: auto; }
+      .chat-sidebar { display: none; }
+      .chat-messages-area { height: 380px; }
+    }
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 20px; }
@@ -937,14 +1646,22 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="#showcase" class="nav-link">Кейсы & Работы</a></li>
-        <li><a href="#products" class="nav-link">Продукты</a></li>
-        <li><a href="#advantages" class="nav-link">Преимущества</a></li>
-        <li><a href="#order" class="nav-link">Заказать проект</a></li>
+        <li><a href="#showcase" class="nav-link" data-i18n="nav_cases">Кейсы & Работы</a></li>
+        <li><a href="#calculator" class="nav-link" data-i18n="nav_calc">🧮 3D-Калькулятор</a></li>
+        <li><a href="#messenger" class="nav-link" data-i18n="nav_chat">💬 Кибер-Чат</a></li>
+        <li><a href="#products" class="nav-link" data-i18n="nav_products">Продукты</a></li>
+        <li><a href="#advantages" class="nav-link" data-i18n="nav_advantages">Преимущества</a></li>
+        <li><a href="#order" class="nav-link" data-i18n="nav_order">Заказать</a></li>
       </ul>
 
       <div class="nav-actions">
-        <a href="https://t.me/ecosystem_never_bot" target="_blank" class="btn-nav">
+        <!-- Языковой переключатель -->
+        <div class="lang-switch-wrap">
+          <button type="button" class="lang-btn active" id="btnLangRu" onclick="setLanguage('ru')">RU</button>
+          <button type="button" class="lang-btn" id="btnLangEn" onclick="setLanguage('en')">EN</button>
+          <button type="button" class="lang-btn" id="btnLangJa" onclick="setLanguage('ja')">日本語</button>
+        </div>
+        <a href="https://t.me/ecosystem_never_bot" target="_blank" class="btn-nav" data-i18n="nav_bot_btn">
           🤖 Telegram Бот
         </a>
       </div>
@@ -1258,7 +1975,283 @@
     </div>
   </section>
 
-  <!-- 4. СЕКЦИЯ: ПОЧЕМУ ВЫБИРАЮТ НАС -->
+  <!-- 3. СЕКЦИЯ: 3D-КАЛЬКУЛЯТОР СТОИМОСТИ ПРОЕКТОВ -->
+  <section class="section calculator-section" id="calculator">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="calc_tag">03 // ОНЛАЙН-КОНФИГУРАТОР ПРОЕКТА</div>
+        <h2 class="section-title" data-i18n="calc_title">3D-Калькулятор стоимости проектов</h2>
+        <p class="section-desc" data-i18n="calc_desc">Выберите параметры вашего будущего продукта, настройте стек и получите мгновенный расчет сметы с отправкой готового ТЗ напрямую создателю.</p>
+      </div>
+
+      <div class="calc-layout-grid">
+        <!-- Левая колонка: параметры конфигуратора -->
+        <div class="calc-panel">
+          <div class="calc-subtitle" data-i18n="calc_step1_sub">ШАГ 1 // ТИП ПРОДУКТА</div>
+          <div class="calc-step-title">
+            <span class="calc-step-num">1</span>
+            <span data-i18n="calc_step1_title">Что разрабатываем?</span>
+          </div>
+
+          <div class="calc-type-grid" id="calcTypeGrid">
+            <div class="calc-type-card active" data-type="landing" onclick="selectCalcType('landing')">
+              <span class="calc-type-icon">🌐</span>
+              <span class="calc-type-name" data-i18n="type_landing">Landing Page / Сайт</span>
+              <span class="calc-type-base" data-price="150">от $150</span>
+            </div>
+
+            <div class="calc-type-card" data-type="portal3d" onclick="selectCalcType('portal3d')">
+              <span class="calc-type-icon">🔮</span>
+              <span class="calc-type-name" data-i18n="type_portal3d">3D Кибер-Портал</span>
+              <span class="calc-type-base" data-price="350">от $350</span>
+            </div>
+
+            <div class="calc-type-card" data-type="bot" onclick="selectCalcType('bot')">
+              <span class="calc-type-icon">🤖</span>
+              <span class="calc-type-name" data-i18n="type_bot">Telegram AI-Бот</span>
+              <span class="calc-type-base" data-price="220">от $220</span>
+            </div>
+
+            <div class="calc-type-card" data-type="miniapp" onclick="selectCalcType('miniapp')">
+              <span class="calc-type-icon">📱</span>
+              <span class="calc-type-name" data-i18n="type_miniapp">Telegram Mini App</span>
+              <span class="calc-type-base" data-price="320">от $320</span>
+            </div>
+
+            <div class="calc-type-card" data-type="ecosystem" onclick="selectCalcType('ecosystem')">
+              <span class="calc-type-icon">♾️</span>
+              <span class="calc-type-name" data-i18n="type_eco">Вся Экосистема</span>
+              <span class="calc-type-base" data-price="650">от $650</span>
+            </div>
+          </div>
+
+          <!-- Шаг 2: Модули и фичи -->
+          <div class="calc-subtitle" data-i18n="calc_step2_sub">ШАГ 2 // ФУНКЦИИ И МОДУЛИ</div>
+          <div class="calc-step-title">
+            <span class="calc-step-num">2</span>
+            <span data-i18n="calc_step2_title">Выберите необходимые модули:</span>
+          </div>
+
+          <div class="calc-features-grid" id="calcFeaturesGrid">
+            <div class="calc-feature-label selected" data-feat="design3d" data-price="60" data-days="2" onclick="toggleCalcFeature(this)">
+              <div class="calc-feat-left">
+                <span>🎨</span>
+                <span data-i18n="feat_design3d">3D/Кибер-дизайн</span>
+              </div>
+              <span class="calc-feat-price">+$60</span>
+            </div>
+
+            <div class="calc-feature-label selected" data-feat="webgl" data-price="90" data-days="3" onclick="toggleCalcFeature(this)">
+              <div class="calc-feat-left">
+                <span>⚡</span>
+                <span data-i18n="feat_webgl">Three.js Анимации</span>
+              </div>
+              <span class="calc-feat-price">+$90</span>
+            </div>
+
+            <div class="calc-feature-label" data-feat="database" data-price="50" data-days="2" onclick="toggleCalcFeature(this)">
+              <div class="calc-feat-left">
+                <span>🗄️</span>
+                <span data-i18n="feat_db">База данных & Облако</span>
+              </div>
+              <span class="calc-feat-price">+$50</span>
+            </div>
+
+            <div class="calc-feature-label" data-feat="payments" data-price="70" data-days="2" onclick="toggleCalcFeature(this)">
+              <div class="calc-feat-left">
+                <span>💳</span>
+                <span data-i18n="feat_pay">Платежи (TON/Stars/Card)</span>
+              </div>
+              <span class="calc-feat-price">+$70</span>
+            </div>
+
+            <div class="calc-feature-label" data-feat="ai" data-price="80" data-days="3" onclick="toggleCalcFeature(this)">
+              <div class="calc-feat-left">
+                <span>🧠</span>
+                <span data-i18n="feat_ai">AI-Ассистент / LLM</span>
+              </div>
+              <span class="calc-feat-price">+$80</span>
+            </div>
+
+            <div class="calc-feature-label" data-feat="admin" data-price="65" data-days="2" onclick="toggleCalcFeature(this)">
+              <div class="calc-feat-left">
+                <span>🛡️</span>
+                <span data-i18n="feat_admin">Панель управления</span>
+              </div>
+              <span class="calc-feat-price">+$65</span>
+            </div>
+
+            <div class="calc-feature-label selected" data-feat="multilang" data-price="40" data-days="1" onclick="toggleCalcFeature(this)">
+              <div class="calc-feat-left">
+                <span>🌍</span>
+                <span data-i18n="feat_lang">Мультиязычность (RU/EN/JP)</span>
+              </div>
+              <span class="calc-feat-price">+$40</span>
+            </div>
+          </div>
+
+          <!-- Шаг 3: Сроки -->
+          <div class="calc-subtitle" data-i18n="calc_step3_sub">ШАГ 3 // СРОЧНОСТЬ РЕАЛИЗАЦИИ</div>
+          <div class="calc-step-title">
+            <span class="calc-step-num">3</span>
+            <span data-i18n="calc_step3_title">Желаемые сроки:</span>
+          </div>
+
+          <div class="calc-timeline-options">
+            <div class="timeline-pill active" data-time="standard" data-mult="1.0" onclick="selectCalcTimeline(this, 'standard')">
+              <div class="timeline-title" data-i18n="time_opt">⚡ Стандартно</div>
+              <div class="timeline-desc" data-i18n="time_opt_desc">10–14 рабочих дней</div>
+            </div>
+
+            <div class="timeline-pill" data-time="urgent" data-mult="1.3" onclick="selectCalcTimeline(this, 'urgent')">
+              <div class="timeline-title" data-i18n="time_urg">🚀 Срочно (VIP)</div>
+              <div class="timeline-desc" data-i18n="time_urg_desc">3–7 дней (+30%)</div>
+            </div>
+
+            <div class="timeline-pill" data-time="flexible" data-mult="0.9" onclick="selectCalcTimeline(this, 'flexible')">
+              <div class="timeline-title" data-i18n="time_flex">🎯 Размеренно</div>
+              <div class="timeline-desc" data-i18n="time_flex_desc">20–30 дней (-10%)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Правая колонка: 3D Голограмма сметы и отправка ТЗ -->
+        <div class="calc-summary-panel">
+          <div class="calc-subtitle" style="text-align: center;" data-i18n="calc_preview_sub">3D-МОДЕЛЬ ПРОЕКТА</div>
+          
+          <div class="calc-3d-scene" id="calcScene">
+            <div class="calc-3d-card" id="calcCard3D">
+              <span class="hologram-icon" id="holoIcon">🌐</span>
+              <div class="hologram-project-title" id="holoTitle">Landing Page</div>
+              <div style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--neon-cyan); margin-top: 2px;" id="holoSub">HIGH-END WEB</div>
+            </div>
+          </div>
+
+          <!-- Выбор валюты -->
+          <div class="currency-selector-row">
+            <button type="button" class="cur-btn active" data-cur="usd" onclick="selectCalcCurrency('usd')">USD ($)</button>
+            <button type="button" class="cur-btn" data-cur="kzt" onclick="selectCalcCurrency('kzt')">KZT (₸)</button>
+            <button type="button" class="cur-btn" data-cur="rub" onclick="selectCalcCurrency('rub')">RUB (₽)</button>
+            <button type="button" class="cur-btn" data-cur="ton" onclick="selectCalcCurrency('ton')">TON (💎)</button>
+            <button type="button" class="cur-btn" data-cur="stars" onclick="selectCalcCurrency('stars')">STARS (⭐️)</button>
+          </div>
+
+          <!-- Итоговый блок -->
+          <div class="calc-total-box">
+            <div class="calc-total-lbl" data-i18n="calc_total_lbl">РАСЧЕТНАЯ СТОИМОСТЬ ПОД КЛЮЧ:</div>
+            <div class="calc-total-val" id="calcPriceVal">$340</div>
+            <div class="calc-days-val" id="calcDaysVal">⏱️ Срок готовности: ~12 дней</div>
+          </div>
+
+          <!-- Рекомендуемый стек -->
+          <div class="calc-tech-stack-wrap">
+            <div class="calc-tech-title" data-i18n="calc_stack_title">РЕКОМЕНДУЕМЫЙ СТЕК ТЕХНОЛОГИЙ:</div>
+            <div class="calc-tech-chips" id="calcTechChips">
+              <span class="tech-chip">HTML5 / Modern CSS</span>
+              <span class="tech-chip">Three.js / WebGL</span>
+              <span class="tech-chip">Node.js</span>
+              <span class="tech-chip">Telegram WebApp API</span>
+            </div>
+          </div>
+
+          <!-- Поля ввода клиента -->
+          <div>
+            <input type="text" id="calcClientName" class="calc-input-field" placeholder="Ваше имя / Компания" data-i18n-ph="calc_ph_name">
+            <input type="text" id="calcClientTg" class="calc-input-field" placeholder="Ваш Telegram (@username) или WhatsApp" data-i18n-ph="calc_ph_contact">
+            <textarea id="calcClientNotes" class="calc-input-field" rows="2" style="resize: none;" placeholder="Краткие пожелания к проекту (необязательно)" data-i18n-ph="calc_ph_notes"></textarea>
+          </div>
+
+          <button type="button" class="btn-calc-submit" onclick="submitProjectCalculation()">
+            <span>🚀</span>
+            <span data-i18n="calc_submit_btn">ОТПРАВИТЬ ГОТОВОЕ ТЗ СОЗДАТЕЛЮ</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. СЕКЦИЯ: ИНТЕРАКТИВНЫЙ NEVERMESSENGER (КИБЕР-ЧАТ) -->
+  <section class="section messenger-section" id="messenger">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="chat_tag">04 // СООБЩЕСТВО & СВЯЗЬ</div>
+        <h2 class="section-title" data-i18n="chat_title">NeverMessenger: Кибер-чат Экосистемы</h2>
+        <p class="section-desc" data-i18n="chat_desc">Живой чат сообщества EcosystemNever, тематические каналы обсуждения и прямой защищенный канал связи с создателем @light18101.</p>
+      </div>
+
+      <div class="chat-card-wrap">
+        <!-- Левый сайдбар каналов -->
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-header">
+            <div class="chat-logo-dot"></div>
+            <div>
+              <div style="font-weight: 800; font-size: 0.88rem; color: #fff;">NeverMessenger</div>
+              <div style="font-size: 0.65rem; color: #10b981; font-family: var(--font-mono);">● NETWORK ONLINE</div>
+            </div>
+          </div>
+
+          <div class="chat-channel-list">
+            <button class="chat-room-btn active" data-room="general" onclick="switchChatRoom('general')">
+              <span># общий-чат</span>
+              <span class="chat-badge-counter">42</span>
+            </button>
+            <button class="chat-room-btn" data-room="slayer" onclick="switchChatRoom('slayer')">
+              <span># клинок-дуэли</span>
+              <span class="chat-badge-counter">9</span>
+            </button>
+            <button class="chat-room-btn" data-room="projects" onclick="switchChatRoom('projects')">
+              <span># разработка-тз</span>
+              <span class="chat-badge-counter">18</span>
+            </button>
+            <button class="chat-room-btn" data-room="vip" onclick="switchChatRoom('vip')">
+              <span>👑 # vip-бета</span>
+              <span class="chat-badge-counter">VIP</span>
+            </button>
+            <button class="chat-room-btn" data-room="creator" onclick="switchChatRoom('creator')" style="color: var(--neon-cyan); border-color: rgba(0, 240, 255, 0.2);">
+              <span>🔒 ЛС с Создателем</span>
+              <span class="chat-badge-counter" style="background: rgba(0,240,255,0.2); color: #00f0ff;">PM</span>
+            </button>
+          </div>
+
+          <div class="chat-security-box">
+            <span>🛡️</span>
+            <span>E2E 256-Bit Quantum Protocol</span>
+          </div>
+        </div>
+
+        <!-- Основное окно сообщений -->
+        <div class="chat-main-window">
+          <div class="chat-top-header">
+            <div>
+              <div class="chat-room-cur-title" id="chatRoomTitle">
+                <span># общий-чат</span>
+              </div>
+              <div class="chat-room-cur-sub" id="chatRoomSub">Обсуждение продуктов, технологий и новостей экосистемы</div>
+            </div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-dim);" id="chatParticipantsTxt">
+              👥 1,480 участников
+            </div>
+          </div>
+
+          <!-- Лента сообщений -->
+          <div class="chat-messages-area" id="chatMessagesArea">
+            <!-- Генерируется из JS -->
+          </div>
+
+          <!-- Поле ввода -->
+          <div class="chat-composer-bar">
+            <input type="text" id="chatInputTxt" class="chat-user-input" placeholder="Напишите сообщение в чат... (Enter для отправки)" data-i18n-ph="chat_input_ph" onkeydown="handleChatKey(event)">
+            <button type="button" class="btn-send-chat" onclick="sendChatMessage()">
+              <span data-i18n="chat_send_btn">Отправить</span>
+              <span>✈️</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. СЕКЦИЯ: ПОЧЕМУ ВЫБИРАЮТ НАС -->
   <section class="section" id="advantages" style="background: rgba(10, 14, 23, 0.5);">
     <div class="container">
       <div class="section-header">
@@ -1327,8 +2320,560 @@
     </div>
   </footer>
 
-  <!-- СКРИПТ ФИЛЬТРАЦИИ ПРОЕКТОВ -->
+  <!-- СКРИПТЫ: 3D-КАЛЬКУЛЯТОР, NEVERMESSENGER И МУЛЬТИЯЗЫЧНОСТЬ -->
   <script>
+    /* ==============================================================
+       1. МУЛЬТИЯЗЫЧНОСТЬ (РУССКИЙ / ENGLISH / 日本語)
+       ============================================================== */
+    const TRANSLATIONS = {
+      ru: {
+        nav_cases: "Кейсы & Работы",
+        nav_calc: "🧮 3D-Калькулятор",
+        nav_chat: "💬 Кибер-Чат",
+        nav_products: "Продукты",
+        nav_advantages: "Преимущества",
+        nav_order: "Заказать",
+        nav_bot_btn: "🤖 Telegram Бот",
+        
+        calc_tag: "03 // ОНЛАЙН-КОНФИГУРАТОР ПРОЕКТА",
+        calc_title: "3D-Калькулятор стоимости проектов",
+        calc_desc: "Выберите параметры вашего будущего продукта, настройте стек и получите мгновенный расчет сметы с отправкой готового ТЗ напрямую создателю.",
+        calc_step1_sub: "ШАГ 1 // ТИП ПРОДУКТА",
+        calc_step1_title: "Что разрабатываем?",
+        type_landing: "Landing Page / Сайт",
+        type_portal3d: "3D Кибер-Портал",
+        type_bot: "Telegram AI-Бот",
+        type_miniapp: "Telegram Mini App",
+        type_eco: "Вся Экосистема",
+
+        calc_step2_sub: "ШАГ 2 // ФУНКЦИИ И МОДУЛИ",
+        calc_step2_title: "Выберите необходимые модули:",
+        feat_design3d: "3D/Кибер-дизайн",
+        feat_webgl: "Three.js Анимации",
+        feat_db: "База данных & Облако",
+        feat_pay: "Платежи (TON/Stars/Card)",
+        feat_ai: "AI-Ассистент / LLM",
+        feat_admin: "Панель управления",
+        feat_lang: "Мультиязычность (RU/EN/JP)",
+
+        calc_step3_sub: "ШАГ 3 // СРОЧНОСТЬ РЕАЛИЗАЦИИ",
+        calc_step3_title: "Желаемые сроки:",
+        time_opt: "⚡ Стандартно",
+        time_opt_desc: "10–14 рабочих дней",
+        time_urg: "🚀 Срочно (VIP)",
+        time_urg_desc: "3–7 дней (+30%)",
+        time_flex: "🎯 Размеренно",
+        time_flex_desc: "20–30 дней (-10%)",
+
+        calc_preview_sub: "3D-МОДЕЛЬ ПРОЕКТА",
+        calc_total_lbl: "РАСЧЕТНАЯ СТОИМОСТЬ ПОД КЛЮЧ:",
+        calc_days_prefix: "⏱️ Срок готовности: ~",
+        calc_days_suffix: " дней",
+        calc_stack_title: "РЕКОМЕНДУЕМЫЙ СТЕК ТЕХНОЛОГИЙ:",
+        calc_ph_name: "Ваше имя / Компания",
+        calc_ph_contact: "Ваш Telegram (@username) или WhatsApp",
+        calc_ph_notes: "Краткие пожелания к проекту (необязательно)",
+        calc_submit_btn: "ОТПРАВИТЬ ГОТОВОЕ ТЗ СОЗДАТЕЛЮ",
+
+        chat_tag: "04 // СООБЩЕСТВО & СВЯЗЬ",
+        chat_title: "NeverMessenger: Кибер-чат Экосистемы",
+        chat_desc: "Живой чат сообщества EcosystemNever, тематические каналы обсуждения и прямой защищенный канал связи с создателем @light18101.",
+        chat_input_ph: "Напишите сообщение в чат... (Enter для отправки)",
+        chat_send_btn: "Отправить"
+      },
+      en: {
+        nav_cases: "Cases & Portfolio",
+        nav_calc: "🧮 3D Calculator",
+        nav_chat: "💬 Cyber-Chat",
+        nav_products: "Products",
+        nav_advantages: "Advantages",
+        nav_order: "Order",
+        nav_bot_btn: "🤖 Telegram Bot",
+
+        calc_tag: "03 // PROJECT CONFIGURATOR",
+        calc_title: "3D Project Cost Estimator",
+        calc_desc: "Configure your project parameters, select technology stack, and get an instant estimate with direct 1-click submission to founder @light18101.",
+        calc_step1_sub: "STEP 1 // PRODUCT TYPE",
+        calc_step1_title: "What are we building?",
+        type_landing: "Landing Page / Website",
+        type_portal3d: "3D Cyber-Portal",
+        type_bot: "Telegram AI Bot",
+        type_miniapp: "Telegram Mini App",
+        type_eco: "Full Ecosystem",
+
+        calc_step2_sub: "STEP 2 // MODULES & FEATURES",
+        calc_step2_title: "Select required features:",
+        feat_design3d: "3D / Cyber Design",
+        feat_webgl: "Three.js Animations",
+        feat_db: "Database & Cloud Sync",
+        feat_pay: "Payments (TON/Stars/Card)",
+        feat_ai: "AI Assistant / LLM",
+        feat_admin: "Admin Dashboard",
+        feat_lang: "Multilingual (RU/EN/JP)",
+
+        calc_step3_sub: "STEP 3 // TIMELINE",
+        calc_step3_title: "Target timeline:",
+        time_opt: "⚡ Standard",
+        time_opt_desc: "10–14 business days",
+        time_urg: "🚀 Urgent (VIP)",
+        time_urg_desc: "3–7 days (+30%)",
+        time_flex: "🎯 Flexible",
+        time_flex_desc: "20–30 days (-10%)",
+
+        calc_preview_sub: "3D PROJECT MODEL",
+        calc_total_lbl: "ESTIMATED TURNKEY COST:",
+        calc_days_prefix: "⏱️ Delivery time: ~",
+        calc_days_suffix: " days",
+        calc_stack_title: "RECOMMENDED TECH STACK:",
+        calc_ph_name: "Your Name / Company",
+        calc_ph_contact: "Your Telegram (@username) or WhatsApp",
+        calc_ph_notes: "Brief project notes (optional)",
+        calc_submit_btn: "SUBMIT SPECIFICATION TO FOUNDER",
+
+        chat_tag: "04 // COMMUNITY & COMMS",
+        chat_title: "NeverMessenger: Cyber-Chat",
+        chat_desc: "Live community chat of EcosystemNever, themed channels and direct encrypted channel to founder @light18101.",
+        chat_input_ph: "Type a message... (Enter to send)",
+        chat_send_btn: "Send"
+      },
+      ja: {
+        nav_cases: "実績・ポートフォリオ",
+        nav_calc: "🧮 3D見積もり計算機",
+        nav_chat: "💬 サイバーチャット",
+        nav_products: "プロダクト",
+        nav_advantages: "特徴と強み",
+        nav_order: "開発依頼",
+        nav_bot_btn: "🤖 Telegramボット",
+
+        calc_tag: "03 // オンライン見積もり",
+        calc_title: "3D プロジェクト見積もり計算機",
+        calc_desc: "開発タイプ、機能、納期を選択して見積もりを瞬時に計算。仕様書を作成して創設者 @light18101 へ直接送信できます。",
+        calc_step1_sub: "STEP 1 // 開発種別",
+        calc_step1_title: "何を開発しますか？",
+        type_landing: "ランディングページ / HP",
+        type_portal3d: "3Dサイバーポータル",
+        type_bot: "Telegram AIボット",
+        type_miniapp: "Telegramミニアプリ",
+        type_eco: "フルエコシステム一式",
+
+        calc_step2_sub: "STEP 2 // 拡張機能・モジュール",
+        calc_step2_title: "必要な機能を選択：",
+        feat_design3d: "3Dサイバーデザイン",
+        feat_webgl: "Three.js演出効果",
+        feat_db: "DB＆クラウド同期",
+        feat_pay: "決済 (TON/Stars/カード)",
+        feat_ai: "AIアシスタント連携",
+        feat_admin: "管理ダッシュボード",
+        feat_lang: "多言語対応 (RU/EN/JP)",
+
+        calc_step3_sub: "STEP 3 // 納期スピード",
+        calc_step3_title: "希望納期：",
+        time_opt: "⚡ 標準納期",
+        time_opt_desc: "10〜14営業日",
+        time_urg: "🚀 特急対応 (VIP)",
+        time_urg_desc: "3〜7日 (+30%)",
+        time_flex: "🎯 ゆったり納期",
+        time_flex_desc: "20〜30日 (-10%)",
+
+        calc_preview_sub: "3Dプロジェクトモデル",
+        calc_total_lbl: "総概算見積もり（税込）：",
+        calc_days_prefix: "⏱️ 目安納期: 約",
+        calc_days_suffix: "日",
+        calc_stack_title: "推奨技術スタック：",
+        calc_ph_name: "お名前 / 企業名",
+        calc_ph_contact: "Telegram (@username) または連絡先",
+        calc_ph_notes: "ご要望・メモ（任意）",
+        calc_submit_btn: "創設者に仕様書を直接送信",
+
+        chat_tag: "04 // コミュニティ＆通信",
+        chat_title: "NeverMessenger: サイバーチャット",
+        chat_desc: "EcosystemNever公式コミュニティチャット。創設者 @light18101 への暗号化DM直通。",
+        chat_input_ph: "メッセージを入力... (Enterで送信)",
+        chat_send_btn: "送信"
+      }
+    };
+
+    let currentLang = localStorage.getItem('never_lang') || 'ru';
+
+    function setLanguage(lang) {
+      if (!TRANSLATIONS[lang]) lang = 'ru';
+      currentLang = lang;
+      localStorage.setItem('never_lang', lang);
+
+      // Обновляем кнопки в переключателе
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btnLang${lang.charAt(0).toUpperCase() + lang.slice(1)}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const t = TRANSLATIONS[lang];
+
+      // Тексты
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+
+      // Плейсхолдеры
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (t[key]) el.placeholder = t[key];
+      });
+
+      // Пересчитываем калькулятор для отображения в выбранном языке
+      updateCalcSummary();
+    }
+
+    /* ==============================================================
+       2. ИНТЕРАКТИВНЫЙ 3D-КАЛЬКУЛЯТОР СТОИМОСТИ
+       ============================================================== */
+    const PROJECT_TYPES = {
+      landing: { name: 'Landing Page / Сайт', baseUsd: 150, days: 5, icon: '🌐', sub: 'HIGH-END WEB', stack: ['HTML5', 'Modern CSS', 'Tailwind', 'JS ES6'] },
+      portal3d: { name: '3D Кибер-Портал', baseUsd: 350, days: 10, icon: '🔮', sub: 'WEBGL 3D EXPERIENCE', stack: ['Three.js', 'WebGL', 'GSAP', 'GLSL Shaders'] },
+      bot: { name: 'Telegram AI-Бот', baseUsd: 220, days: 7, icon: '🤖', sub: 'AUTONOMOUS BOT AGENT', stack: ['Node.js', 'GrammY', 'OpenAI API', 'PostgreSQL'] },
+      miniapp: { name: 'Telegram Mini App', baseUsd: 320, days: 9, icon: '📱', sub: 'TELEGRAM WEBAPP TMA', stack: ['TMA SDK', 'Vue/React', 'Web Audio', 'Haptics'] },
+      ecosystem: { name: 'Вся Экосистема', baseUsd: 650, days: 18, icon: '♾️', sub: 'PORTAL + BOT + TMA + CLOUD', stack: ['Ecosystem Stack', 'Node.js', 'Three.js', 'Telegram API', 'Cloud'] }
+    };
+
+    const CURRENCIES = {
+      usd: { rate: 1, symbol: '$', prefix: true },
+      kzt: { rate: 480, symbol: ' ₸', prefix: false },
+      rub: { rate: 95, symbol: ' ₽', prefix: false },
+      ton: { rate: 0.38, symbol: ' TON 💎', prefix: false },
+      stars: { rate: 50, symbol: ' ⭐️', prefix: false }
+    };
+
+    let calcState = {
+      type: 'landing',
+      features: new Set(['design3d', 'webgl', 'multilang']),
+      timeline: 'standard',
+      timeMult: 1.0,
+      currency: 'usd'
+    };
+
+    function selectCalcType(typeKey) {
+      calcState.type = typeKey;
+      document.querySelectorAll('.calc-type-card').forEach(c => {
+        c.classList.toggle('active', c.dataset.type === typeKey);
+      });
+      updateCalcSummary();
+    }
+
+    function toggleCalcFeature(el) {
+      const feat = el.dataset.feat;
+      if (calcState.features.has(feat)) {
+        calcState.features.delete(feat);
+        el.classList.remove('selected');
+      } else {
+        calcState.features.add(feat);
+        el.classList.add('selected');
+      }
+      updateCalcSummary();
+    }
+
+    function selectCalcTimeline(el, timeKey) {
+      calcState.timeline = timeKey;
+      calcState.timeMult = parseFloat(el.dataset.mult) || 1.0;
+      document.querySelectorAll('.timeline-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      updateCalcSummary();
+    }
+
+    function selectCalcCurrency(curKey) {
+      calcState.currency = curKey;
+      document.querySelectorAll('.cur-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.cur === curKey);
+      });
+      updateCalcSummary();
+    }
+
+    function updateCalcSummary() {
+      const typeInfo = PROJECT_TYPES[calcState.type] || PROJECT_TYPES.landing;
+
+      // Базовые дни и стоимость
+      let totalUsd = typeInfo.baseUsd;
+      let totalDays = typeInfo.days;
+
+      // Добавки модулей
+      document.querySelectorAll('.calc-feature-label.selected').forEach(el => {
+        totalUsd += parseFloat(el.dataset.price) || 0;
+        totalDays += parseInt(el.dataset.days) || 0;
+      });
+
+      // Применяем таймлайн мультипликатор
+      totalUsd = Math.round(totalUsd * calcState.timeMult);
+
+      if (calcState.timeline === 'urgent') totalDays = Math.max(3, Math.round(totalDays * 0.5));
+      else if (calcState.timeline === 'flexible') totalDays = Math.round(totalDays * 1.3);
+
+      // Конвертация валют
+      const cur = CURRENCIES[calcState.currency] || CURRENCIES.usd;
+      const convertedPrice = Math.round(totalUsd * cur.rate);
+      const formattedPrice = cur.prefix 
+        ? `${cur.symbol}${convertedPrice.toLocaleString()}`
+        : `${convertedPrice.toLocaleString()}${cur.symbol}`;
+
+      document.getElementById('calcPriceVal').textContent = formattedPrice;
+
+      const t = TRANSLATIONS[currentLang] || TRANSLATIONS.ru;
+      document.getElementById('calcDaysVal').textContent = `${t.calc_days_prefix}${totalDays}${t.calc_days_suffix}`;
+
+      // Обновляем 3D карточку
+      document.getElementById('holoIcon').textContent = typeInfo.icon;
+      document.getElementById('holoTitle').textContent = typeInfo.name;
+      document.getElementById('holoSub').textContent = typeInfo.sub;
+
+      // Обновляем стек технологий
+      const chipsCont = document.getElementById('calcTechChips');
+      chipsCont.innerHTML = '';
+      typeInfo.stack.forEach(tech => {
+        const chip = document.createElement('span');
+        chip.className = 'tech-chip';
+        chip.textContent = tech;
+        chipsCont.appendChild(chip);
+      });
+
+      // Добавляем дополнительные теги по фичам
+      if (calcState.features.has('database')) chipsCont.innerHTML += '<span class="tech-chip">PostgreSQL / Redis</span>';
+      if (calcState.features.has('payments')) chipsCont.innerHTML += '<span class="tech-chip">TON Connect / CryptoPay</span>';
+      if (calcState.features.has('ai')) chipsCont.innerHTML += '<span class="tech-chip">OpenAI / Claude LLM</span>';
+    }
+
+    // Интерактивное 3D-вращение карточки мышкой
+    const calcScene = document.getElementById('calcScene');
+    const calcCard3D = document.getElementById('calcCard3D');
+    if (calcScene && calcCard3D) {
+      calcScene.addEventListener('mousemove', (e) => {
+        const rect = calcScene.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        calcCard3D.style.transform = `rotateX(${-y * 0.25}deg) rotateY(${x * 0.25}deg)`;
+      });
+      calcScene.addEventListener('mouseleave', () => {
+        calcCard3D.style.transform = `rotateX(15deg) rotateY(-15deg)`;
+      });
+    }
+
+    function submitProjectCalculation() {
+      const name = document.getElementById('calcClientName').value.trim() || 'Клиент EcosystemNever';
+      const tgContact = document.getElementById('calcClientTg').value.trim() || 'Не указан';
+      const notes = document.getElementById('calcClientNotes').value.trim() || 'Без дополнительных комментариев';
+
+      const typeInfo = PROJECT_TYPES[calcState.type] || PROJECT_TYPES.landing;
+      const priceTxt = document.getElementById('calcPriceVal').textContent;
+      const daysTxt = document.getElementById('calcDaysVal').textContent;
+
+      const activeFeats = Array.from(document.querySelectorAll('.calc-feature-label.selected'))
+        .map(el => el.querySelector('.calc-feat-left span:last-child').textContent)
+        .join(', ') || 'Базовые функции';
+
+      const tzMessage = `🚀 НОВАЯ ЗАЯВКА НА РАЗРАБОТКУ | ECOSYSTEMNEVER
+━━━━━━━━━━━━━━━━━━━━━
+👤 Клиент: ${name}
+💬 Контакт: ${tgContact}
+📦 Продукт: ${typeInfo.name}
+⚡ Модули: ${activeFeats}
+${daysTxt}
+💰 Расчетная смета: ${priceTxt} (${calcState.currency.toUpperCase()})
+📝 Пожелания: ${notes}
+━━━━━━━━━━━━━━━━━━━━━
+Отправлено через 3D-Конфигуратор EcosystemNever`;
+
+      const encoded = encodeURIComponent(tzMessage);
+      window.open(`https://t.me/light18101?text=${encoded}`, '_blank');
+    }
+
+    /* ==============================================================
+       3. NEVERMESSENGER (КИБЕР-ЧАТ ЭКОСИСТЕМЫ)
+       ============================================================== */
+    const CHAT_ROOMS = {
+      general: {
+        title: '# общий-чат',
+        sub: 'Обсуждение продуктов, технологий и новостей экосистемы',
+        participants: '👥 1,480 участников',
+        messages: [
+          { author: 'Miras (Основатель)', role: 'Founder', time: '14:20', text: 'Добро пожаловать в NeverMessenger! Здесь мы тестируем новый чат и делимся релизами ♾️', avatar: '👑' },
+          { author: 'CyberNinja', role: 'Столп', time: '14:35', text: '3D-калькулятор на сайте выглядит потрясающе, особенно смета в TON и Stars!', avatar: '🥷' },
+          { author: 'Elena_Design', role: 'Дизайнер', time: '15:02', text: 'Интерфейс в темных неоновых тонах получился супер футуристичным 🔥', avatar: '🎨' }
+        ]
+      },
+      slayer: {
+        title: '# клинок-дуэли',
+        sub: 'Обсуждение мини-аппы «Клинок Never», тактики и боссы',
+        participants: '👥 920 столпов',
+        messages: [
+          { author: 'Ренгоку Фан', role: 'Столп Пламени', time: '13:10', text: 'Кто уже победил Музана на 100 уровне? Скорость атаки у него просто безумная ⚡', avatar: '🔥' },
+          { author: 'Томиока_Гию', role: 'Столп Воды', time: '13:45', text: '11-я форма Штиль решает! Главное следить за перезарядкой стилей.', avatar: '🌊' }
+        ]
+      },
+      projects: {
+        title: '# разработка-тз',
+        sub: 'Вопросы по заказам, интеграциям Telegram-ботов и TMA',
+        participants: '👥 340 заказчиков',
+        messages: [
+          { author: 'Alex_Crypto', role: 'Заказчик', time: '11:15', text: 'Отправил ТЗ через калькулятор на разработку Telegram Mini App с платежами в TON. Жду подтверждения от @light18101.', avatar: '💼' },
+          { author: 'Касугай AI 🦅', role: 'Bot', time: '11:16', text: 'Заявка принята! Основатель @light18101 ответит в ближайшее время.', avatar: '🤖' }
+        ]
+      },
+      vip: {
+        title: '👑 # vip-бета',
+        sub: 'Закрытый клуб тестеров экосистемы (100+ уровень)',
+        participants: '👥 58 VIP-тестеров',
+        messages: [
+          { author: 'Miras (Основатель)', role: 'Founder', time: '12:00', text: 'Приветствую лучших бойцов! Доступ к бета-тестированию EcosystemNever 2.0 открыт на 7 дней. Тестируйте функции и присылайте баг-репорты!', avatar: '👑' }
+        ]
+      },
+      creator: {
+        title: '🔒 ЛС с Создателем (@light18101)',
+        sub: 'Прямой защищенный квантовый диалог с Miras (@light18101)',
+        participants: '🔐 End-to-End Encryption',
+        messages: [
+          { author: 'Miras (@light18101)', role: 'Founder', time: 'Now', text: 'Привет! Напиши свой вопрос или идею проекта здесь, или перейди напрямую в Telegram: @light18101', avatar: '👑' }
+        ]
+      }
+    };
+
+    let activeRoom = 'general';
+
+    // Загрузка сохраненных сообщений
+    try {
+      const savedMessages = localStorage.getItem('never_chat_messages');
+      if (savedMessages) {
+        const parsed = JSON.parse(savedMessages);
+        for (const k in parsed) {
+          if (CHAT_ROOMS[k]) CHAT_ROOMS[k].messages = parsed[k];
+        }
+      }
+    } catch (e) {}
+
+    function saveChatMessages() {
+      try {
+        const store = {};
+        for (const k in CHAT_ROOMS) store[k] = CHAT_ROOMS[k].messages;
+        localStorage.setItem('never_chat_messages', JSON.stringify(store));
+      } catch (e) {}
+    }
+
+    function switchChatRoom(roomKey) {
+      if (!CHAT_ROOMS[roomKey]) return;
+      activeRoom = roomKey;
+
+      document.querySelectorAll('.chat-room-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.room === roomKey);
+      });
+
+      const r = CHAT_ROOMS[roomKey];
+      document.getElementById('chatRoomTitle').textContent = r.title;
+      document.getElementById('chatRoomSub').textContent = r.sub;
+      document.getElementById('chatParticipantsTxt').textContent = r.participants;
+
+      renderChatMessages();
+    }
+
+    function renderChatMessages() {
+      const cont = document.getElementById('chatMessagesArea');
+      cont.innerHTML = '';
+
+      const r = CHAT_ROOMS[activeRoom];
+      r.messages.forEach((msg, idx) => {
+        const row = document.createElement('div');
+        row.className = 'chat-msg-row';
+        row.innerHTML = `
+          <div class="chat-avatar-box">${msg.avatar || '👤'}</div>
+          <div class="chat-msg-content">
+            <div class="chat-msg-meta">
+              <span class="chat-author">${msg.author}</span>
+              <span class="chat-role-pill">${msg.role || 'Member'}</span>
+              <span class="chat-time">${msg.time}</span>
+            </div>
+            <div class="chat-bubble-txt">${msg.text}</div>
+            <div class="chat-reactions-row">
+              <span class="reaction-pill" onclick="addChatReaction(this, '🔥')">🔥 3</span>
+              <span class="reaction-pill" onclick="addChatReaction(this, '⚔️')">⚔️ 2</span>
+              <span class="reaction-pill" onclick="addChatReaction(this, '♾️')">♾️ 5</span>
+            </div>
+          </div>
+        `;
+        cont.appendChild(row);
+      });
+
+      cont.scrollTop = cont.scrollHeight;
+    }
+
+    function addChatReaction(el, emo) {
+      const parts = el.textContent.split(' ');
+      const count = parseInt(parts[1]) || 0;
+      el.textContent = `${emo} ${count + 1}`;
+      el.style.background = 'rgba(0, 240, 255, 0.25)';
+      el.style.color = '#fff';
+    }
+
+    // Звук сообщения
+    let chatAudioCtx = null;
+    function playChatSound() {
+      try {
+        if (!chatAudioCtx) chatAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (chatAudioCtx.state === 'suspended') chatAudioCtx.resume();
+        const now = chatAudioCtx.currentTime;
+        const osc = chatAudioCtx.createOscillator();
+        const gain = chatAudioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.connect(gain);
+        gain.connect(chatAudioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } catch (e) {}
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInputTxt');
+      const text = input.value.trim();
+      if (!text) return;
+
+      playChatSound();
+
+      const newMsg = {
+        author: 'Вы (Гость)',
+        role: 'Участник',
+        time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+        text: text,
+        avatar: '🥷'
+      };
+
+      CHAT_ROOMS[activeRoom].messages.push(newMsg);
+      saveChatMessages();
+      input.value = '';
+      renderChatMessages();
+
+      // Ответ Касугай AI через 1.2с
+      if (activeRoom === 'general' || activeRoom === 'projects') {
+        setTimeout(() => {
+          playChatSound();
+          CHAT_ROOMS[activeRoom].messages.push({
+            author: 'Касугай AI 🦅',
+            role: 'Assistant Bot',
+            time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+            text: `Принято! Сообщение зафиксировано в экосистеме. По срочным проектам пишите напрямую создателю: @light18101 ♾️`,
+            avatar: '🤖'
+          });
+          saveChatMessages();
+          renderChatMessages();
+        }, 1200);
+      }
+    }
+
+    function handleChatKey(e) {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    /* ==============================================================
+       4. СКРИПТ ФИЛЬТРАЦИИ КЕЙСОВ
+       ============================================================== */
     const filterBtns = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
 
@@ -1347,6 +2892,10 @@
         });
       });
     });
+
+    // Инициализация языка и чата
+    setLanguage(currentLang);
+    switchChatRoom('general');
   </script>
 </body>
 </html>
