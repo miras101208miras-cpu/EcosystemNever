@@ -514,27 +514,40 @@
 
       <div class="stage-controls">
         <!-- БЛОК: МАРАФОН КРД (ДЕМОН СЛЕЙЕР ПО СЕРИЯМ ПО ОЧЕРЕДИ) - НА САМОМ ВИДНОМ МЕСТЕ -->
-        <div class="krd-marathon-box" style="padding: 14px 16px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(15, 23, 42, 0.95)); border: 2px solid #ef4444; border-radius: 14px; box-shadow: 0 0 30px rgba(239, 68, 68, 0.35);">
+        <div class="krd-marathon-box" style="padding: 16px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.28), rgba(15, 23, 42, 0.98)); border: 2px solid #ef4444; border-radius: 14px; box-shadow: 0 0 35px rgba(239, 68, 68, 0.4);">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 1.6rem; filter: drop-shadow(0 0 8px #ef4444);">⚔️</span>
+              <span style="font-size: 1.8rem; filter: drop-shadow(0 0 10px #ef4444);">⚔️</span>
               <div>
-                <strong style="color: #fca5a5; font-size: 1.05rem; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">МАРАФОН КРД: КЛИНОК, РАССЕКАЮЩИЙ ДЕМОНОВ</strong>
-                <div style="font-size: 0.75rem; color: #fecaca; margin-top: 2px;" id="lblKrdCurrentEp">Сезон 1 • Нажми кнопку чтобы включить 1 серию и смотреть по очереди</div>
+                <strong style="color: #fca5a5; font-size: 1.1rem; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">МАРАФОН КРД: КЛИНОК, РАССЕКАЮЩИЙ ДЕМОНОВ (1 СЕЗОН)</strong>
+                <div style="font-size: 0.78rem; color: #fecaca; margin-top: 3px;" id="lblKrdCurrentEp">⚡ Реальные серии в дубляже без блокировок YouTube: смотри прямо в плеере или через Google Видео</div>
               </div>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-primary" id="btnStartKrdMarathon" style="background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; padding: 10px 20px; font-size: 0.85rem; font-weight: 800; border: 1px solid #fca5a5; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); cursor: pointer;" onclick="startKrdFromStart()">
-                🔥 НАЧАТЬ С 1 СЕЗОНА 1 СЕРИИ ▶
+              <button type="button" class="btn btn-primary" id="btnStartKrdMarathon" style="background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; padding: 10px 18px; font-size: 0.85rem; font-weight: 800; border: 1px solid #fca5a5; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); cursor: pointer;" onclick="startKrdFromStart()">
+                🔥 НАЧАТЬ С 1 СЕРИИ ▶
               </button>
-              <button type="button" class="btn btn-glass" style="padding: 10px 16px; font-size: 0.85rem; border-color: rgba(239, 68, 68, 0.6); color: #fca5a5; font-weight: 700; cursor: pointer;" onclick="playNextKrdEpisode()">
-                Следующая серия ⏭️
+              <button type="button" class="btn btn-glass" style="padding: 10px 14px; font-size: 0.85rem; border-color: rgba(239, 68, 68, 0.6); color: #fca5a5; font-weight: 700; cursor: pointer;" onclick="playNextKrdEpisode()">
+                След. серия ⏭️
+              </button>
+              <button type="button" class="btn btn-glass" style="padding: 10px 14px; font-size: 0.82rem; border-color: #fbbf24; color: #fbbf24; font-weight: 700; cursor: pointer;" onclick="playKrdFullMarathon()">
+                🎞️ Полный 1 сезон (4K BD)
+              </button>
+              <button type="button" class="btn btn-glass" style="padding: 10px 14px; font-size: 0.82rem; border-color: #38bdf8; color: #38bdf8; font-weight: 700; cursor: pointer;" onclick="searchKrdInGoogle()">
+                🔍 Искать серию в Google
+              </button>
+              <button type="button" class="btn btn-glass" style="padding: 10px 14px; font-size: 0.82rem; border-color: #4ade80; color: #4ade80; font-weight: 700; cursor: pointer;" onclick="openKrdJutsu()">
+                🍿 На Jut.su
               </button>
             </div>
           </div>
 
-          <!-- СЕРИИ 1 СЕЗОНА ПО ПОРЯДКУ -->
-          <div class="krd-episodes-bar" id="krdEpisodesBar" style="display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px;">
+          <!-- СЕРИИ 1 СЕЗОНА ПО ПОРЯДКУ (С 1 ПО 26 СЕРИЮ) -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 0.72rem; color: #cbd5e1; font-weight: 700;">ВЫБЕРИ СЕРИЮ ДЛЯ ПРОСМОТРА (1 — 26 СЕРИИ 1 СЕЗОНА):</span>
+            <span style="font-size: 0.72rem; color: #f87171;" id="lblKrdEpBadge">Серия 1 из 26</span>
+          </div>
+          <div class="krd-episodes-bar" id="krdEpisodesBar" style="display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px;">
             <!-- Серии генерируются JS -->
           </div>
         </div>
@@ -839,7 +852,28 @@
         embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
         title = 'Google Диск Документ / Видео';
       }
-      // 3. Google Storage / Direct Video (.mp4, .webm, .ogg, .mov, googleapis.com)
+      // 3. VK Video (vk.com/video-XXX_YYY or vkvideo.ru/video-XXX_YYY or vk.com/video_ext.php)
+      else if (url.includes('vk.com/video') || url.includes('vkvideo.ru/video')) {
+        const extMatch = url.match(/oid=(-?\d+)&id=(\d+)/);
+        if (extMatch) {
+          embedUrl = 'https://vk.com/video_ext.php?oid=' + extMatch[1] + '&id=' + extMatch[2];
+        } else {
+          const directMatch = url.match(/video(-?\d+)_(\d+)/);
+          if (directMatch) {
+            embedUrl = 'https://vk.com/video_ext.php?oid=' + directMatch[1] + '&id=' + directMatch[2];
+          }
+        }
+        title = 'VK Видео HD';
+      }
+      // 4. Rutube (rutube.ru/video/XXX or rutube.ru/play/embed/XXX)
+      else if (url.includes('rutube.ru/video/') || url.includes('rutube.ru/play/embed/')) {
+        const match = url.match(/rutube\.ru\/(?:video|play\/embed)\/([a-zA-Z0-9]+)/);
+        if (match) {
+          embedUrl = 'https://rutube.ru/play/embed/' + match[1];
+        }
+        title = 'Rutube Видео HD';
+      }
+      // 5. Google Storage / Direct Video (.mp4, .webm, .ogg, .mov, googleapis.com)
       else if (url.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i) || url.includes('storage.googleapis.com')) {
         isDirectVideo = true;
         embedUrl = url;
@@ -983,18 +1017,36 @@
 
 
 
-    // 8. МАРАФОН КРД: ДАННЫЕ И ПЕРЕКЛЮЧЕНИЕ СЕРИЙ ПО ОЧЕРЕДИ
+    // 8. МАРАФОН КРД: ПОЛНЫЙ 1 СЕЗОН (26 СЕРИЙ) БЕЗ БЛОКИРОВОК YOUTUBE
+    const KRD_FULL_SEASON_EMBED = 'https://vk.com/video_ext.php?oid=-185087421&id=456247413'; // Студийная банда BD 4K (Все 26 серий)
+
     const KRD_EPISODES = [
-      { s: 1, ep: 1, title: 'Серия 1: Жестокость (Cruelty)', url: 'https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1', desc: 'Тандзиро находит свою семью и спасает Незуко' },
-      { s: 1, ep: 2, title: 'Серия 2: Учитель Сакондзи Урокодаки', url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1', desc: 'Путь к горе Сагири и первая встреча с Урокодаки' },
-      { s: 1, ep: 3, title: 'Серия 3: Сабито и Макомо', url: 'https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1', desc: 'Тренировка рассечения огромного валуна клинком' },
-      { s: 1, ep: 4, title: 'Серия 4: Финальный отбор', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1', desc: 'Гора Фудзикасанэ среди цветущей глицинии' },
-      { s: 1, ep: 5, title: 'Серия 5: Собственная сталь', url: 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1', desc: 'Выбор руды тамахаганэ и ковка клинка нитирин' },
-      { s: 1, ep: 6, title: 'Серия 6: Мечник в сопровождении демона', url: 'https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1', desc: 'Первое задание и битва с Болотным демоном' },
-      { s: 1, ep: 7, title: 'Серия 7: Мудзан Кибуцудзи', url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1', desc: 'Встреча в Токио Асакуса с прародителем демонов' },
-      { s: 1, ep: 8, title: 'Серия 8: Запах чарующей крови', url: 'https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1', desc: 'Тамаё и Юсиро приходят на помощь Тандзиро' },
-      { s: 1, ep: 9, title: 'Серия 9: Демон с темари и Демон со стрелами', url: 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1', desc: 'Ожесточенная битва с приспешниками Мудзана' },
-      { s: 1, ep: 10, title: 'Серия 10: Вместе навсегда', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1', desc: 'Победа и отправка на юг, встреча с Дзэницу' }
+      { s: 1, ep: 1, title: 'Серия 1: Жестокость', url: 'https://vk.com/video_ext.php?oid=-233763194&id=456239023', desc: 'Тандзиро возвращается домой и находит семью убитой, Незуко обращается в демона' },
+      { s: 1, ep: 2, title: 'Серия 2: Учитель Сакондзи Урокодаки', url: 'https://vk.com/video_ext.php?oid=-239442239&id=456239022', desc: 'Путь к горе Сагири, встреча с Урокодаки и испытание туманом' },
+      { s: 1, ep: 3, title: 'Серия 3: Сабито и Макомо', url: 'https://vk.com/video_ext.php?oid=-227447822&id=456239031', desc: 'Полгода суровых тренировок и рассечение огромного валуна' },
+      { s: 1, ep: 4, title: 'Серия 4: Финальный отбор', url: 'https://vk.com/video_ext.php?oid=-227429188&id=456239031', desc: 'Гора Фудзикасанэ среди цветущей глицинии и бой с Демоном рук' },
+      { s: 1, ep: 5, title: 'Серия 5: Собственная сталь', url: 'https://vk.com/video_ext.php?oid=-239442239&id=456239037', desc: 'Выбор руды тамахаганэ, ковка чёрного клинка нитирин и первая форма дыхания воды' },
+      { s: 1, ep: 6, title: 'Серия 6: Мечник в сопровождении демона', url: KRD_FULL_SEASON_EMBED, desc: 'Первая официальная миссия мечника и битва с Болотным демоном в деревне' },
+      { s: 1, ep: 7, title: 'Серия 7: Мудзан Кибуцудзи', url: KRD_FULL_SEASON_EMBED, desc: 'Шумный ночной Токио Асакуса и первая смертоносная встреча с Мудзаном' },
+      { s: 1, ep: 8, title: 'Серия 8: Запах чарующей крови', url: KRD_FULL_SEASON_EMBED, desc: 'Врач-демон госпожа Тамаё и Юсиро предлагают лекарство для Незуко' },
+      { s: 1, ep: 9, title: 'Серия 9: Демон с темари и Демон со стрелами', url: KRD_FULL_SEASON_EMBED, desc: 'Нападение Сасамару и Яхабы, сокрушительные мячи-темари и векторные стрелы' },
+      { s: 1, ep: 10, title: 'Серия 10: Вместе навсегда', url: KRD_FULL_SEASON_EMBED, desc: 'Победа в схватке, прощание с Тамаё и отправка на юг, встреча с Дзэницу' },
+      { s: 1, ep: 11, title: 'Серия 11: Поместье Цудзуми', url: KRD_FULL_SEASON_EMBED, desc: 'Дом барабанщика Киодгая, комнаты вращаются от каждого удара по барабану' },
+      { s: 1, ep: 12, title: 'Серия 12: Кабан обнажает клыки, Дзэницу спит', url: KRD_FULL_SEASON_EMBED, desc: 'Появление Иноскэ в маске кабана и техника Дыхания молнии спящего Дзэницу' },
+      { s: 1, ep: 13, title: 'Серия 13: Что-то более важное, чем жизнь', url: KRD_FULL_SEASON_EMBED, desc: 'Победа Тандзиро над Кёгаем и защита ящика с Незуко телом Дзэницу' },
+      { s: 1, ep: 14, title: 'Серия 14: Дом с гербом глицинии', url: KRD_FULL_SEASON_EMBED, desc: 'Отдых и лечение троицы мечников у гостеприимной старушки клана глицинии' },
+      { s: 1, ep: 15, title: 'Серия 15: Гора Натагумо', url: KRD_FULL_SEASON_EMBED, desc: 'Зловещая гора пауков, охотники превращаются в марионеток на паутине' },
+      { s: 1, ep: 16, title: 'Серия 16: Предоставить другому идти вперёд', url: KRD_FULL_SEASON_EMBED, desc: 'Тандзиро и Иноскэ пробиваются сквозь марионеток к Матери пауков' },
+      { s: 1, ep: 17, title: 'Серия 17: Овладей до совершенства', url: KRD_FULL_SEASON_EMBED, desc: 'Легендарный бой Дзэницу против Паука-сына: Дыхание молнии: Первая форма — Шестикратный выпад' },
+      { s: 1, ep: 18, title: 'Серия 18: Фальшивые узы', url: KRD_FULL_SEASON_EMBED, desc: 'Битва с Отцом пауков и появление Пятой Низшей Луны — Руи' },
+      { s: 1, ep: 19, title: 'Серия 19: Бог огня (Хиноками)', url: KRD_FULL_SEASON_EMBED, desc: 'Шедевр аниме: Танец Бога Огня Тандзиро и взрывное Искусство демонической крови Незуко' },
+      { s: 1, ep: 20, title: 'Серия 20: Поддельная семья', url: KRD_FULL_SEASON_EMBED, desc: 'Прибытие Столпов Гию Томиоки и Синобу Котё, разгром паучьего клана' },
+      { s: 1, ep: 21, title: 'Серия 21: Нарушение правил', url: KRD_FULL_SEASON_EMBED, desc: 'Гию защищает Тандзиро и Незуко от смертельного яда Синобу' },
+      { s: 1, ep: 22, title: 'Серия 22: Хозяин поместья', url: KRD_FULL_SEASON_EMBED, desc: 'Суд девяти Столпов над Тандзиро и появление Кагая Убуясики' },
+      { s: 1, ep: 23, title: 'Серия 23: Собрание столпов', url: KRD_FULL_SEASON_EMBED, desc: 'Незуко отказывается от крови Санэми Синадзугавы, доказав свою безвредность' },
+      { s: 1, ep: 24, title: 'Серия 24: Реабилитационная тренировка', url: KRD_FULL_SEASON_EMBED, desc: 'Тренировки в Поместье Бабочки: постоянная концентрация дыхания и разбивание тыкв' },
+      { s: 1, ep: 25, title: 'Серия 25: Цугуко, Канао Цуюри', url: KRD_FULL_SEASON_EMBED, desc: 'Тандзиро догоняет Канао в скорости и осваивает постоянное дыхание' },
+      { s: 1, ep: 26, title: 'Серия 26: Новая миссия (Поезд «Бесконечный»)', url: KRD_FULL_SEASON_EMBED, desc: 'Мудзан уничтожает Низшие Луны. Тандзиро, Дзэницу и Иноскэ садятся на Поезд «Бесконечный»' }
     ];
 
     let currentKrdIndex = 0;
@@ -1008,17 +1060,20 @@
       currentKrdIndex = index;
       const ep = KRD_EPISODES[index];
 
-      loadVideoEmbed(ep.url, '⚔️ КРД: ' + ep.title, true, false);
+      loadVideoEmbed(ep.url, '⚔️ КРД Серия ' + ep.ep + ': ' + ep.title, true, false);
 
       const badge = document.getElementById('lblKrdCurrentEp');
-      if (badge) badge.textContent = 'Сейчас играет: ' + ep.title + ' • ' + ep.desc;
+      if (badge) badge.textContent = 'Сейчас выбрана Серия ' + ep.ep + ': ' + ep.desc;
 
-      renderSystemBubble('⚔️ ' + userName + ' включил КРД: <strong>' + ep.title + '</strong>');
+      const epBadge = document.getElementById('lblKrdEpBadge');
+      if (epBadge) epBadge.textContent = 'Серия ' + ep.ep + ' из 26 • ' + ep.title;
+
+      renderSystemBubble('⚔️ ' + userName + ' включил КРД <strong>' + ep.title + '</strong>');
 
       broadcastPacket({
         type: 'chat',
         user: userName,
-        text: '⚔️ Смотрим КРД: ' + ep.title
+        text: '⚔️ Смотрим КРД 1 сезон ' + ep.ep + ' серия: ' + ep.title
       });
 
       renderKrdButtons();
@@ -1029,13 +1084,31 @@
       playKrdEpisode(nextIdx);
     }
 
+    function playKrdFullMarathon() {
+      loadVideoEmbed(KRD_FULL_SEASON_EMBED, '⚔️ КРД: Полный 1 сезон (Все 26 серий BD 4K Студийная Банда)', true, false);
+      const badge = document.getElementById('lblKrdCurrentEp');
+      if (badge) badge.textContent = '🎞️ Запущен полный 1 сезон без пауз (Студийная Банда 4K, 26 серий)';
+      renderSystemBubble('🎞️ ' + userName + ' запустил полный марафон 1 сезона КРД в 4K!');
+    }
+
+    function searchKrdInGoogle(idx) {
+      const ep = KRD_EPISODES[idx !== undefined ? idx : currentKrdIndex];
+      const q = 'клинок рассекающий демонов 1 сезон ' + ep.ep + ' серия смотреть онлайн';
+      window.open('https://www.google.com/search?tbm=vid&q=' + encodeURIComponent(q), '_blank');
+    }
+
+    function openKrdJutsu(idx) {
+      const ep = KRD_EPISODES[idx !== undefined ? idx : currentKrdIndex];
+      window.open('https://jut.su/kimetsu-no-yaiba/season-1/episode-' + ep.ep + '.html', '_blank');
+    }
+
     function renderKrdButtons() {
       const bar = document.getElementById('krdEpisodesBar');
       if (!bar) return;
       bar.innerHTML = KRD_EPISODES.map((ep, i) => {
         const isAct = i === currentKrdIndex;
-        const bg = isAct ? 'background: #ef4444; color: #fff; font-weight: 800; border-color: #f87171;' : 'background: rgba(255,255,255,0.05); color: #cbd5e1;';
-        return '<button type="button" class="quick-btn" style="' + bg + ' white-space: nowrap; padding: 6px 12px; font-size: 0.75rem;" onclick="playKrdEpisode(' + i + ')">' + (isAct ? '▶ ' : '') + (i + 1) + ' серия</button>';
+        const bg = isAct ? 'background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; font-weight: 800; border-color: #fca5a5; box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);' : 'background: rgba(255,255,255,0.06); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.12);';
+        return '<button type="button" class="quick-btn" style="' + bg + ' white-space: nowrap; padding: 7px 12px; font-size: 0.78rem; cursor: pointer; border-radius: 8px;" onclick="playKrdEpisode(' + i + ')" title="' + ep.title + ' • ' + ep.desc + '">' + (isAct ? '▶ ' : '') + ep.ep + ' серия</button>';
       }).join('');
     }
 

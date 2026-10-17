@@ -4676,11 +4676,12 @@
 
     let miniKrdIndex = 0;
     const MINI_KRD_EPS = [
-      { ep: 1, title: '1 серия: Жестокость', url: 'https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1' },
-      { ep: 2, title: '2 серия: Учитель Урокодаки', url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1' },
-      { ep: 3, title: '3 серия: Сабито и Макомо', url: 'https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1' },
-      { ep: 4, title: '4 серия: Финальный отбор', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1' },
-      { ep: 5, title: '5 серия: Клинок нитирин', url: 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1' }
+      { ep: 1, title: '1 серия: Жестокость', url: 'https://vk.com/video_ext.php?oid=-233763194&id=456239023' },
+      { ep: 2, title: '2 серия: Учитель Урокодаки', url: 'https://vk.com/video_ext.php?oid=-239442239&id=456239022' },
+      { ep: 3, title: '3 серия: Сабито и Макомо', url: 'https://vk.com/video_ext.php?oid=-227447822&id=456239031' },
+      { ep: 4, title: '4 серия: Финальный отбор', url: 'https://vk.com/video_ext.php?oid=-227429188&id=456239031' },
+      { ep: 5, title: '5 серия: Клинок нитирин', url: 'https://vk.com/video_ext.php?oid=-239442239&id=456239037' },
+      { ep: 0, title: 'Полный 1 сезон (26 серий BD 4K)', url: 'https://vk.com/video_ext.php?oid=-185087421&id=456247413' }
     ];
 
     function startMiniKrdMarathon() {
@@ -4693,7 +4694,7 @@
       const iframe = document.getElementById('miniPartyIframe');
       if (iframe) iframe.src = item.url;
       const lbl = document.getElementById('lblMiniKrdEpTitle');
-      if (lbl) lbl.textContent = '⚔️ Играет: ' + item.title;
+      if (lbl) lbl.textContent = '⚔️ Играет: ' + item.title + ' (Без блокировок YouTube)';
       showFlyingToast('⚔️ ' + item.title);
       addMiniPartyMsg('Ты', '⚔️ Включил КРД: ' + item.title);
       haptic('success');
