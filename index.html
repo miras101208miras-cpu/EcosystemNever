@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcosystemNever | Цифровая Экосистема & Студия Разработки</title>
+  <meta name="description" content="EcosystemNever — цифровая экосистема сервисов и студия создания высокотехнологичных веб-проектов, 3D-сайтов, SaaS платформ и Telegram-ботов под ключ." />
+
+  <!-- Шрифты: Syne, Montserrat, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #04060a;
+      --bg-surface: #0a0e17;
+      --bg-card: rgba(16, 23, 38, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+
+      --neon-cyan: #00f0ff;
+      --neon-purple: #a855f7;
+      --neon-blue: #3b82f6;
+      --neon-green: #10b981;
+      --neon-orange: #ff5722;
+      --neon-gold: #f59e0b;
+
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Montserrat', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    ::selection {
+      background: var(--neon-cyan);
+      color: #000;
+    }
+
+    /* Фоновые градиенты и сетка */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .ambient-orb {
+      position: fixed;
+      width: 75vw;
+      height: 55vh;
+      top: -15vh;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.16), rgba(168, 85, 247, 0.12), transparent 70%);
+      filter: blur(100px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* НАВИГАЦИЯ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      background: rgba(4, 6, 10, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    /* СОВРЕМЕННЫЙ 3D КИБЕР-ЛОГОТИП ECOSYSTEMNEVER */
+    .brand-logo-wrap {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(16, 23, 38, 0.75);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-logo-svg {
+      width: 32px;
+      height: 32px;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .brand:hover .brand-logo-wrap {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.7), 0 0 45px rgba(168, 85, 247, 0.4);
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    .brand:hover .brand-logo-svg {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .brand-text-eco {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .brand-text-never {
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--neon-cyan);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* ГРАНДИОЗНЫЙ ЭМБЛЕМ-ЛОГОТИП В HERO */
+    .hero-emblem-container {
+      margin-bottom: 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-emblem-glow {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, rgba(168, 85, 247, 0.25) 50%, transparent 70%);
+      filter: blur(25px);
+      z-index: 0;
+      animation: pulseLogo 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseLogo {
+      0% { transform: scale(0.9); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 0.9; }
+    }
+
+    .hero-emblem-box {
+      width: 84px;
+      height: 84px;
+      border-radius: 22px;
+      background: rgba(16, 23, 38, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.35);
+      transition: var(--transition);
+    }
+
+    .hero-emblem-box:hover {
+      transform: translateY(-4px) scale(1.06);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 240, 255, 0.8);
+    }
+
+    .hero-emblem-svg {
+      width: 54px;
+      height: 54px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #fff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-nav {
+      padding: 10px 22px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+      color: #04060a;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 30px;
+      letter-spacing: 1px;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+      transition: var(--transition);
+    }
+
+    .btn-nav:hover {
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+      transform: translateY(-2px);
+    }
+
+    /* HERO СЕКЦИЯ */
+    .hero {
+      padding: 180px 0 100px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 20px;
+      background: rgba(16, 23, 38, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 70%, var(--neon-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto 44px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 70px;
+    }
+
+    .btn-primary {
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      color: #04060a;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border-radius: 30px;
+      text-decoration: none;
+      letter-spacing: 1px;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.8);
+      transform: translateY(-2px);
+    }
+
+    .btn-glass {
+      padding: 16px 34px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: 30px;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-glass:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* ПОКАЗАТЕЛИ СТАТИСТИКИ */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+      padding-top: 36px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--neon-cyan);
+      line-height: 1.1;
+    }
+
+    .stat-text {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* СЕКЦИИ */
+    .section {
+      padding: 110px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      letter-spacing: -0.5px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 14px auto 0;
+      font-size: 1.05rem;
+    }
+
+    /* ==============================================================
+       СЕКЦИЯ: ПОРТФОЛИО КЛИЕНТСКИХ ПРОЕКТОВ (SHOWCASE)
+       ============================================================== */
+    .portfolio-filter {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 50px;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--neon-cyan);
+      color: #04060a;
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 32px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .project-card:hover {
+      border-color: var(--proj-color, var(--neon-cyan));
+      transform: translateY(-8px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px var(--proj-glow, rgba(0, 240, 255, 0.3));
+    }
+
+    /* Визуальный баннер проекта */
+    .project-preview {
+      height: 240px;
+      position: relative;
+      background: var(--proj-bg, #0b111a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .project-art {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.15);
+      user-select: none;
+      transition: transform 0.6s ease;
+    }
+
+    .project-card:hover .project-art {
+      transform: scale(1.15) rotate(4deg);
+    }
+
+    .project-badge {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: rgba(4, 6, 10, 0.85);
+      border: 1px solid var(--proj-color, var(--neon-cyan));
+      color: var(--proj-color, var(--neon-cyan));
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .project-metric {
+      position: absolute;
+      bottom: 18px;
+      right: 18px;
+      background: rgba(4, 6, 10, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+
+    .project-body {
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      color: #cbd5e1;
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-project {
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-decoration: none;
+      text-align: center;
+      transition: var(--transition);
+      flex: 1;
+    }
+
+    .btn-project-primary {
+      background: var(--proj-color, var(--neon-cyan));
+      color: #04060a;
+      box-shadow: 0 0 15px var(--proj-glow, rgba(0, 240, 255, 0.4));
+    }
+
+    .btn-project-primary:hover {
+      box-shadow: 0 0 25px var(--proj-glow, rgba(0, 240, 255, 0.7));
+    }
+
+    .btn-project-order {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #fff;
+    }
+
+    .btn-project-order:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ==============================================================
+       СЕКЦИЯ: ПРОДУКТЫ ЭКОСИСТЕМЫ
+       ============================================================== */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 30px;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 32px;
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--card-color, var(--neon-cyan));
+      opacity: 0.8;
+    }
+
+    .product-card:hover {
+      border-color: var(--card-color, var(--neon-cyan));
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 25px var(--card-glow, rgba(0, 240, 255, 0.3));
+    }
+
+    .product-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 24px;
+    }
+
+    .product-status {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--card-color, var(--neon-cyan));
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .product-name {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .product-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .product-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 30px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    .product-features li::before {
+      content: '⚡ ';
+      color: var(--card-color, var(--neon-cyan));
+    }
+
+    .product-btn {
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-align: center;
+      letter-spacing: 1px;
+      transition: var(--transition);
+      display: inline-block;
+    }
+
+    .btn-solid {
+      background: var(--card-color, var(--neon-cyan));
+      color: #04060a;
+      box-shadow: 0 0 15px var(--card-glow, rgba(0, 240, 255, 0.4));
+    }
+
+    .btn-solid:hover {
+      box-shadow: 0 0 25px var(--card-glow, rgba(0, 240, 255, 0.7));
+    }
+
+    /* ==============================================================
+       СЕКЦИЯ: ПОЧЕМУ КЛИЕНТЫ ВЫБИРАЮТ ECOSYSTEMNEVER
+       ============================================================== */
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .adv-card {
+      background: rgba(16, 23, 38, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 34px 28px;
+      transition: var(--transition);
+    }
+
+    .adv-card:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .adv-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      color: var(--neon-cyan);
+    }
+
+    .adv-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .adv-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    /* ==============================================================
+       СЕКЦИЯ: СОЗДАТЕЛЬ & ЗАКАЗ ПРОЕКТА
+       ============================================================== */
+    .order-section {
+      background: radial-gradient(circle at center, rgba(16, 23, 38, 0.8), #04060a);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .order-box {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 24px;
+      padding: 60px 50px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.2);
+    }
+
+    .order-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+    }
+
+    .order-title {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .order-sub {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--neon-cyan);
+      margin-bottom: 24px;
+      letter-spacing: 2px;
+    }
+
+    .order-desc {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      max-width: 680px;
+      margin: 0 auto 36px;
+    }
+
+    .order-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    /* ПОДВАЛ */
+    .footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .projects-grid, .products-grid { grid-template-columns: 1fr; }
+      .order-box { padding: 40px 24px; }
+      .order-title { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="ambient-orb"></div>
+
+  <!-- ШАПКА -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand">
+        <div class="brand-logo-wrap">
+          <svg class="brand-logo-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="navMobiusDark" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#334155" />
+                <stop offset="50%" stop-color="#1e293b" />
+                <stop offset="100%" stop-color="#0f172a" />
+              </linearGradient>
+              <linearGradient id="navMobiusChrome" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#94a3b8" />
+                <stop offset="40%" stop-color="#475569" />
+                <stop offset="70%" stop-color="#1e293b" />
+                <stop offset="100%" stop-color="#0f172a" />
+              </linearGradient>
+              <linearGradient id="navMobiusBevel" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#e2e8f0" stop-opacity="0.85" />
+                <stop offset="100%" stop-color="#475569" stop-opacity="0.1" />
+              </linearGradient>
+            </defs>
+            <ellipse cx="60" cy="60" rx="52" ry="32" stroke="#334155" stroke-width="0.75" stroke-dasharray="2 4" opacity="0.4" />
+            <path d="M 38 60 C 20 60 14 44 26 34 C 40 22 55 45 60 60 C 55 75 40 98 26 86 C 14 76 20 60 38 60 Z" fill="url(#navMobiusChrome)" stroke="#475569" stroke-width="0.8" />
+            <path d="M 82 60 C 100 60 106 76 94 86 C 80 98 65 75 60 60 C 65 45 80 22 94 34 C 106 44 100 60 82 60 Z" fill="url(#navMobiusDark)" stroke="#475569" stroke-width="0.8" />
+            <path d="M 38 60 C 20 60 14 44 26 34 C 40 22 55 45 60 60" stroke="url(#navMobiusBevel)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <path d="M 82 60 C 100 60 106 76 94 86 C 80 98 65 75 60 60" stroke="url(#navMobiusBevel)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <circle cx="60" cy="60" r="4.5" fill="#0f172a" stroke="#64748b" stroke-width="1" />
+            <circle cx="60" cy="60" r="2" fill="#38bdf8" />
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">
+            <span class="brand-text-eco">ECOSYSTEM</span><span class="brand-text-never">NEVER</span>
+          </div>
+          <div class="brand-tag">DIGITAL ECOSYSTEM & STUDIO</div>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#showcase" class="nav-link">Кейсы & Работы</a></li>
+        <li><a href="#products" class="nav-link">Продукты</a></li>
+        <li><a href="#advantages" class="nav-link">Преимущества</a></li>
+        <li><a href="#order" class="nav-link">Заказать проект</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://t.me/ecosystem_never_bot" target="_blank" class="btn-nav">
+          🤖 Telegram Бот
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. HERO -->
+  <section class="hero">
+    <div class="container">
+      <!-- Центральный 3D-эмблем логотип -->
+      <div class="hero-emblem-container">
+        <div class="hero-emblem-glow"></div>
+        <div class="hero-emblem-box">
+          <svg class="hero-emblem-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="60" cy="60" rx="52" ry="32" stroke="#334155" stroke-width="0.75" stroke-dasharray="2 4" opacity="0.4" />
+            <path d="M 38 60 C 20 60 14 44 26 34 C 40 22 55 45 60 60 C 55 75 40 98 26 86 C 14 76 20 60 38 60 Z" fill="url(#navMobiusChrome)" stroke="#475569" stroke-width="0.8" />
+            <path d="M 82 60 C 100 60 106 76 94 86 C 80 98 65 75 60 60 C 65 45 80 22 94 34 C 106 44 100 60 82 60 Z" fill="url(#navMobiusDark)" stroke="#475569" stroke-width="0.8" />
+            <path d="M 38 60 C 20 60 14 44 26 34 C 40 22 55 45 60 60" stroke="url(#navMobiusBevel)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <path d="M 82 60 C 100 60 106 76 94 86 C 80 98 65 75 60 60" stroke="url(#navMobiusBevel)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+            <circle cx="60" cy="60" r="4.5" fill="#0f172a" stroke="#64748b" stroke-width="1" />
+            <circle cx="60" cy="60" r="2" fill="#38bdf8" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>ECOSYSTEMNEVER STUDIO • СЕРВИСЫ & РАЗРАБОТКА</span>
+      </div>
+
+      <h1 class="hero-title">
+        СОЗДАЕМ ВЕБ-ПРОЕКТЫ<br>
+        <span class="hero-gradient">НОВОГО ПОКОЛЕНИЯ</span>
+      </h1>
+
+      <p class="hero-desc">
+        От интерактивных 3D-миров и корпоративных платформ до масштабируемых облачных сервисов и ботов. 
+        Мы воплощаем смелые идеи в безупречный, быстрый и красивый цифровой продукт.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#showcase" class="btn-primary">СМОТРЕТЬ НАШИ РАБОТЫ 🚀</a>
+        <a href="#order" class="btn-glass">ЗАКАЗАТЬ РАЗРАБОТКУ 💬</a>
+        <a href="https://miras101208miras-cpu.github.io/NeverProduct-Demon-Slayer/" target="_blank" class="btn-glass">ДЕМОН СЛЕЙЕР САЙТ ⚔️</a>
+      </div>
+
+      <!-- Статистические показатели -->
+      <div class="hero-stats">
+        <div class="stat-box">
+          <span class="stat-num">100%</span>
+          <span class="stat-text">PageSpeed Скорость</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">60 FPS</span>
+          <span class="stat-text">Плавность Анимаций</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">0.3s</span>
+          <span class="stat-text">Мгновенный Отклик</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">24/7</span>
+          <span class="stat-text">Поддержка Бота</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. НОВАЯ СЕКЦИЯ: ПОРТФОЛИО КЛИЕНТСКИХ ПРОЕКТОВ (SHOWCASE) -->
+  <section class="section" id="showcase">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">01 // НАШЕ ПОРТФОЛИО & КЕЙСЫ</div>
+        <h2 class="section-title">На что мы способны</h2>
+        <p class="section-desc">
+          Ознакомьтесь с примерами проектов, которые мы создаем: от высокоскоростных 3D-витрин и аналитических платформ до интерактивных анимационных миров.
+        </p>
+      </div>
+
+      <!-- Фильтр категорий -->
+      <div class="portfolio-filter">
+        <button class="filter-btn active" data-cat="all">Все Проекты (6)</button>
+        <button class="filter-btn" data-cat="3d">3D & WebGL</button>
+        <button class="filter-btn" data-cat="ecommerce">E-Commerce & Магазины</button>
+        <button class="filter-btn" data-cat="saas">SaaS & Платформы</button>
+      </div>
+
+      <!-- Сетка проектов -->
+      <div class="projects-grid" id="projectsGrid">
+
+        <!-- Проект 1: Demon Slayer Interactive Portal -->
+        <div class="project-card" data-category="3d" style="--proj-color: #00f0ff; --proj-glow: rgba(0, 240, 255, 0.4); --proj-bg: linear-gradient(135deg, #051329, #0077b6);">
+          <div class="project-preview">
+            <span class="project-badge">3D & Web Audio</span>
+            <div class="project-art">⚔️ 水</div>
+            <span class="project-metric">60 FPS • 14 Styles</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Demon Slayer Universe</h3>
+            <p class="project-desc">
+              Флагманский интерактивный портал по КРД с математическим синтезом звуков меча ничирин через Web Audio API, частицами Canvas и динамической галереей 9 Столпов.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Web Audio API</span>
+              <span class="project-tag">Canvas 2D</span>
+              <span class="project-tag">GSAP 3</span>
+              <span class="project-tag">GitHub Pages</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://miras101208miras-cpu.github.io/NeverProduct-Demon-Slayer/" target="_blank" class="btn-project btn-project-primary">Живое Демо ↗</a>
+              <a href="https://t.me/light18101?text=Привет!%20Хочу%20заказать%20проект%20как%20Demon%20Slayer" target="_blank" class="btn-project btn-project-order">Заказать 💬</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Проект 2: CyberStore 3D -->
+        <div class="project-card" data-category="ecommerce" style="--proj-color: #ff5722; --proj-glow: rgba(255, 87, 34, 0.4); --proj-bg: linear-gradient(135deg, #2b0c00, #ff5722);">
+          <div class="project-preview">
+            <span class="project-badge">E-Commerce 3D</span>
+            <div class="project-art">🛍️ 3D</div>
+            <span class="project-metric">+340% Конверсия</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">CyberStore 3D Configurator</h3>
+            <p class="project-desc">
+              Инновационный интернет-магазин с трехмерной примеркой товаров в реальном времени. Вращение на 360°, кастомизация материалов и чекаут за 0.8 секунды.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Three.js</span>
+              <span class="project-tag">WebGL</span>
+              <span class="project-tag">Apple Pay / Stripe</span>
+              <span class="project-tag">PWA</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://t.me/light18101?text=Привет!%20Интересует%203D%20E-Commerce%20магазин" target="_blank" class="btn-project btn-project-primary">Заказать Кейс ↗</a>
+              <a href="https://t.me/light18101" target="_blank" class="btn-project btn-project-order">Консультация 💬</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Проект 3: Apex Analytics SaaS -->
+        <div class="project-card" data-category="saas" style="--proj-color: #10b981; --proj-glow: rgba(16, 185, 129, 0.4); --proj-bg: linear-gradient(135deg, #042f2e, #10b981);">
+          <div class="project-preview">
+            <span class="project-badge">SaaS & Highload</span>
+            <div class="project-art">📊 APEX</div>
+            <span class="project-metric">Zero Latency WS</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Apex FinTech & Crypto Dashboard</h3>
+            <p class="project-desc">
+              Высоконагруженный дашборд с живой визуализацией рыночных данных, WebSocket-потоками без задержек, темным интерфейсом и экспортом отчетов.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">WebSockets</span>
+              <span class="project-tag">Chart.js / Canvas</span>
+              <span class="project-tag">Dark Mode</span>
+              <span class="project-tag">REST API</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://t.me/light18101?text=Привет!%20Хочу%20дашборд%20или%20SaaS%20платформу" target="_blank" class="btn-project btn-project-primary" style="background: #10b981; color: #04060a;">Заказать Кейс ↗</a>
+              <a href="https://t.me/light18101" target="_blank" class="btn-project btn-project-order">Консультация 💬</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Проект 4: NeverCloud Platform -->
+        <div class="project-card" data-category="saas" style="--proj-color: #3b82f6; --proj-glow: rgba(59, 130, 246, 0.4); --proj-bg: linear-gradient(135deg, #0f172a, #2563eb);">
+          <div class="project-preview">
+            <span class="project-badge">Cloud Storage</span>
+            <div class="project-art">☁️ CLOUD</div>
+            <span class="project-metric">E2E Шифрование</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">NeverCloud Storage Engine</h3>
+            <p class="project-desc">
+              Приватная облачная платформа для мгновенного сохранения, каталогизации и стриминга медиафайлов. Интеграция с ботом EcosystemNever и веб-интерфейсом.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Telegram Bot API</span>
+              <span class="project-tag">File Streaming</span>
+              <span class="project-tag">Zero Knowledge</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://t.me/ecosystem_never_bot" target="_blank" class="btn-project btn-project-primary" style="background: #3b82f6; color: #fff;">Тест в Боте ↗</a>
+              <a href="https://t.me/light18101" target="_blank" class="btn-project btn-project-order">Разработка 💬</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Проект 5: Aura Meta World -->
+        <div class="project-card" data-category="3d" style="--proj-color: #a855f7; --proj-glow: rgba(168, 85, 247, 0.4); --proj-bg: linear-gradient(135deg, #1e082b, #9333ea);">
+          <div class="project-preview">
+            <span class="project-badge">WebGL Shaders</span>
+            <div class="project-art">🔮 AURA</div>
+            <span class="project-metric">GLSL Shaders</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Aura WebGL Interactive Space</h3>
+            <p class="project-desc">
+              Иммерсивный промо-сайт с кастомными шейдерами света, кинетической типографикой и процедурными 3D-анимациями, реагирующими на курсор пользователя.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">GLSL Shaders</span>
+              <span class="project-tag">Three.js</span>
+              <span class="project-tag">Kinetic Typography</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://t.me/light18101?text=Привет!%20Хочу%20крутой%203D%20промо-сайт" target="_blank" class="btn-project btn-project-primary" style="background: #a855f7; color: #fff;">Заказать Кейс ↗</a>
+              <a href="https://t.me/light18101" target="_blank" class="btn-project btn-project-order">Консультация 💬</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Проект 6: NeverParty Synchronous Watch -->
+        <div class="project-card" data-category="saas" style="--proj-color: #f59e0b; --proj-glow: rgba(245, 158, 11, 0.4); --proj-bg: linear-gradient(135deg, #2e1a00, #d97706);">
+          <div class="project-preview">
+            <span class="project-badge">Realtime Streaming</span>
+            <div class="project-art">🍿 PARTY</div>
+            <span class="project-metric">Sub-50ms Sync</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">NeverParty Watch Room</h3>
+            <p class="project-desc">
+              Стриминговая комната совместного просмотра видео и аниме с синхронизацией кадров миллисекундной точности, живым аудио-чатом и реакциями.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">WebRTC</span>
+              <span class="project-tag">Realtime Sync</span>
+              <span class="project-tag">Live Reactions</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://t.me/ecosystem_never_bot" target="_blank" class="btn-project btn-project-primary" style="background: #f59e0b; color: #04060a;">Тест в Боте ↗</a>
+              <a href="https://t.me/light18101" target="_blank" class="btn-project btn-project-order">Заказать 💬</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. СЕКЦИЯ: СОБСТВЕННЫЕ ПРОДУКТЫ ЭКОСИСТЕМЫ -->
+  <section class="section" id="products">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">02 // ЭКОСИСТЕМА СЕРВИСОВ</div>
+        <h2 class="section-title">Сервисы EcosystemNever</h2>
+        <p class="section-desc">Единая цифровая инфраструктура для работы, хранения данных и развлечений.</p>
+      </div>
+
+      <div class="products-grid">
+
+        <!-- 1. NeverCloud -->
+        <div class="product-card" style="--card-color: #00f0ff; --card-glow: rgba(0, 240, 255, 0.4);">
+          <div class="product-icon">☁️</div>
+          <div class="product-status">Облачное хранилище</div>
+          <h3 class="product-name">NeverCloud</h3>
+          <p class="product-desc">
+            Личное быстрое облако для безопасного хранения файлов, фотографий и документов без сжатия качества. 
+            Прямое автосохранение файлов через нашего Telegram-бота.
+          </p>
+          <ul class="product-features">
+            <li>Мгновенный аплоад без потери качества</li>
+            <li>Сквозное шифрование файлов</li>
+            <li>Автосохранение из Telegram в 1 клик</li>
+          </ul>
+          <a href="https://t.me/ecosystem_never_bot" target="_blank" class="product-btn btn-solid">
+            Открыть через Бота ↗
+          </a>
+        </div>
+
+        <!-- 2. NeverMessenger -->
+        <div class="product-card" style="--card-color: #a855f7; --card-glow: rgba(168, 85, 247, 0.4);">
+          <div class="product-icon">💬</div>
+          <div class="product-status">Безопасный мессенджер</div>
+          <h3 class="product-name">NeverMessenger</h3>
+          <p class="product-desc">
+            Приватное пространство для общения. Прямые диалоги и групповые штабы со сквозным E2E-шифрованием, 
+            голосовыми каналами и нулевыми задержками.
+          </p>
+          <ul class="product-features">
+            <li>End-to-End шифрование переписки</li>
+            <li>Голосовые комнаты без задержек</li>
+            <li>Передача любых форматов данных</li>
+          </ul>
+          <a href="https://t.me/ecosystem_never_bot" target="_blank" class="product-btn btn-solid" style="background: #a855f7; color: #fff;">
+            Запись на Бета-тест ↗
+          </a>
+        </div>
+
+        <!-- 3. NeverParty -->
+        <div class="product-card" style="--card-color: #ff5722; --card-glow: rgba(255, 87, 34, 0.4);">
+          <div class="product-icon">🍿</div>
+          <div class="product-status">Party Watch Кинотеатр</div>
+          <h3 class="product-name">NeverParty</h3>
+          <p class="product-desc">
+            Синхронный совместный просмотр аниме, фильмов и видеороликов с друзьями на любых расстояниях. 
+            Единый плеер, реакции в реальном времени и встроенный чат.
+          </p>
+          <ul class="product-features">
+            <li>Идеальная синхронизация таймкода</li>
+            <li>Каталог всех сезонов Demon Slayer</li>
+            <li>Генерация приватных комнат по ID</li>
+          </ul>
+          <a href="https://t.me/ecosystem_never_bot" target="_blank" class="product-btn btn-solid" style="background: #ff5722; color: #fff;">
+            Создать комнату ↗
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. СЕКЦИЯ: ПОЧЕМУ ВЫБИРАЮТ НАС -->
+  <section class="section" id="advantages" style="background: rgba(10, 14, 23, 0.5);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">03 // НАШИ СТАНДАРТЫ КАЧЕСТВА</div>
+        <h2 class="section-title">Почему клиенты выбирают нас</h2>
+        <p class="section-desc">Мы не используем шаблонные решения. Каждый продукт проектируется как штучный шедевр.</p>
+      </div>
+
+      <div class="advantages-grid">
+        <div class="adv-card">
+          <div class="adv-icon">⚡</div>
+          <h3 class="adv-title">Ультимативная Скорость</h3>
+          <p class="adv-desc">Рейтинг 100/100 в Google PageSpeed, нулевые задержки ввода (INP < 50ms) и моментальный отклик интерфейса.</p>
+        </div>
+
+        <div class="adv-card">
+          <div class="adv-icon">🎨</div>
+          <h3 class="adv-title">Эксклюзивный Дизайн</h3>
+          <p class="adv-desc">Премиальная темная эстетика, кинематографичные микроанимации и 3D-графика, которая влюбляет пользователей с первой секунды.</p>
+        </div>
+
+        <div class="adv-card">
+          <div class="adv-icon">🛡️</div>
+          <h3 class="adv-title">Надежная Архитектура</h3>
+          <p class="adv-desc">Чистый масштабируемый код без балласта, максимальная безопасность данных и защита от перегрузок.</p>
+        </div>
+
+        <div class="adv-card">
+          <div class="adv-icon">🤖</div>
+          <h3 class="adv-title">Экосистема Под Ключ</h3>
+          <p class="adv-desc">Разрабатываем комплексные решения: веб-портал + Telegram-бот + облачные интеграции под ключ.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. СЕКЦИЯ: ЗАКАЗ ПРОЕКТА & СВЯЗЬ С СОЗДАТЕЛЕМ -->
+  <section class="section order-section" id="order">
+    <div class="container">
+      <div class="order-box">
+        <div class="order-avatar">👑</div>
+        <div class="order-sub">FOUNDER & LEAD ARCHITECT • @LIGHT18101</div>
+        <h2 class="order-title">Готовы создать свой проект?</h2>
+        <p class="order-desc">
+          Нужен современный интернет-магазин, 3D промо-сайт, сложная веб-платформа или Telegram-бот для вашего бизнеса? 
+          Напишите напрямую основателю <strong>EcosystemNever</strong> — обсудим вашу задачу и рассчитаем сроки реализации!
+        </p>
+
+        <div class="order-btn-group">
+          <a href="https://t.me/light18101" target="_blank" class="btn-primary" style="font-size: 1rem; padding: 18px 40px;">
+            ✈️ НАПИСАТЬ В TELEGRAM (@light18101)
+          </a>
+          <a href="https://t.me/ecosystem_never_bot" target="_blank" class="btn-glass" style="font-size: 1rem; padding: 18px 36px;">
+            🤖 ТЕСТИРОВАТЬ НАШЕГО БОТА
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПОДВАЛ -->
+  <footer class="footer">
+    <div class="container">
+      <p style="margin-bottom: 8px;"><strong>EcosystemNever</strong> — Единая цифровая экосистема и студия разработки.</p>
+      <p>© 2026 EcosystemNever. Основатель & Главный разработчик: <a href="https://t.me/light18101" target="_blank" style="color: var(--neon-cyan); text-decoration: none;">@light18101</a></p>
+    </div>
+  </footer>
+
+  <!-- СКРИПТ ФИЛЬТРАЦИИ ПРОЕКТОВ -->
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const cat = btn.dataset.cat;
+        projectCards.forEach(card => {
+          if (cat === 'all' || card.dataset.category === cat) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
