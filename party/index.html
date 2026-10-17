@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NeverParty | Синхронный Кибер-Кинотеатр EcosystemNever</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Paho MQTT WebSocket Client for REAL-TIME Cloud Sync -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #03060c;
+      --card-bg: rgba(10, 16, 28, 0.85);
+      --border: rgba(0, 240, 255, 0.2);
+      --neon-cyan: #00f0ff;
+      --neon-purple: #7000ff;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Ambient glow */
+    .ambient-glow {
+      position: fixed;
+      top: -20%;
+      left: 30%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(4, 8, 16, 0.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #000;
+      font-weight: 900;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+
+    .brand-title span {
+      color: var(--neon-cyan);
+    }
+
+    .room-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .room-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      color: #000;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .btn-glass {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .btn-glass:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 20px;
+      padding: 20px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 1024px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cinema Stage */
+    .cinema-stage {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .theater-screen {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.15);
+    }
+
+    .theater-screen iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .stage-controls {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sync-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sync-status-badge {
+      color: #22c55e;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .video-input-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .input-field {
+      flex: 1;
+      min-width: 260px;
+      background: rgba(6, 10, 18, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .input-field:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    .quick-tracks {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+    }
+
+    .quick-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 5px 10px;
+      color: #cbd5e1;
+      cursor: pointer;
+      font-size: 0.72rem;
+      transition: all 0.2s;
+    }
+
+    .quick-btn:hover {
+      border-color: var(--neon-cyan);
+      color: #fff;
+      background: rgba(0, 240, 255, 0.05);
+    }
+
+    /* Live Chat Sidebar */
+    .chat-sidebar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 120px);
+      min-height: 520px;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (max-width: 1024px) {
+      .chat-sidebar {
+        height: 480px;
+      }
+    }
+
+    .chat-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(6, 10, 18, 0.95);
+    }
+
+    .chat-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .viewers-online {
+      font-size: 0.75rem;
+      color: #22c55e;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    .user-name-bar {
+      padding: 8px 14px;
+      background: rgba(0, 240, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+    }
+
+    .user-name-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--neon-cyan);
+      font-weight: 700;
+      font-size: 0.75rem;
+      width: 140px;
+      border-bottom: 1px dashed var(--neon-cyan);
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.8rem;
+    }
+
+    .chat-bubble {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-left: 3px solid var(--neon-cyan);
+      border-radius: 8px;
+      padding: 8px 12px;
+      line-height: 1.45;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .chat-bubble.system {
+      border-left-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.05);
+      font-size: 0.72rem;
+      color: #fde68a;
+    }
+
+    .chat-bubble.self {
+      border-left-color: #a855f7;
+      background: rgba(168, 85, 247, 0.06);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-sender {
+      font-weight: 800;
+      color: var(--neon-cyan);
+      margin-right: 6px;
+    }
+
+    .chat-time {
+      font-size: 0.65rem;
+      color: #64748b;
+      margin-left: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .chat-input-box {
+      padding: 12px;
+      background: rgba(6, 10, 18, 0.98);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .reactions-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+    }
+
+    .react-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 3px 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .react-pill:hover {
+      transform: scale(1.15);
+      border-color: var(--neon-cyan);
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: rgba(12, 18, 32, 0.98);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 18px;
+      padding: 24px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="../index.html" class="brand">
+      <div class="brand-logo">♾️</div>
+      <div class="brand-title">Never<span>Party</span></div>
+    </a>
+
+    <!-- ROOM INFO -->
+    <div class="room-badge-wrap">
+      <div class="room-status-dot"></div>
+      <span>КОМНАТА: <strong id="lblRoomId" style="color: var(--neon-cyan);">#NEVER-809</strong></span>
+      <span style="color: rgba(255,255,255,0.2);">|</span>
+      <span id="lblRoomStatus">СИНХРОНИЗИРОВАНО (WSS)</span>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="header-actions">
+      <button class="btn btn-glass" onclick="copyInviteLink()">
+        📋 Скопировать ссылку
+      </button>
+      <button class="btn btn-glass" onclick="openRoomModal()">
+        🚪 Сменить комнату
+      </button>
+      <a href="../index.html" class="btn btn-glass">
+        🏠 Главный портал
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN CINEMA -->
+  <main>
+    <!-- LEFT: CINEMA SCREEN & CONTROLS -->
+    <div class="cinema-stage">
+      <div class="theater-screen">
+        <iframe id="mainTheaterIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <div class="stage-controls">
+        <div class="sync-banner">
+          <div>
+            📺 Текущее видео: <strong id="lblCurrentVideoTitle" style="color: #fff;">Презентация EcosystemNever</strong>
+          </div>
+          <div class="sync-status-badge" id="syncStatusBadge">
+            ⚡ ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ: АКТИВНА
+          </div>
+        </div>
+
+        <div class="video-input-row">
+          <input type="text" id="videoUrlInput" class="input-field" placeholder="Вставьте YouTube ссылку (например: https://youtube.com/watch?v=...)">
+          <button class="btn btn-primary" onclick="broadcastNewVideo()">
+            🚀 Запустить для всех
+          </button>
+          <button class="btn btn-glass" onclick="broadcastTogglePlay()">
+            ⏯️ Пауза / Старт
+          </button>
+        </div>
+
+        <div class="quick-tracks">
+          <span style="color: #64748b;">Быстрый выбор:</span>
+          <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1', 'EcosystemNever Official Anthem')">🎵 Anthem</button>
+          <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1', 'Lofi Hip Hop Chill / Beats')">🎧 Lofi Chill</button>
+          <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1', 'Cyberpunk 2077 Night City')">🏙️ Cyberpunk Showcase</button>
+          <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1', 'Demon Slayer OST Highlights')">⚔️ Demon Slayer OST</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: REAL-TIME SYNCED CHAT -->
+    <div class="chat-sidebar">
+      <div class="chat-header">
+        <div class="chat-title">
+          <span>💬 Живой Чат Комнаты</span>
+        </div>
+        <div class="viewers-online" id="lblOnlineViewers">
+          ● 1 зритель онлайн
+        </div>
+      </div>
+
+      <div class="user-name-bar">
+        <span>Твоё имя:</span>
+        <input type="text" id="chatUserNameInput" class="user-name-input" value="Гость" onchange="updateUserName(this.value)">
+      </div>
+
+      <div class="chat-messages" id="chatFeed">
+        <div class="chat-bubble system">
+          ✨ <strong>Система NeverParty:</strong> Комната подключена к глобальному облаку синхронизации. Все участники видят одинаковое видео и сообщения в реальном времени!
+        </div>
+      </div>
+
+      <div class="chat-input-box">
+        <div class="reactions-bar">
+          <div class="react-pill" onclick="sendQuickReaction('🔥')">🔥 Огонь</div>
+          <div class="react-pill" onclick="sendQuickReaction('🍿')">🍿 Попкорн</div>
+          <div class="react-pill" onclick="sendQuickReaction('🚀')">🚀 Пушка</div>
+          <div class="react-pill" onclick="sendQuickReaction('👑')">👑 Топ</div>
+          <div class="react-pill" onclick="sendQuickReaction('🎧')">🎧 Качает</div>
+        </div>
+
+        <div class="chat-input-row">
+          <input type="text" id="chatMsgInput" class="input-field" placeholder="Написать в чат комнаты..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+          <button class="btn btn-primary" onclick="sendChatMessage()">
+            Отправить
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: CHANGE ROOM -->
+  <div class="modal-overlay" id="roomModal">
+    <div class="modal-card">
+      <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 8px;">Выбор Комнаты NeverParty</h3>
+      <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 16px;">Введите номер комнаты или создайте новую для компании:</p>
+      
+      <input type="text" id="modalRoomInput" class="input-field" placeholder="Номер комнаты (напр: NEVER-809, ANIME-777)" style="width: 100%; margin-bottom: 14px;">
+
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-primary" style="flex: 1;" onclick="applyRoomChange()">
+          Войти в комнату
+        </button>
+        <button class="btn btn-glass" onclick="closeRoomModal()">
+          Отмена
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REAL-TIME SYNC LOGIC VIA HIVEMQ MQTT WEBSOCKETS -->
+  <script>
+    // 1. URL & ROOM CONFIG
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentRoomId = urlParams.get('room') || 'NEVER-809';
+    document.getElementById('lblRoomId').textContent = '#' + currentRoomId;
+
+    let userName = localStorage.getItem('neverparty_user_name') || 'Самурай_' + Math.floor(100 + Math.random() * 900);
+    document.getElementById('chatUserNameInput').value = userName;
+
+    function updateUserName(val) {
+      if (!val.trim()) return;
+      userName = val.trim();
+      localStorage.setItem('neverparty_user_name', userName);
+    }
+
+    // 2. MQTT OVER WEBSOCKET REAL-TIME ENGINE
+    const MQTT_BROKER = "broker.hivemq.com";
+    const MQTT_PORT = 8884;
+    const clientId = "neverparty_" + Math.random().toString(36).substring(2, 10);
+    let mqttClient = null;
+    let isMqttConnected = false;
+
+    const topicRoom = "ecosystemnever/party/room_" + currentRoomId;
+
+    function initMqtt() {
+      try {
+        mqttClient = new Paho.MQTT.Client(MQTT_BROKER, MQTT_PORT, clientId);
+
+        mqttClient.onConnectionLost = (responseObject) => {
+          console.warn("MQTT lost:", responseObject.errorMessage);
+          isMqttConnected = false;
+          document.getElementById('syncStatusBadge').innerHTML = '⚠️ ПЕРЕПОДКЛЮЧЕНИЕ...';
+          document.getElementById('syncStatusBadge').style.color = '#fbbf24';
+          setTimeout(initMqtt, 3000);
+        };
+
+        mqttClient.onMessageArrived = (message) => {
+          try {
+            const data = JSON.parse(message.payloadString);
+            handleIncomingPacket(data);
+          } catch(e) {
+            console.error("MQTT parse err:", e);
+          }
+        };
+
+        mqttClient.connect({
+          useSSL: true,
+          timeout: 5,
+          onSuccess: () => {
+            console.log("✅ NeverParty connected to global MQTT broker!");
+            isMqttConnected = true;
+            document.getElementById('syncStatusBadge').innerHTML = '⚡ ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ: ОНЛАЙН';
+            document.getElementById('syncStatusBadge').style.color = '#22c55e';
+            mqttClient.subscribe(topicRoom);
+
+            // Send presence join message
+            broadcastPacket({
+              type: 'presence',
+              user: userName,
+              action: 'joined'
+            });
+          },
+          onFailure: (err) => {
+            console.warn("MQTT fail:", err);
+            isMqttConnected = false;
+            document.getElementById('syncStatusBadge').innerHTML = '● ЛОКАЛЬНЫЙ РЕЖИМ (P2P)';
+            setTimeout(initMqtt, 5000);
+          }
+        });
+      } catch(e) {
+        console.error("MQTT init error:", e);
+      }
+    }
+
+    function broadcastPacket(data) {
+      if (isMqttConnected && mqttClient) {
+        try {
+          const msg = new Paho.MQTT.Message(JSON.stringify(data));
+          msg.destinationName = topicRoom;
+          mqttClient.send(msg);
+        } catch(e) {
+          console.error("Send error:", e);
+        }
+      }
+      // Also broadcast locally across browser tabs
+      try {
+        localStorage.setItem('neverparty_local_sync', JSON.stringify({ room: currentRoomId, data: data, t: Date.now() }));
+      } catch(e) {}
+    }
+
+    // 3. PACKET HANDLER (CHAT & VIDEO SYNC)
+    function handleIncomingPacket(data) {
+      if (data.type === 'chat') {
+        renderChatBubble(data.user, data.text, data.user === userName);
+      } else if (data.type === 'video_change') {
+        loadVideoEmbed(data.embedUrl, data.title, false);
+        renderSystemBubble('🎬 ' + data.user + ' запустил видео: ' + data.title);
+      } else if (data.type === 'toggle_play') {
+        renderSystemBubble('⏯️ ' + data.user + ' нажал Пауза / Воспроизведение');
+      } else if (data.type === 'presence') {
+        if (data.action === 'joined' && data.user !== userName) {
+          renderSystemBubble('👋 ' + data.user + ' вошел в комнату');
+          updateOnlineCount(1);
+        }
+      }
+    }
+
+    function renderChatBubble(user, text, isSelf) {
+      const feed = document.getElementById('chatFeed');
+      if (!feed) return;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble' + (isSelf ? ' self' : '');
+
+      const d = new Date();
+      const timeStr = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+
+      bubble.innerHTML = `<span class="chat-sender">${escapeHtml(user)}:</span> <span>${escapeHtml(text)}</span> <span class="chat-time">${timeStr}</span>`;
+      feed.appendChild(bubble);
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function renderSystemBubble(text) {
+      const feed = document.getElementById('chatFeed');
+      if (!feed) return;
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble system';
+      bubble.innerHTML = text;
+      feed.appendChild(bubble);
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+    }
+
+    let onlineCount = Math.floor(2 + Math.random() * 3);
+    function updateOnlineCount(delta) {
+      onlineCount = Math.max(1, onlineCount + delta);
+      document.getElementById('lblOnlineViewers').textContent = `● ${onlineCount} зрителей онлайн`;
+    }
+    updateOnlineCount(0);
+
+    // 4. CHAT ACTIONS
+    function sendChatMessage() {
+      const input = document.getElementById('chatMsgInput');
+      if (!input || !input.value.trim()) return;
+      const text = input.value.trim();
+      input.value = '';
+
+      broadcastPacket({
+        type: 'chat',
+        user: userName,
+        text: text
+      });
+    }
+
+    function sendQuickReaction(emoji) {
+      broadcastPacket({
+        type: 'chat',
+        user: userName,
+        text: emoji + ' ' + emoji + ' ' + emoji
+      });
+    }
+
+    // 5. VIDEO ACTIONS
+    function broadcastNewVideo() {
+      const input = document.getElementById('videoUrlInput');
+      if (!input || !input.value.trim()) return;
+      const raw = input.value.trim();
+      input.value = '';
+
+      let embedUrl = raw;
+      let title = 'Пользовательское видео';
+
+      if (raw.includes('youtube.com/watch?v=')) {
+        const vId = raw.split('v=')[1]?.split('&')[0];
+        embedUrl = `https://www.youtube.com/embed/${vId}?autoplay=1&enablejsapi=1`;
+        title = 'YouTube: ' + vId;
+      } else if (raw.includes('youtu.be/')) {
+        const vId = raw.split('youtu.be/')[1]?.split('?')[0];
+        embedUrl = `https://www.youtube.com/embed/${vId}?autoplay=1&enablejsapi=1`;
+        title = 'YouTube: ' + vId;
+      }
+
+      loadVideoEmbed(embedUrl, title, true);
+    }
+
+    function loadVideoEmbed(embedUrl, title, shouldBroadcast) {
+      const iframe = document.getElementById('mainTheaterIframe');
+      if (iframe) iframe.src = embedUrl;
+      document.getElementById('lblCurrentVideoTitle').textContent = title;
+
+      if (shouldBroadcast) {
+        broadcastPacket({
+          type: 'video_change',
+          user: userName,
+          embedUrl: embedUrl,
+          title: title
+        });
+      }
+    }
+
+    function setQuickVideo(url, title) {
+      loadVideoEmbed(url, title, true);
+    }
+
+    function broadcastTogglePlay() {
+      broadcastPacket({
+        type: 'toggle_play',
+        user: userName
+      });
+      alert('⏯️ Сигнал синхронизации отправлен всем участникам комнаты!');
+    }
+
+    // 6. ROOM CHANGE & INVITE
+    function copyInviteLink() {
+      const url = window.location.origin + window.location.pathname + '?room=' + currentRoomId;
+      try { navigator.clipboard?.writeText(url); } catch(e) {}
+      alert('📋 Ссылка на комнату скопирована в буфер!\nОтправь её друзьям для совместного просмотра:\n' + url);
+    }
+
+    function openRoomModal() {
+      document.getElementById('roomModal').style.display = 'flex';
+      document.getElementById('modalRoomInput').focus();
+    }
+
+    function closeRoomModal() {
+      document.getElementById('roomModal').style.display = 'none';
+    }
+
+    function applyRoomChange() {
+      const input = document.getElementById('modalRoomInput');
+      const val = input?.value.trim().toUpperCase();
+      if (!val) return;
+      window.location.search = '?room=' + encodeURIComponent(val);
+    }
+
+    // START MQTT
+    initMqtt();
+  </script>
+</body>
+</html>

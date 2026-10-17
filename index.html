@@ -2810,10 +2810,19 @@
           </div>
 
           <!-- ПАНЕЛЬ СОЗДАТЕЛЯ ДЛЯ ВЫДАЧИ ПРОМОКОДОВ (@light18101) -->
-          <div class="promo-creator-card">
+          
+          <!-- КНОПКА ДОСТУПА СОЗДАТЕЛЯ (СКРЫТА ОТ ОБЫЧНЫХ ПОЛЬЗОВАТЕЛЕЙ) -->
+          <div style="text-align: center; margin-top: 20px;">
+            <button type="button" class="btn-glass" id="btnUnlockFounderPromo" style="font-size: 0.72rem; opacity: 0.6;" onclick="unlockFounderPromoPanel()">
+              🔒 Доступ Создателя (@light18101)
+            </button>
+          </div>
+
+          <!-- ПАНЕЛЬ СОЗДАТЕЛЯ (СКРЫТА ПО УМОЛЧАНИЮ) -->
+          <div class="promo-creator-card" id="portalFounderPromoBox" style="display: none;">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
               <div>
-                <span style="font-size: 0.7rem; font-weight: 800; color: #fbbf24; letter-spacing: 0.1em;">👑 FOUNDER TOOLS (@light18101)</span>
+                <span style="font-size: 0.7rem; font-weight: 800; color: #fbbf24; letter-spacing: 0.1em;">👑 ДОСТУП РАЗРЕШЕН (@light18101)</span>
                 <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 2px 0;">Генератор Промокодов для Клиентов</h4>
                 <p style="font-size: 0.78rem; color: #94a3b8;">Создавайте официальные промокоды на скидку и отправляйте заказчикам в один клик.</p>
               </div>
@@ -2826,7 +2835,7 @@
             </div>
 
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <input type="text" class="party-input-url" id="founderClientInput" placeholder="Имя клиента или @username (например: Иван, @client)..." style="flex: 2; min-width: 200px;">
+              <input type="text" class="party-input-url" id="founderClientInput" placeholder="Имя клиента или @username..." style="flex: 2; min-width: 200px;">
               <button class="btn-primary" style="background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; font-weight: 800; padding: 8px 18px;" onclick="generateFounderPromo()">
                 ⚡ Создать Промокод
               </button>
@@ -2845,125 +2854,37 @@
       </div>
 
       <!-- 2. ПАНЕЛЬ: NEVERPARTY (МУЛЬТИ-КОМНАТЫ БЕЗ ВЫБРАСЫВАНИЯ НА САЙТ) -->
+            <!-- 2. ПАНЕЛЬ: NEVERPARTY (ВЫНЕСЕН В ОТДЕЛЬНЫЙ ПЛАТФОРМЕННЫЙ САЙТ) -->
       <div class="tool-tab-panel" id="panelParty">
-        <div class="tool-glass-card">
-          <!-- ВЕРХНЯЯ ШАПКА PARTY -->
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-            <div>
-              <div class="section-tag">SYNC MULTI-ROOM CINEMA</div>
-              <h3 style="font-size: 1.3rem; font-weight: 800; color: #fff;">NeverParty: Совместный Кибер-Кинотеатр</h3>
-            </div>
-            <!-- ПЕРЕКЛЮЧАТЕЛЬ ЛОББИ / КОМНАТА -->
-            <div style="display: flex; gap: 8px;">
-              <button class="btn-glass active" id="btnPartyLobbyTab" style="padding: 6px 14px; font-size: 0.78rem;" onclick="showPartyLobby()">
-                🔥 Все Комнаты
-              </button>
-              <button class="btn-primary" style="padding: 6px 14px; font-size: 0.78rem;" onclick="showPartyCreateModal()">
-                ➕ Создать Комнату
-              </button>
-            </div>
-          </div>
+        <div class="tool-glass-card" style="text-align: center; max-width: 760px; padding: 40px 24px;">
+          <div class="section-tag" style="color: #22c55e;">DEDICATED CYBER-CINEMA PLATFORM</div>
+          <h3 style="font-size: 1.6rem; font-weight: 900; color: #fff; margin: 8px 0 12px;">NeverParty: Кибер-Кинотеатр Совместного Просмотра</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; max-width: 600px; margin: 0 auto 24px;">
+            Для комфортного просмотра в 4K и синхронизации без рекламы сервис <strong>NeverParty</strong> вынесен на отдельную платформу с поддержкой облачных WebSockets, живым чатом комнат и поддержкой мобильных устройств.
+          </p>
 
-          <!-- ЛОББИ: СПИСОК КОМНАТ ДРУГИХ ПЛЕЕРОВ -->
-          <div id="partyLobbyView">
-            <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px;">
-              Выберите активную комнату других игроков для совместного просмотра или создайте свою:
+          <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 25px;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 20px; text-align: left;">
+              <div style="color: #22c55e; font-size: 0.75rem; font-weight: 800;">● СИНХРОНИЗАЦИЯ 50 МС</div>
+              <div style="color: #fff; font-weight: 700; font-size: 0.85rem;">MQTT WebSockets Cloud</div>
             </div>
-            
-            <div id="partyRoomsContainer">
-              <!-- Комната 1 -->
-              <div class="party-room-chip">
-                <div>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #22c55e; font-size: 0.7rem;">● LIVE</span>
-                    <strong style="color: #fff; font-size: 0.9rem;">#NEVER-809: Кибер-Презентация EcosystemNever</strong>
-                  </div>
-                  <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Создатель: Miras (@light18101) • 3 зрителя онлайн</div>
-                </div>
-                <button class="btn-primary" style="padding: 6px 16px; font-size: 0.75rem;" onclick="joinPartyRoom('NEVER-809', 'Кибер-Презентация EcosystemNever', 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1')">
-                  Войти в Пати ➔
-                </button>
-              </div>
-
-              <!-- Комната 2 -->
-              <div class="party-room-chip">
-                <div>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #ef4444; font-size: 0.7rem;">● LIVE</span>
-                    <strong style="color: #fff; font-size: 0.9rem;">#ANIME-777: Demon Slayer Live Trance & Beats</strong>
-                  </div>
-                  <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Создатель: Самурай • 6 зрителей онлайн</div>
-                </div>
-                <button class="btn-primary" style="padding: 6px 16px; font-size: 0.75rem;" onclick="joinPartyRoom('ANIME-777', 'Demon Slayer Beats', 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1')">
-                  Войти в Пати ➔
-                </button>
-              </div>
-
-              <!-- Комната 3 -->
-              <div class="party-room-chip">
-                <div>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #38bdf8; font-size: 0.7rem;">● LIVE</span>
-                    <strong style="color: #fff; font-size: 0.9rem;">#NEON-101: Web3 & Cyberpunk Tech Showcase</strong>
-                  </div>
-                  <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Создатель: Alex_Dev • 4 зрителя онлайн</div>
-                </div>
-                <button class="btn-primary" style="padding: 6px 16px; font-size: 0.75rem;" onclick="joinPartyRoom('NEON-101', 'Web3 & Cyberpunk Showcase', 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1')">
-                  Войти в Пати ➔
-                </button>
-              </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 20px; text-align: left;">
+              <div style="color: #38bdf8; font-size: 0.75rem; font-weight: 800;">● МУЛЬТИ-КОМНАТЫ</div>
+              <div style="color: #fff; font-weight: 700; font-size: 0.85rem;">Комнаты #NEVER-809, #ANIME-777</div>
             </div>
-
-            <!-- ВХОД ПО КОДУ -->
-            <div style="display: flex; gap: 8px; margin-top: 15px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px;">
-              <input type="text" class="party-input-url" id="partyJoinCodeInput" placeholder="Введите номер комнаты (например: NEVER-809)...">
-              <button class="btn-glass" style="padding: 8px 18px; font-size: 0.78rem;" onclick="joinPartyByCode()">Войти по коду</button>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 20px; text-align: left;">
+              <div style="color: #fbbf24; font-size: 0.75rem; font-weight: 800;">● ЖИВОЙ ЧАТ ЗРИТЕЛЕЙ</div>
+              <div style="color: #fff; font-weight: 700; font-size: 0.85rem;">Реакции и обмен трейлерами</div>
             </div>
           </div>
 
-          <!-- ЭКРАН КОМНАТЫ ПРОСМОТРА (АКТИВНАЯ КОМНАТА) -->
-          <div id="partyRoomView" style="display: none;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(0, 240, 255, 0.05); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.2);">
-              <div>
-                <span style="color: #00f0ff; font-weight: 800; font-family: 'JetBrains Mono', monospace;" id="partyCurrentRoomId">#NEVER-809</span>:
-                <strong style="color: #fff; margin-left: 6px;" id="partyCurrentRoomTitle">Презентация</strong>
-              </div>
-              <div style="display: flex; gap: 8px;">
-                <button class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem;" onclick="copyPartyRoomLink()">📋 Пригласить друга</button>
-                <button class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem; color: #ef4444;" onclick="showPartyLobby()">🚪 Выйти в Лобби</button>
-              </div>
-            </div>
-
-            <div class="party-grid">
-              <div class="party-player-box">
-                <div class="party-screen" id="partyScreenWrap">
-                  <iframe id="partyIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <div class="party-controls-bar">
-                  <button class="btn-glass" style="padding: 6px 12px; font-size: 0.8rem;" onclick="togglePartyPlay()">⏯️ Старт/Пауза</button>
-                  <input type="text" class="party-input-url" id="partyVideoInput" placeholder="Вставьте ссылку на YouTube (например: https://youtube.com/watch?v=...)...">
-                  <button class="btn-primary" style="padding: 6px 16px; font-size: 0.78rem;" onclick="loadPartyVideo()">Сменить видео</button>
-                </div>
-              </div>
-
-              <div class="party-chat-box">
-                <div style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.75rem; font-weight: 800; color: #fff; display: flex; justify-content: space-between;">
-                  <span>💬 Чат комнаты</span>
-                  <span style="color: #22c55e;" id="partyOnlineCount">● 4 онлайн</span>
-                </div>
-                <div class="party-chat-feed" id="partyChatFeed">
-                  <div class="party-chat-msg"><strong>Miras (Founder):</strong> Добро пожаловать в совместный просмотр! Синхронизация включена.</div>
-                  <div class="party-chat-msg"><strong>Гость:</strong> Качество топ, видео играет без задержек 🔥</div>
-                </div>
-                <div class="party-chat-input-row">
-                  <input type="text" class="party-input-url" id="partyMsgInput" placeholder="Сообщение зрителям..." onkeydown="if(event.key==='Enter') sendPartyMessage()">
-                  <button class="btn-primary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="sendPartyMessage()">Отправить</button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <a href="party/index.html" target="_blank" class="btn btn-primary" style="padding: 16px 36px; font-size: 1rem; border-radius: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
+            <span>🍿</span> <span>ОТКРЫТЬ КИНОТЕАТР NEVERPARTY</span> <span>➔</span>
+          </a>
         </div>
       </div>
+
+/div>
 
       <!-- 3. ПАНЕЛЬ: ЛИДЕРБОРД (БЕЗ БОТОВ! ТОЛЬКО РЕАЛЬНЫЕ УЧАСТНИКИ) -->
       <div class="tool-tab-panel" id="panelTop">
@@ -4347,6 +4268,20 @@ ${daysTxt}
 
     setTimeout(drawWheel, 250);
 
+
+
+    function unlockFounderPromoPanel() {
+      const pin = prompt('Введите секретный PIN Создателя (@light18101):');
+      if (pin === '1810' || pin === 'light18101') {
+        const box = document.getElementById('portalFounderPromoBox');
+        if (box) box.style.display = 'block';
+        document.getElementById('btnUnlockFounderPromo').style.display = 'none';
+        alert('👑 Доступ Создателя открыт! Теперь вы можете генерировать промокоды.');
+      } else if (pin) {
+        alert('⛔ Неверный PIN! Доступ к генератору промокодов имеет только Создатель @light18101.');
+      }
+    }
+  
 </script>
 </body>
 </html>

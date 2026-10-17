@@ -1858,6 +1858,7 @@
     }
 
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 </head>
 <body>
 
@@ -1892,6 +1893,44 @@
         <!-- VIEW 1: БИТВА С ДЕМОНОМ -->
     <div id="viewBattle" class="app-tab-view active">
       <!-- 2. ДУЭЛЬ: МОДЕЛЬ СТОЛПА СЛЕВА VS МОДЕЛЬ ДЕМОНА СПРАВА -->
+      
+      <!-- КНОПКА ПАУЗЫ И ВЫХОДА ИЗ БОЯ -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(0,0,0,0.4); border-bottom: 1px solid var(--border-subtle);">
+        <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">⚔️ АРЕНА ДУЭЛИ</div>
+        <button type="button" class="btn-glass" id="btnBattlePause" style="padding: 4px 12px; font-size: 0.75rem; border-color: #fbbf24; color: #fbbf24;" onclick="openBattlePauseModal()">
+          ⏸️ Пауза / Меню
+        </button>
+      </div>
+
+      <!-- МОДАЛЬНОЕ ОКНО ПАУЗЫ БОЯ -->
+      <div id="modalBattlePause" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 500; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 20px;">
+        <div style="background: rgba(14, 20, 32, 0.98); border: 1px solid var(--accent); border-radius: 18px; padding: 24px; max-width: 340px; width: 100%; text-align: center; box-shadow: 0 0 35px rgba(56, 189, 248, 0.4);">
+          <div style="font-size: 2.2rem; margin-bottom: 6px;">⏸️</div>
+          <h3 style="font-size: 1.25rem; font-weight: 900; color: #fff; margin-bottom: 6px;">БОЙ НА ПАУЗЕ</h3>
+          <p style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 20px;">
+            Удары демона остановлены. Вы можете спокойно перейти в любой раздел приложения или продолжить поединок.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn-submit-order" style="padding: 12px; font-size: 0.85rem;" onclick="resumeBattle()">
+              ⚔️ Продолжить бой
+            </button>
+            <button class="btn-glass" style="padding: 10px; font-size: 0.8rem;" onclick="switchAppTab('tools'); closeBattlePauseModal();">
+              🛠️ В Кибер-Хаб (Колесо, Топ)
+            </button>
+            <button class="btn-glass" style="padding: 10px; font-size: 0.8rem;" onclick="switchAppTab('calc'); closeBattlePauseModal();">
+              🧮 В 3D-Смету
+            </button>
+            <button class="btn-glass" style="padding: 10px; font-size: 0.8rem;" onclick="switchAppTab('chat'); closeBattlePauseModal();">
+              💬 В Кибер-Чат
+            </button>
+            <button class="btn-glass" style="padding: 10px; font-size: 0.75rem; color: #ef4444;" onclick="restartBattleClean()">
+              🔄 Начать бой заново
+            </button>
+          </div>
+        </div>
+      </div>
+  
       <div class="duel-arena">
         <div class="demon-info-header">
           <div class="demon-name-title" id="demonName">Бродячий Демон</div>
@@ -2768,7 +2807,7 @@
       const dt = tickMs / 1000;
 
       demonTimerInterval = setInterval(() => {
-        if (!demon || demon.curHp <= 0 || playerCurHp <= 0) return;
+        if (isBattlePaused || !demon || demon.curHp <= 0 || playerCurHp <= 0) return;
 
         demonTimerLeft -= dt;
         if (demonTimerLeft <= 0) {
@@ -3572,6 +3611,9 @@
     let currentAppTab = 'battle';
 
     function switchAppTab(tabName) {
+      if (tabName !== 'battle') {
+        isBattlePaused = true;
+      }
       currentAppTab = tabName;
       haptic('medium');
 
@@ -4392,6 +4434,75 @@
         haptic('warning');
       }
     }
+
+
+
+
+    let isBattlePaused = false;
+
+    function openBattlePauseModal() {
+      isBattlePaused = true;
+      const modal = document.getElementById('modalBattlePause');
+      if (modal) modal.style.display = 'flex';
+      haptic('light');
+    }
+
+    function closeBattlePauseModal() {
+      const modal = document.getElementById('modalBattlePause');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function resumeBattle() {
+      isBattlePaused = false;
+      closeBattlePauseModal();
+      showFlyingToast('⚔️ Бой возобновлен!');
+      haptic('medium');
+    }
+
+    function restartBattleClean() {
+      isBattlePaused = false;
+      closeBattlePauseModal();
+      playerCurHp = getHashira().baseHp;
+      updatePlayerHp();
+      spawnNextDemon();
+      showFlyingToast('🔄 Бой начат заново!');
+      haptic('success');
+    }
+
+
+    function unlockMiniFounderPromo() {
+      // Авто-проверка Telegram
+      const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user?.username;
+      if (tgUser === 'light18101') {
+        revealMiniFounderCard();
+        return;
+      }
+
+      const pin = prompt('Введите PIN Создателя (@light18101):');
+      if (pin === '1810' || pin === 'light18101') {
+        revealMiniFounderCard();
+        showFlyingToast('👑 Доступ Создателя открыт!');
+        haptic('success');
+      } else if (pin) {
+        showFlyingToast('⛔ Неверный PIN!');
+        haptic('warning');
+      }
+    }
+
+    function revealMiniFounderCard() {
+      const box = document.getElementById('miniFounderPromoCardBox');
+      if (box) box.style.display = 'block';
+      const btn = document.getElementById('btnMiniUnlockFounder');
+      if (btn) btn.style.display = 'none';
+    }
+
+    // Автоматическая проверка при открытии Mini App
+    setTimeout(() => {
+      const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user?.username;
+      if (tgUser === 'light18101') {
+        revealMiniFounderCard();
+      }
+    }, 500);
 
 </script>
 </body>
