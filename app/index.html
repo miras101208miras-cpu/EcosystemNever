@@ -2464,7 +2464,7 @@
 
                 <div style="display: flex; gap: 6px; margin-bottom: 8px;">
                   <button class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem;" onclick="toggleMiniPartyPlay()">⏯️ Пауза/Старт</button>
-                  <input type="text" class="calc-input-field" id="miniPartyVideoUrlInput" placeholder="YouTube ссылка..." style="flex: 1; padding: 4px 8px; font-size: 0.72rem;">
+                  <input type="text" class="calc-input-field" id="miniPartyVideoUrlInput" placeholder="Google Диск, YouTube или MP4 ссылка..." style="flex: 1; padding: 4px 8px; font-size: 0.72rem;">
                   <button class="btn-submit-order" style="padding: 4px 10px; font-size: 0.72rem; width: auto;" onclick="loadMiniPartyCustomVideo()">Сменить</button>
                 </div>
 
@@ -4580,20 +4580,36 @@
       const input = document.getElementById('miniPartyVideoUrlInput');
       if (!input || !input.value.trim()) return;
       let url = input.value.trim();
+      input.value = '';
+
+      let embedUrl = url;
+      let title = 'Пользовательское видео';
 
       if (url.includes('v=')) {
         const vId = url.split('v=')[1]?.split('&')[0];
-        url = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+        embedUrl = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+        title = 'YouTube: ' + vId;
       } else if (url.includes('youtu.be/')) {
         const vId = url.split('youtu.be/')[1]?.split('?')[0];
-        url = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+        embedUrl = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+        title = 'YouTube: ' + vId;
+      } else if (url.includes('drive.google.com/file/d/')) {
+        const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        const fileId = match ? match[1] : '';
+        embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+        title = 'Google Диск Видео';
+      } else if (url.includes('drive.google.com/open?id=') || url.includes('drive.google.com/uc?id=')) {
+        const match = url.match(/id=([a-zA-Z0-9_-]+)/);
+        const fileId = match ? match[1] : '';
+        embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+        title = 'Google Диск Видео';
       }
 
       const iframe = document.getElementById('miniPartyIframe');
-      if (iframe) iframe.src = url;
+      if (iframe) iframe.src = embedUrl;
 
-      addMiniPartyMsg('Система', '🎬 Загружено новое видео');
-      input.value = '';
+      addMiniPartyMsg('Система', '🎬 Загружено: ' + title);
+      showFlyingToast('🎬 Видео загружено!');
       haptic('light');
     }
 
