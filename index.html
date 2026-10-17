@@ -2068,7 +2068,7 @@
             <div class="calc-feature-label" data-feat="ai" data-price="8" data-days="3" onclick="toggleCalcFeature(this)">
               <div class="calc-feat-left">
                 <span>🧠</span>
-                <span data-i18n="feat_ai">AI-Ассистент / LLM</span>
+                <span data-i18n="feat_ai">Автоматизация & Скрипты</span>
               </div>
               <span class="calc-feat-price">+$8</span>
             </div>
@@ -2352,7 +2352,7 @@
         feat_webgl: "Three.js Анимации",
         feat_db: "База данных & Облако",
         feat_pay: "Платежи (TON/Stars/Card)",
-        feat_ai: "AI-Ассистент / LLM",
+        feat_ai: "Автоматизация & Скрипты",
         feat_admin: "Панель управления",
         feat_lang: "Мультиязычность (RU/EN/JP)",
 
@@ -2407,7 +2407,7 @@
         feat_webgl: "Three.js Animations",
         feat_db: "Database & Cloud Sync",
         feat_pay: "Payments (TON/Stars/Card)",
-        feat_ai: "AI Assistant / LLM",
+        feat_ai: "Automation & Scripts",
         feat_admin: "Admin Dashboard",
         feat_lang: "Multilingual (RU/EN/JP)",
 
@@ -2462,7 +2462,7 @@
         feat_webgl: "Three.js演出効果",
         feat_db: "DB＆クラウド同期",
         feat_pay: "決済 (TON/Stars/カード)",
-        feat_ai: "AIアシスタント連携",
+        feat_ai: "自動化＆スクリプト",
         feat_admin: "管理ダッシュボード",
         feat_lang: "多言語対応 (RU/EN/JP)",
 
@@ -2529,7 +2529,7 @@
     const PROJECT_TYPES = {
       landing: { name: 'Landing Page / Сайт', baseUsd: 15, days: 5, icon: '🌐', sub: 'HIGH-END WEB', stack: ['HTML5', 'Modern CSS', 'Tailwind', 'JS ES6'] },
       portal3d: { name: '3D Кибер-Портал', baseUsd: 35, days: 10, icon: '🔮', sub: 'WEBGL 3D EXPERIENCE', stack: ['Three.js', 'WebGL', 'GSAP', 'GLSL Shaders'] },
-      bot: { name: 'Telegram AI-Бот', baseUsd: 22, days: 7, icon: '🤖', sub: 'AUTONOMOUS BOT AGENT', stack: ['Node.js', 'GrammY', 'OpenAI API', 'PostgreSQL'] },
+      bot: { name: 'Telegram Бот', baseUsd: 22, days: 7, icon: '🤖', sub: 'HIGH-LOAD TELEGRAM BOT', stack: ['Node.js', 'GrammY', 'Webhooks API', 'PostgreSQL'] },
       miniapp: { name: 'Telegram Mini App', baseUsd: 32, days: 9, icon: '📱', sub: 'TELEGRAM WEBAPP TMA', stack: ['TMA SDK', 'Vue/React', 'Web Audio', 'Haptics'] },
       ecosystem: { name: 'Вся Экосистема', baseUsd: 65, days: 18, icon: '♾️', sub: 'PORTAL + BOT + TMA + CLOUD', stack: ['Ecosystem Stack', 'Node.js', 'Three.js', 'Telegram API', 'Cloud'] }
     };
@@ -2635,7 +2635,7 @@
       // Добавляем дополнительные теги по фичам
       if (calcState.features.has('database')) chipsCont.innerHTML += '<span class="tech-chip">PostgreSQL / Redis</span>';
       if (calcState.features.has('payments')) chipsCont.innerHTML += '<span class="tech-chip">TON Connect / CryptoPay</span>';
-      if (calcState.features.has('ai')) chipsCont.innerHTML += '<span class="tech-chip">OpenAI / Claude LLM</span>';
+      if (calcState.features.has('ai')) chipsCont.innerHTML += '<span class="tech-chip">Automation Engine</span>';
     }
 
     // Интерактивное 3D-вращение карточки мышкой
