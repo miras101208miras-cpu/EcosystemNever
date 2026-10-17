@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>EcosystemNever | Битва Клинка Mini App</title>
+  <title>EcosystemNever | Дуэль Столпов & Демонов</title>
 
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -15,17 +15,18 @@
 
   <style>
     :root {
-      --bg: #07090e;
-      --bg-card: rgba(15, 22, 34, 0.85);
+      --bg: #06080e;
+      --bg-card: rgba(14, 20, 32, 0.85);
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(56, 189, 248, 0.35);
       --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.3);
+      --accent-glow: rgba(56, 189, 248, 0.35);
+      --demon-red: #ef4444;
+      --demon-glow: rgba(239, 68, 68, 0.4);
       --gold: #f59e0b;
       --gold-glow: rgba(245, 158, 11, 0.4);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --nav-height: 64px;
+      --nav-height: 60px;
     }
 
     * {
@@ -42,390 +43,409 @@
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
-      padding-bottom: calc(var(--nav-height) + 16px);
+      padding-bottom: calc(var(--nav-height) + 14px);
       position: relative;
-    }
-
-    /* Фоновая сетка и атмосферное свечение */
-    .bg-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 99;
     }
 
     .ambient-bg {
       position: fixed;
-      top: -10vh;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100vw;
-      height: 45vh;
-      background: radial-gradient(circle, var(--hero-glow, rgba(56, 189, 248, 0.15)) 0%, transparent 75%);
-      filter: blur(60px);
+      inset: 0;
+      background: radial-gradient(circle at 50% 20%, var(--hashira-glow, rgba(56, 189, 248, 0.12)) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
-      transition: background 0.5s ease;
+      transition: background 0.4s;
     }
 
     .container {
       position: relative;
       z-index: 1;
-      padding: 12px 16px;
+      padding: 10px 14px;
       max-width: 520px;
       margin: 0 auto;
     }
 
-    /* 1. ВЕРХНЯЯ ПАНЕЛЬ СТАТИСТИКИ САМУРАЯ */
-    .top-stats-bar {
+    /* 1. ШАПКА РАУНДА И РЕСУРСОВ */
+    .top-header-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 10px 14px;
-      margin-bottom: 12px;
+      border-radius: 14px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
       backdrop-filter: blur(12px);
     }
 
-    .hashira-mini-profile {
+    .stage-badge {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stage-badge span {
+      color: var(--hashira-color, var(--accent));
+    }
+
+    .btn-change-hashira {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      color: var(--text-muted);
       cursor: pointer;
     }
 
-    .hashira-avatar-frame {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 2px solid var(--hashira-color, var(--accent));
-      background: #000;
-      flex-shrink: 0;
-      position: relative;
-      box-shadow: 0 0 12px var(--hashira-glow, var(--accent-glow));
+    .currencies {
+      display: flex;
+      gap: 6px;
     }
 
-    .hashira-avatar-img {
+    .cur-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .cur-pill.coins { color: var(--gold); }
+    .cur-pill.exp { color: var(--accent); }
+
+    /* 2. БОЕВАЯ АРЕНА ДУЭЛИ (СТОЛП VS ДЕМОН) */
+    .duel-arena {
+      background: linear-gradient(180deg, rgba(18, 26, 42, 0.75) 0%, rgba(9, 13, 22, 0.95) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 14px 12px 16px;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    }
+
+    .demon-info-header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .demon-name-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--demon-red);
+      text-shadow: 0 0 12px var(--demon-glow);
+    }
+
+    .demon-subtitle {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 1.5px;
+    }
+
+    /* ПОЛЕ БОЯ: СТОЛП СЛЕВА, ДЕМОН СПРАВА */
+    .battle-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 210px;
+      position: relative;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+    /* СТОЛП (ИГРОК) */
+    .fighter-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 44%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .fighter-hp-bar {
+      width: 100%;
+      height: 9px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 5px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      margin-bottom: 4px;
+      position: relative;
+    }
+
+    .fighter-hp-fill {
+      height: 100%;
+      width: 100%;
+      border-radius: 4px;
+      transition: width 0.2s ease-out;
+    }
+
+    .player-hp-fill {
+      background: linear-gradient(90deg, #10b981, #34d399);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+    }
+
+    .demon-hp-fill {
+      background: linear-gradient(90deg, #ef4444, #f43f5e);
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+    }
+
+    .hp-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    /* 3D МОДЕЛИ ПЕРСОНАЖЕЙ */
+    .model-standee {
+      width: 110px;
+      height: 140px;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.12s ease;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    }
+
+    .player-model {
+      border: 2px solid var(--hashira-color, var(--accent));
+      background: #000;
+      box-shadow: 0 0 20px var(--hashira-glow, var(--accent-glow));
+    }
+
+    .player-model-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .hashira-meta h3 {
-      font-size: 0.88rem;
-      font-weight: 800;
-      line-height: 1.2;
+    .demon-model {
+      border: 2px solid var(--demon-red);
+      background: radial-gradient(circle, #250912 0%, #0c0205 100%);
+      box-shadow: 0 0 20px var(--demon-glow);
     }
 
-    .hashira-style-tag {
-      font-size: 0.68rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--hashira-color, var(--accent));
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .currencies-group {
-      display: flex;
-      gap: 8px;
-    }
-
-    .currency-pill {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 700;
-    }
-
-    .currency-pill.coins { color: var(--gold); }
-    .currency-pill.exp { color: var(--accent); }
-
-    /* 2. АРЕНА БИТВЫ (БОЕВОЙ ЭКРАН) */
-    .battle-stage {
-      background: linear-gradient(180deg, rgba(20, 30, 48, 0.7) 0%, rgba(10, 15, 24, 0.95) 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 16px 14px;
-      margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-      text-align: center;
-    }
-
-    .level-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 14px;
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-subtle);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-
-    .demon-boss-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: #f43f5e;
-      text-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
-      margin-bottom: 2px;
-    }
-
-    .demon-jp-title {
-      font-family: 'Noto Serif JP', serif;
-      font-size: 0.72rem;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-
-    /* Шкала здоровья демона */
-    .hp-bar-container {
-      width: 100%;
-      max-width: 320px;
-      height: 12px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(244, 63, 94, 0.4);
-      border-radius: 6px;
-      margin: 0 auto 12px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hp-bar-fill {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, #f43f5e, #fb7185);
-      border-radius: 5px;
-      transition: width 0.15s ease-out;
-      box-shadow: 0 0 10px rgba(244, 63, 94, 0.8);
-    }
-
-    .hp-bar-text {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: #fff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-    }
-
-    /* АРЕНА ТАПА ПО ДЕМОНУ */
-    .demon-target-arena {
-      position: relative;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .demon-figure {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, rgba(20, 10, 20, 0.8) 70%);
-      border: 2px solid rgba(244, 63, 94, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      transition: transform 0.08s ease;
-      box-shadow: 0 0 30px rgba(244, 63, 94, 0.35);
-    }
-
-    .demon-target-arena:active .demon-figure {
-      transform: scale(0.92);
-      filter: brightness(1.3);
-    }
-
-    .demon-icon-art {
-      font-size: 4.8rem;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+    .demon-model-art {
+      font-size: 4.5rem;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.9));
       transition: transform 0.1s;
     }
 
-    .demon-hit-flash {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.8);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.1s;
+    /* ТАЙМЕР АТАКИ ДЕМОНА */
+    .demon-attack-timer-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 4px;
     }
 
-    /* Рассекающая линия меча */
-    .blade-slash-fx {
-      position: absolute;
-      width: 240px;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #fff, var(--hashira-color, #00f0ff), transparent);
-      box-shadow: 0 0 15px var(--hashira-color, #00f0ff);
-      pointer-events: none;
-      opacity: 0;
-      transform-origin: center;
-      z-index: 10;
+    .demon-timer-bar-bg {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
     }
 
-    /* Летающий текст урона */
-    .damage-number {
+    .demon-timer-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #ef4444;
+      transition: width 0.1s linear;
+    }
+
+    .demon-timer-lbl {
+      font-size: 0.58rem;
+      color: #f87171;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 2px;
+    }
+
+    /* АНИМАЦИИ УДАРА И ВСПЛЫВАЮЩИЙ УРОН */
+    .player-attacking {
+      transform: translateX(35px) scale(1.08) !important;
+    }
+
+    .demon-attacking {
+      transform: translateX(-35px) scale(1.08) !important;
+    }
+
+    .fighter-hurt {
+      animation: hurtShake 0.25s ease-in-out;
+      filter: brightness(2) contrast(1.5);
+    }
+
+    @keyframes hurtShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .flying-dmg {
       position: absolute;
       font-family: 'Cinzel', serif;
       font-weight: 900;
-      font-size: 1.4rem;
-      color: #fff;
-      text-shadow: 0 0 10px var(--hashira-color, #00f0ff), 0 2px 4px #000;
+      font-size: 1.25rem;
       pointer-events: none;
-      z-index: 20;
-      animation: floatDamage 0.75s ease-out forwards;
+      z-index: 25;
+      animation: floatDmg 0.75s ease-out forwards;
     }
 
-    @keyframes floatDamage {
+    @keyframes floatDmg {
       0% { opacity: 1; transform: translate(-50%, 0) scale(1); }
-      50% { transform: translate(-50%, -40px) scale(1.2); }
-      100% { opacity: 0; transform: translate(-50%, -70px) scale(0.8); }
+      50% { transform: translate(-50%, -35px) scale(1.2); }
+      100% { opacity: 0; transform: translate(-50%, -60px) scale(0.8); }
     }
 
-    /* 3. КНОПКИ СТИЛЕЙ ДЫХАНИЯ (РАЗБЛОКИРУЮТСЯ КАЖДЫЕ 10 УРОВНЕЙ) */
-    .breathing-forms-panel {
-      margin-bottom: 12px;
-    }
-
-    .forms-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .forms-scroll-row {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-    .forms-scroll-row::-webkit-scrollbar { display: none; }
-
-    .form-skill-card {
-      min-width: 135px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 10px 10px;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .form-skill-card.unlocked {
-      border-color: var(--hashira-color, var(--accent));
-      background: linear-gradient(135deg, rgba(20, 30, 48, 0.9), rgba(10, 16, 26, 0.95));
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .form-skill-card.unlocked:active {
-      transform: scale(0.96);
-    }
-
-    .form-skill-card.locked {
-      opacity: 0.45;
-      filter: grayscale(0.8);
-      cursor: not-allowed;
-    }
-
-    .form-number {
-      font-size: 0.65rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--hashira-color, var(--accent));
-      font-weight: 700;
-    }
-
-    .form-name {
-      font-size: 0.75rem;
-      font-weight: 800;
-      line-height: 1.3;
-      margin: 3px 0 6px;
-      color: #fff;
-    }
-
-    .form-power {
+    /* ВСЕОБЩИЙ ИНДИКАТОР ТАПА */
+    .tap-action-prompt {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 0.68rem;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(0, 0, 0, 0.6);
+      padding: 3px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      pointer-events: none;
+      white-space: nowrap;
     }
 
-    /* 4. ПАНЕЛЬ ХАРАКТЕРИСТИК САМУРАЯ */
-    .player-stats-grid {
+    /* 3. ХАРАКТЕРИСТИКИ СТОЛПА */
+    .stats-trio {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
-    .stat-card {
+    .stat-pill-box {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 10px;
+      padding: 8px 6px;
       text-align: center;
     }
 
-    .stat-card .val {
+    .stat-pill-box .val {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: #fff;
     }
 
-    .stat-card .lbl {
-      font-size: 0.65rem;
+    .stat-pill-box .lbl {
+      font-size: 0.62rem;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
-    /* 5. МОДАЛЬНОЕ ОКНО: СУНДУК С ДОБЫЧЕЙ (LEVEL UP CHEST) */
-    .chest-modal {
+    /* 4. ФОРМЫ ДЫХАНИЯ (КАЖДЫЕ 10 УРОВНЕЙ) */
+    .breathing-bar-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .breathing-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+      margin-bottom: 8px;
+    }
+    .breathing-scroll::-webkit-scrollbar { display: none; }
+
+    .form-btn-card {
+      min-width: 125px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .form-btn-card.unlocked {
+      border-color: var(--hashira-color, var(--accent));
+      background: linear-gradient(135deg, rgba(20, 32, 50, 0.9), rgba(10, 16, 26, 0.95));
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-btn-card.unlocked:active {
+      transform: scale(0.96);
+    }
+
+    .form-btn-card.locked {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: grayscale(0.8);
+    }
+
+    .form-lvl-tag {
+      font-size: 0.6rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--hashira-color, var(--accent));
+      font-weight: 700;
+    }
+
+    .form-title-txt {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 2px 0 4px;
+      line-height: 1.25;
+    }
+
+    .form-bonus-txt {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* 5. МОДАЛЬНЫЙ СУНДУК ЗА ПОБЕДУ */
+    .chest-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.92);
       backdrop-filter: blur(14px);
       z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
     }
 
-    .chest-modal.open {
+    .chest-modal-overlay.open {
       display: flex;
-      animation: fadeIn 0.3s forwards;
+      animation: fadeIn 0.25s forwards;
     }
 
     @keyframes fadeIn {
@@ -433,194 +453,220 @@
       to { opacity: 1; }
     }
 
-    .chest-box {
+    .chest-window {
       width: 100%;
       max-width: 360px;
-      background: linear-gradient(145deg, #162032 0%, #0c121e 100%);
+      background: linear-gradient(145deg, #151f32 0%, #0a0e18 100%);
       border: 2px solid var(--gold);
       border-radius: 24px;
-      padding: 28px 20px;
+      padding: 24px 18px;
       text-align: center;
       box-shadow: 0 0 50px var(--gold-glow);
-      position: relative;
-      animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes popIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .chest-icon {
-      font-size: 5rem;
-      margin-bottom: 12px;
+    .chest-bounce-icon {
+      font-size: 4.8rem;
+      margin-bottom: 8px;
       cursor: pointer;
       display: inline-block;
-      transition: transform 0.2s;
-      filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6));
-      animation: chestBounce 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.7));
+      animation: bounceChest 2s infinite ease-in-out;
     }
 
-    @keyframes chestBounce {
+    @keyframes bounceChest {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px) scale(1.04); }
+      50% { transform: translateY(-8px) scale(1.05); }
     }
 
-    .chest-title {
+    .chest-header-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 900;
       color: var(--gold);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .chest-desc {
-      font-size: 0.82rem;
+    .chest-sub {
+      font-size: 0.8rem;
       color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 20px;
+      line-height: 1.4;
+      margin-bottom: 16px;
     }
 
-    .chest-rewards-list {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 20px;
+    .reward-items-box {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 12px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       text-align: left;
+      margin-bottom: 18px;
     }
 
-    .reward-row {
+    .reward-item-row {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
     }
 
-    .reward-row span:last-child {
+    .reward-item-row span:last-child {
       color: #34d399;
       font-family: 'JetBrains Mono', monospace;
     }
 
-    .btn-open-chest {
+    .btn-claim {
       width: 100%;
-      padding: 14px;
-      border-radius: 14px;
+      padding: 13px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: #040711;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       border: none;
       cursor: pointer;
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
-      transition: all 0.2s;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
     }
 
-    .btn-open-chest:active {
-      transform: scale(0.97);
-    }
-
-    /* 6. МОДАЛЬНОЕ ОКНО: ВЫБОР СТОЛПА (HASHIRA SELECTION) */
-    .selection-modal {
+    /* 6. ЭКРАН ВЫБОРА СТОЛПА (В НАЧАЛЕ ИГРЫ) */
+    .hashira-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(4, 6, 12, 0.95);
-      backdrop-filter: blur(16px);
-      z-index: 1001;
+      background: rgba(4, 6, 12, 0.98);
+      backdrop-filter: blur(20px);
+      z-index: 1005;
       display: none;
       flex-direction: column;
-      padding: 20px 16px;
+      padding: 18px 14px;
       overflow-y: auto;
     }
 
-    .selection-modal.open {
+    .hashira-modal-overlay.open {
       display: flex;
     }
 
-    .selection-header {
+    .hashira-select-header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    .selection-header h2 {
+    .hashira-select-header h2 {
       font-family: 'Cinzel', serif;
-      font-size: 1.6rem;
+      font-size: 1.45rem;
       font-weight: 900;
       color: #fff;
     }
 
-    .selection-header p {
-      font-size: 0.82rem;
+    .hashira-select-header p {
+      font-size: 0.78rem;
       color: var(--text-muted);
       margin-top: 4px;
     }
 
-    .hashira-grid-select {
+    .hashira-selection-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding-bottom: 30px;
+      gap: 10px;
+      padding-bottom: 24px;
     }
 
-    .hashira-select-card {
+    .hashira-card-item {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
-      padding: 14px 10px;
+      padding: 12px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       cursor: pointer;
-      transition: all 0.25s;
+      transition: all 0.2s;
     }
 
-    .hashira-select-card:hover, .hashira-select-card.selected {
-      border-color: var(--card-color, var(--accent));
-      background: linear-gradient(145deg, rgba(30, 45, 70, 0.8), rgba(15, 22, 35, 0.9));
-      box-shadow: 0 0 20px var(--card-glow, var(--accent-glow));
+    .hashira-card-item:hover, .hashira-card-item.active {
+      border-color: var(--pillar-color, var(--accent));
+      background: linear-gradient(145deg, rgba(25, 38, 60, 0.8), rgba(12, 18, 30, 0.9));
+      box-shadow: 0 0 20px var(--pillar-glow, var(--accent-glow));
       transform: translateY(-2px);
     }
 
-    .hashira-select-img {
-      width: 72px;
-      height: 72px;
-      border-radius: 16px;
+    .hashira-card-item img {
+      width: 70px;
+      height: 70px;
+      border-radius: 14px;
       object-fit: cover;
-      margin-bottom: 10px;
-      border: 2px solid var(--card-color, var(--accent));
+      margin-bottom: 8px;
+      border: 2px solid var(--pillar-color, var(--accent));
     }
 
-    .hashira-select-name {
-      font-size: 0.88rem;
+    .hashira-card-item .name {
+      font-size: 0.82rem;
       font-weight: 800;
       margin-bottom: 2px;
     }
 
-    .hashira-select-title {
-      font-size: 0.7rem;
+    .hashira-card-item .title {
+      font-size: 0.68rem;
       font-family: 'JetBrains Mono', monospace;
-      color: var(--card-color, var(--accent));
-      margin-bottom: 8px;
+      color: var(--pillar-color, var(--accent));
+      margin-bottom: 6px;
     }
 
-    .hashira-select-stats {
-      font-size: 0.65rem;
+    .hashira-card-item .stats {
+      font-size: 0.62rem;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
-    /* 7. НИЖНИЙ TABBAR */
+    /* 7. МОДАЛЬНОЕ ОКНО ПОРАЖЕНИЯ (ЛЕЧЕНИЕ ГЛИЦИНИЕЙ) */
+    .defeat-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(14px);
+      z-index: 1002;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .defeat-modal.open {
+      display: flex;
+    }
+
+    .defeat-box {
+      width: 100%;
+      max-width: 340px;
+      background: linear-gradient(145deg, #220d14 0%, #0c0407 100%);
+      border: 2px solid #ef4444;
+      border-radius: 20px;
+      padding: 24px 18px;
+      text-align: center;
+    }
+
+    .btn-heal {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      background: #10b981;
+      color: #000;
+      font-weight: 800;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      margin-top: 14px;
+    }
+
+    /* 8. TABBAR */
     .tabbar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       height: var(--nav-height);
-      background: rgba(7, 10, 16, 0.95);
+      background: rgba(6, 8, 14, 0.95);
       backdrop-filter: blur(20px);
       border-top: 1px solid var(--border-subtle);
       display: flex;
@@ -634,196 +680,210 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 700;
       background: transparent;
       border: none;
       cursor: pointer;
-      padding: 6px 14px;
-      border-radius: 12px;
-      transition: all 0.2s;
     }
 
     .tab-btn.active {
       color: var(--accent);
     }
-
-    .tab-icon {
-      font-size: 1.25rem;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Холст для рассечений меча и искр -->
-  <canvas class="bg-canvas" id="fxCanvas"></canvas>
-  <div class="ambient-bg" id="ambientBg"></div>
+  <div class="ambient-bg" id="ambientGlow"></div>
 
   <div class="container">
     
-    <!-- 1. ВЕРХНЯЯ ПАНЕЛЬ СТОЛПА И СТАТИСТИКИ -->
-    <div class="top-stats-bar">
-      <div class="hashira-mini-profile" onclick="openHashiraSelectModal()" title="Нажми, чтобы сменить Столпа">
-        <div class="hashira-avatar-frame">
-          <img id="curHashiraImg" class="hashira-avatar-img" src="images/giyu.webp" alt="Столп">
+    <!-- 1. ВЕРХНЯЯ СТАТИСТИКА И КНОПКА СМЕНЫ СТОЛПА -->
+    <div class="top-header-bar">
+      <div class="stage-badge">
+        <span>⚔️</span> УРОВЕНЬ <span id="lblLevel">1</span>
+      </div>
+
+      <button class="btn-change-hashira" onclick="openHashiraSelect(true)">
+        ⛩️ Сменить Столпа
+      </button>
+
+      <div class="currencies">
+        <div class="cur-pill coins">🪙 <span id="lblCoins">50</span></div>
+        <div class="cur-pill exp">⚡ <span id="lblExp">100</span></div>
+      </div>
+    </div>
+
+    <!-- 2. ДУЭЛЬ: МОДЕЛЬ СТОЛПА СЛЕВА VS МОДЕЛЬ ДЕМОНА СПРАВА -->
+    <div class="duel-arena">
+      <div class="demon-info-header">
+        <div class="demon-name-title" id="demonName">Бродячий Демон</div>
+        <div class="demon-subtitle" id="demonJp">鬼 • Рядовой Демон Кисацутай</div>
+      </div>
+
+      <div class="battle-field" id="battleField" onclick="playerStrike(event)">
+        
+        <!-- СЛЕВА: МОДЕЛЬ СТОЛПА (ИГРОК) -->
+        <div class="fighter-side">
+          <div class="fighter-hp-bar">
+            <div class="fighter-hp-fill player-hp-fill" id="playerHpFill"></div>
+          </div>
+          <div class="hp-text"><span id="playerHpCur">220</span> / <span id="playerHpMax">220</span> HP</div>
+
+          <div class="model-standee player-model" id="playerModel">
+            <img id="playerImg" class="player-model-img" src="images/giyu.webp" alt="Столп">
+          </div>
+          <div style="font-size: 0.75rem; font-weight: 800; margin-top: 6px;" id="playerName">Гию Томиока</div>
         </div>
-        <div class="hashira-meta">
-          <h3 id="curHashiraName">Гию Томиока</h3>
-          <div class="hashira-style-tag" id="curHashiraTag">
-            <span>⛩️</span> <span id="curHashiraStyle">Столп Воды</span>
+
+        <!-- СПРАВА: МОДЕЛЬ ДЕМОНА (ПРОТИВНИК) -->
+        <div class="fighter-side">
+          <div class="fighter-hp-bar">
+            <div class="fighter-hp-fill demon-hp-fill" id="demonHpFill"></div>
+          </div>
+          <div class="hp-text"><span id="demonHpCur">140</span> / <span id="demonHpMax">140</span> HP</div>
+
+          <div class="model-standee demon-model" id="demonModel">
+            <span class="demon-model-art" id="demonEmoji">👹</span>
+          </div>
+
+          <!-- Таймер атаки демона -->
+          <div class="demon-attack-timer-wrap">
+            <div class="demon-timer-bar-bg">
+              <div class="demon-timer-bar-fill" id="demonTimerFill"></div>
+            </div>
+            <div class="demon-timer-lbl">Атака демона: <span id="demonTimerTxt">2.5s</span></div>
           </div>
         </div>
-      </div>
 
-      <div class="currencies-group">
-        <div class="currency-pill coins" title="Монеты NeverCoins">
-          <span>🪙</span> <span id="valCoins">120</span>
-        </div>
-        <div class="currency-pill exp" title="Очки EXP">
-          <span>⚡</span> <span id="valExp">350</span>
-        </div>
+        <!-- Подсказка тапа -->
+        <div class="tap-action-prompt">⚔️ ТАПАЙ ПО ЭКРАНУ ДЛЯ УДАРА КЛИНОМ!</div>
       </div>
     </div>
 
-    <!-- 2. АРЕНА БИТВЫ: ДЕМОН И ТАПЫ КЛИНОМ -->
-    <div class="battle-stage">
-      <div class="level-badge">
-        <span>⚔️</span> УРОВЕНЬ <span id="stageLevel">1</span>
-      </div>
-
-      <div class="demon-boss-title" id="demonName">Лесной Демон</div>
-      <div class="demon-jp-title" id="demonJp">鬼 • Рядовой Демон Кисацутай</div>
-
-      <!-- Шкала HP Демона -->
-      <div class="hp-bar-container">
-        <div class="hp-bar-fill" id="demonHpFill"></div>
-        <div class="hp-bar-text" id="demonHpText">150 / 150 HP</div>
-      </div>
-
-      <!-- Фигура Демона (Цель ударов) -->
-      <div class="demon-target-arena" id="demonArena" onclick="attackDemon(event)">
-        <div class="blade-slash-fx" id="slashFx"></div>
-        <div class="demon-figure" id="demonFigure">
-          <div class="demon-hit-flash" id="hitFlash"></div>
-          <span class="demon-icon-art" id="demonEmoji">👹</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. ПАНЕЛЬ ХАРАКТЕРИСТИК САМУРАЯ -->
-    <div class="player-stats-grid">
-      <div class="stat-card">
+    <!-- 3. ХАРАКТЕРИСТИКИ СТОЛПА (ПОВЫШАЮТСЯ С КАЖДЫМ СУНДУКОМ) -->
+    <div class="stats-trio">
+      <div class="stat-pill-box">
         <div class="val" id="statDmg">28</div>
         <div class="lbl">⚔️ Урон Клинка</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-pill-box">
         <div class="val" id="statHp">220</div>
-        <div class="lbl">❤️ Здоровье HP</div>
+        <div class="lbl">❤️ Макс. HP</div>
       </div>
-      <div class="stat-card">
-        <div class="val" id="statDef">12</div>
-        <div class="lbl">🛡️ Защита Хаори</div>
+      <div class="stat-pill-box">
+        <div class="val" id="statDef">14</div>
+        <div class="lbl">🛡️ Броня Хаори</div>
       </div>
     </div>
 
-    <!-- 4. СТИЛИ ДЫХАНИЯ: 1-Й В НАЧАЛЕ, НОВЫЙ КАЖДЫЕ 10 УРОВНЕЙ -->
-    <div class="breathing-forms-panel">
-      <div class="forms-header">
-        <span>ФОРМЫ ДЫХАНИЯ (КАЖДЫЕ 10 УР.)</span>
-        <span id="formsCountText">1 / 11 Открыто</span>
+    <!-- 4. ФОРМЫ ДЫХАНИЯ (РАЗБЛОКИРОВКА КАЖДЫЕ 10 УРОВНЕЙ) -->
+    <div>
+      <div class="breathing-bar-title">
+        <span>ФОРМЫ ДЫХАНИЯ (+1 КАЖДЫЕ 10 УР.)</span>
+        <span id="formsCountTxt">1 / 11 Открыто</span>
       </div>
-      <div class="forms-scroll-row" id="formsRow">
-        <!-- Генерируется динамически через JS -->
+      <div class="breathing-scroll" id="breathingRow">
+        <!-- Генерируется из JS -->
       </div>
     </div>
 
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО 1: СУНДУК ЗА ПОБЕДУ (LEVEL UP CHEST) -->
-  <div class="chest-modal" id="chestModal">
-    <div class="chest-box">
-      <div class="chest-icon" onclick="claimChestReward()">🎁</div>
-      <h2 class="chest-title">ДЕМОН ПОВЕРЖЕН!</h2>
-      <p class="chest-desc">
-        Отличный удар! Твой ранг повышен до <b>Уровня <span id="modalNewLevel">2</span></b>.<br>
-        Открой наградной сундук Кисацутай:
+  <!-- МОДАЛЬНЫЙ СУНДУК ЗА ПОБЕДУ -->
+  <div class="chest-modal-overlay" id="chestModal">
+    <div class="chest-window">
+      <div class="chest-bounce-icon" onclick="claimChestReward()">🎁</div>
+      <h2 class="chest-header-title">ДЕМОН УНИЧТОЖЕН!</h2>
+      <p class="chest-sub">
+        Поздравляем! Достигнут <b>Уровень <span id="chestLvlNum">2</span></b>.<br>
+        Открой сундук добычи с прокачкой:
       </p>
 
-      <div class="chest-rewards-list">
-        <div class="reward-row">
+      <div class="reward-items-box">
+        <div class="reward-item-row">
           <span>⚔️ Урон клинка:</span>
-          <span id="rewDmg">+6 DMG</span>
+          <span id="rewDmg">+5 DMG</span>
         </div>
-        <div class="reward-row">
+        <div class="reward-item-row">
           <span>❤️ Запас здоровья:</span>
-          <span id="rewHp">+35 HP</span>
+          <span id="rewHp">+25 HP</span>
         </div>
-        <div class="reward-row">
-          <span>🛡️ Защита хаори:</span>
-          <span id="rewDef">+4 DEF</span>
+        <div class="reward-item-row">
+          <span>🛡️ Броня хаори:</span>
+          <span id="rewDef">+3 DEF</span>
         </div>
-        <div class="reward-row">
+        <div class="reward-item-row">
           <span>🪙 Монеты NeverCoins:</span>
           <span id="rewCoins">+40 Coins</span>
         </div>
-        <div class="reward-row" id="rewBreathingRow" style="display: none; color: #38bdf8;">
+        <div class="reward-item-row" id="rewBreathingRow" style="display: none; color: #38bdf8;">
           <span>⛩️ НОВОЕ ДЫХАНИЕ:</span>
           <span id="rewBreathingName">Форма открыта!</span>
         </div>
       </div>
 
-      <button class="btn-open-chest" onclick="claimChestReward()">
+      <button class="btn-claim" onclick="claimChestReward()">
         ОТКРЫТЬ СУНДУК 💎
       </button>
     </div>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО 2: ВЫБОР СТОЛПА КИСАЦУТАЙ (В НАЧАЛЕ) -->
-  <div class="selection-modal" id="selectionModal">
-    <div class="selection-header">
-      <h2>ВЫБЕРИ СВОЕГО СТОЛПА</h2>
-      <p>Каждый Хашира обладает уникальным дыханием, оружием и бонусами:</p>
-    </div>
-
-    <div class="hashira-grid-select" id="hashiraSelectGrid">
-      <!-- Генерируется динамически из массива Столпов -->
+  <!-- МОДАЛЬНОЕ ОКНО ПОРАЖЕНИЯ (СТОЛП РАНЕН) -->
+  <div class="defeat-modal" id="defeatModal">
+    <div class="defeat-box">
+      <div style="font-size: 4rem; margin-bottom: 8px;">🩸</div>
+      <h2 style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: #ef4444; font-weight: 900;">СТОЛП РАНЕН!</h2>
+      <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-top: 6px;">
+        Демон нанес тяжелый удар. Примени целебное снадобье Дома Бабочки, чтобы восстановить здоровье и продолжить бой!
+      </p>
+      <button class="btn-heal" onclick="healPlayerAndRetry()">
+        ИСЦЕЛИТЬ СТОЛПА (ПОЛНОЕ HP) 🌿
+      </button>
     </div>
   </div>
 
-  <!-- НИЖНИЙ TABBAR -->
+  <!-- ЭКРАН ВЫБОРА СТОЛПА (В САМОМ НАЧАЛЕ) -->
+  <div class="hashira-modal-overlay" id="hashiraSelectModal">
+    <div class="hashira-select-header">
+      <h2>ВЫБЕРИ СВОЕГО СТОЛПА</h2>
+      <p>Выбери Хашира, с которым отправишься в битву против демонов:</p>
+    </div>
+    <div class="hashira-selection-grid" id="hashiraGrid"></div>
+  </div>
+
+  <!-- TABBAR -->
   <nav class="tabbar">
-    <button class="tab-btn active" onclick="haptic('light')">
-      <span class="tab-icon">⚔️</span>
+    <button class="tab-btn active">
+      <span style="font-size: 1.2rem;">⚔️</span>
       <span>Битва</span>
     </button>
-    <button class="tab-btn" onclick="openHashiraSelectModal()">
-      <span class="tab-icon">⛩️</span>
+    <button class="tab-btn" onclick="openHashiraSelect(true)">
+      <span style="font-size: 1.2rem;">⛩️</span>
       <span>Столп</span>
     </button>
     <button class="tab-btn" onclick="openExternalUrl('https://miras101208miras-cpu.github.io/EcosystemNever/')">
-      <span class="tab-icon">🌐</span>
+      <span style="font-size: 1.2rem;">🌐</span>
       <span>Портал</span>
     </button>
     <button class="tab-btn" onclick="openExternalUrl('https://t.me/light18101')">
-      <span class="tab-icon">💬</span>
+      <span style="font-size: 1.2rem;">💬</span>
       <span>Создатель</span>
     </button>
   </nav>
 
   <script>
-    // Инициализация Telegram WebApp
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
       tg.expand();
-      tg.setHeaderColor('#07090e');
-      tg.setBackgroundColor('#07090e');
+      tg.setHeaderColor('#06080e');
+      tg.setBackgroundColor('#06080e');
     }
 
-    // Тактильный отклик Telegram
     function haptic(type = 'light') {
       try {
         if (tg?.HapticFeedback) {
@@ -838,12 +898,11 @@
     /* ==============================================================
        1. БАЗА 9 СТОЛПОВ КИСАЦУТАЙ
        ============================================================== */
-    const HASHIRA_DATA = [
+    const HASHIRAS = [
       {
         id: 'giyu',
         name: 'Гию Томиока',
         title: 'Столп Воды',
-        styleName: 'Дыхание Воды',
         color: '#00f0ff',
         glow: 'rgba(0, 240, 255, 0.4)',
         image: 'images/giyu.webp',
@@ -860,7 +919,6 @@
         id: 'rengoku',
         name: 'Кёдзюро Ренгоку',
         title: 'Столп Пламени',
-        styleName: 'Дыхание Пламени',
         color: '#ff4500',
         glow: 'rgba(255, 69, 0, 0.4)',
         image: 'images/rengoku.webp',
@@ -877,7 +935,6 @@
         id: 'muichiro',
         name: 'Муичиро Токито',
         title: 'Столп Тумана',
-        styleName: 'Дыхание Тумана',
         color: '#06b6d4',
         glow: 'rgba(6, 182, 212, 0.4)',
         image: 'images/muichiro.webp',
@@ -894,7 +951,6 @@
         id: 'shinobu',
         name: 'Шинобу Кочо',
         title: 'Столп Насекомого',
-        styleName: 'Дыхание Насекомого',
         color: '#d946ef',
         glow: 'rgba(217, 70, 239, 0.4)',
         image: 'images/shinobu.jpg',
@@ -911,7 +967,6 @@
         id: 'tengen',
         name: 'Тенген Узуй',
         title: 'Столп Звука',
-        styleName: 'Дыхание Звука',
         color: '#f59e0b',
         glow: 'rgba(245, 158, 11, 0.4)',
         image: 'images/tengen.jpg',
@@ -928,7 +983,6 @@
         id: 'mitsuri',
         name: 'Мицури Канроджи',
         title: 'Столп Любви',
-        styleName: 'Дыхание Любви',
         color: '#ec4899',
         glow: 'rgba(236, 72, 153, 0.4)',
         image: 'images/mitsuri.webp',
@@ -945,7 +999,6 @@
         id: 'sanemi',
         name: 'Санеми Шинадзугава',
         title: 'Столп Ветра',
-        styleName: 'Дыхание Ветра',
         color: '#10b981',
         glow: 'rgba(16, 185, 129, 0.4)',
         image: 'images/sanemi.webp',
@@ -962,7 +1015,6 @@
         id: 'obanai',
         name: 'Обанай Игуро',
         title: 'Столп Змеи',
-        styleName: 'Дыхание Змеи',
         color: '#8b5cf6',
         glow: 'rgba(139, 92, 246, 0.4)',
         image: 'images/obanai.webp',
@@ -979,7 +1031,6 @@
         id: 'gyomei',
         name: 'Гёмэй Химеджима',
         title: 'Столп Камня',
-        styleName: 'Дыхание Камня',
         color: '#94a3b8',
         glow: 'rgba(148, 163, 184, 0.4)',
         image: 'images/gyomei.webp',
@@ -995,9 +1046,10 @@
     ];
 
     /* ==============================================================
-       2. ИГРОВОЕ СОСТОЯНИЕ (PROGRESS STATE)
+       2. ИГРОВОЙ ПРОГРЕСС
        ============================================================== */
-    let gameState = {
+    let save = {
+      chosen: false, // Выбран ли Столп
       hashiraId: 'giyu',
       level: 1,
       coins: 50,
@@ -1007,137 +1059,156 @@
       bonusDef: 0
     };
 
-    // Загрузка сохраненного прогресса
     try {
-      const saved = localStorage.getItem('never_slayer_save');
-      if (saved) {
-        gameState = { ...gameState, ...JSON.parse(saved) };
-      }
+      const loaded = localStorage.getItem('slayer_duel_save');
+      if (loaded) save = { ...save, ...JSON.parse(loaded) };
     } catch (e) {}
 
-    function saveGame() {
+    function persist() {
       try {
-        localStorage.setItem('never_slayer_save', JSON.stringify(gameState));
+        localStorage.setItem('slayer_duel_save', JSON.stringify(save));
       } catch (e) {}
     }
 
-    /* ==============================================================
-       3. ГЕНЕРАТОР ДЕМОНОВ ПО УРОВНЯМ
-       ============================================================== */
-    let currentDemon = null;
+    let playerCurHp = 220;
+    let playerMaxHp = 220;
 
-    function getDemonForLevel(lvl) {
-      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 2.8 };
-      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 2.5 };
-      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.3 };
-      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.1 };
-      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 1.9 };
-      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.7 };
-      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.6 };
-      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.4 };
-      if (lvl >= 20) return { name: 'Руи (Паук)', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.3 };
-      if (lvl >= 10) return { name: 'Кёгай (Барабанщик)', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.2 };
-      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.1 };
-      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0 };
+    let demon = null;
+    let demonTimerInterval = null;
+    let demonTimerLeft = 2.5;
+    const DEMON_ATTACK_SPEED = 2.8; // Демон атакует каждые 2.8 сек
+
+    function getHashira() {
+      return HASHIRAS.find(h => h.id === save.hashiraId) || HASHIRAS[0];
     }
 
-    function spawnDemon() {
-      const info = getDemonForLevel(gameState.level);
-      // Масштабирование HP с каждым уровнем
-      const baseDemonHp = 80 + (gameState.level * 45) * info.hpMulti;
-      const maxHp = Math.round(baseDemonHp);
+    /* ==============================================================
+       3. ДЕМОНЫ ПО УРОВНЯМ
+       ============================================================== */
+    function getDemonStats(lvl) {
+      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 2.8, dmg: 48 };
+      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 2.5, dmg: 42 };
+      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.3, dmg: 37 };
+      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.1, dmg: 33 };
+      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 1.9, dmg: 29 };
+      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.7, dmg: 25 };
+      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.5, dmg: 22 };
+      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.4, dmg: 19 };
+      if (lvl >= 20) return { name: 'Руи', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.3, dmg: 16 };
+      if (lvl >= 10) return { name: 'Кёгай', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.2, dmg: 14 };
+      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.1, dmg: 12 };
+      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0, dmg: 10 };
+    }
 
-      currentDemon = {
+    function spawnNextDemon() {
+      const info = getDemonStats(save.level);
+      const maxHp = Math.round(90 + (save.level * 42) * info.hpMulti);
+      const attackPower = Math.round(info.dmg + (save.level * 1.5));
+
+      demon = {
         name: info.name,
         jp: info.jp,
         emoji: info.emoji,
         maxHp: maxHp,
-        currentHp: maxHp
+        curHp: maxHp,
+        dmg: attackPower
       };
 
-      document.getElementById('demonName').textContent = currentDemon.name;
-      document.getElementById('demonJp').textContent = currentDemon.jp;
-      document.getElementById('demonEmoji').textContent = currentDemon.emoji;
-      updateDemonHpBar();
+      document.getElementById('demonName').textContent = demon.name;
+      document.getElementById('demonJp').textContent = demon.jp;
+      document.getElementById('demonEmoji').textContent = demon.emoji;
+      updateDemonHp();
+
+      // Запуск таймера контратаки демона
+      startDemonAttackCycle();
     }
 
-    function updateDemonHpBar() {
-      const pct = Math.max(0, (currentDemon.currentHp / currentDemon.maxHp) * 100);
+    function updateDemonHp() {
+      const pct = Math.max(0, (demon.curHp / demon.maxHp) * 100);
       document.getElementById('demonHpFill').style.width = `${pct}%`;
-      document.getElementById('demonHpText').textContent = `${Math.ceil(currentDemon.currentHp)} / ${currentDemon.maxHp} HP`;
+      document.getElementById('demonHpCur').textContent = Math.ceil(demon.curHp);
+      document.getElementById('demonHpMax').textContent = demon.maxHp;
+    }
+
+    function updatePlayerHp() {
+      const pct = Math.max(0, (playerCurHp / playerMaxHp) * 100);
+      document.getElementById('playerHpFill').style.width = `${pct}%`;
+      document.getElementById('playerHpCur').textContent = Math.ceil(playerCurHp);
+      document.getElementById('playerHpMax').textContent = playerMaxHp;
     }
 
     /* ==============================================================
-       4. РЕНДЕР И ОБНОВЛЕНИЕ СТОЛПА И ФОРМ ДЫХАНИЯ
+       4. КОНТРАТАКА ДЕМОНА ПО ИГРОКУ
        ============================================================== */
-    function getCurrentHashira() {
-      return HASHIRA_DATA.find(h => h.id === gameState.hashiraId) || HASHIRA_DATA[0];
-    }
+    function startDemonAttackCycle() {
+      clearInterval(demonTimerInterval);
+      demonTimerLeft = DEMON_ATTACK_SPEED;
 
-    function updatePlayerUI() {
-      const hashira = getCurrentHashira();
+      demonTimerInterval = setInterval(() => {
+        if (!demon || demon.curHp <= 0 || playerCurHp <= 0) return;
 
-      // Цвета темы Столпа
-      document.documentElement.style.setProperty('--hashira-color', hashira.color);
-      document.documentElement.style.setProperty('--hashira-glow', hashira.glow);
-      document.getElementById('ambientBg').style.setProperty('--hero-glow', hashira.glow);
-
-      // Профиль в шапке
-      document.getElementById('curHashiraImg').src = hashira.image;
-      document.getElementById('curHashiraName').textContent = hashira.name;
-      document.getElementById('curHashiraStyle').textContent = `${hashira.title} • Ур. ${gameState.level}`;
-
-      // Валюта
-      document.getElementById('valCoins').textContent = gameState.coins;
-      document.getElementById('valExp').textContent = gameState.exp;
-      document.getElementById('stageLevel').textContent = gameState.level;
-
-      // Характеристики с бонусами
-      const totalDmg = hashira.baseDmg + gameState.bonusDmg + Math.floor(gameState.level * 2.5);
-      const totalHp = hashira.baseHp + gameState.bonusHp + (gameState.level * 15);
-      const totalDef = hashira.baseDef + gameState.bonusDef + Math.floor(gameState.level * 1.2);
-
-      document.getElementById('statDmg').textContent = totalDmg;
-      document.getElementById('statHp').textContent = totalHp;
-      document.getElementById('statDef').textContent = totalDef;
-
-      // Отрисовка форм дыхания (каждые 10 уровней)
-      renderBreathingForms(hashira);
-    }
-
-    function renderBreathingForms(hashira) {
-      const formsRow = document.getElementById('formsRow');
-      formsRow.innerHTML = '';
-
-      // Сколько форм открыто (1 в начале, +1 за каждые 10 уровней: ур.10 = 2, ур.20 = 3...)
-      const unlockedCount = Math.min(hashira.forms.length, 1 + Math.floor(gameState.level / 10));
-      document.getElementById('formsCountText').textContent = `${unlockedCount} / ${hashira.forms.length} Открыто`;
-
-      hashira.forms.forEach((formName, idx) => {
-        const isUnlocked = idx < unlockedCount;
-        const requiredLvl = idx === 0 ? 1 : idx * 10;
-        const formCard = document.createElement('div');
-        formCard.className = `form-skill-card ${isUnlocked ? 'unlocked' : 'locked'}`;
-
-        formCard.innerHTML = `
-          <div class="form-number">${isUnlocked ? `ФОРМА ${idx + 1} ⚡` : `УРОВЕНЬ ${requiredLvl} 🔒`}</div>
-          <div class="form-name">${formName}</div>
-          <div class="form-power">${isUnlocked ? `+${(idx + 1) * 20}% Урона` : 'Заблокировано'}</div>
-        `;
-
-        if (isUnlocked) {
-          formCard.onclick = (e) => {
-            e.stopPropagation();
-            useBreathingSkill(idx + 1, formName, (idx + 1) * 1.5);
-          };
+        demonTimerLeft -= 0.1;
+        if (demonTimerLeft <= 0) {
+          demonStrikePlayer();
+          demonTimerLeft = DEMON_ATTACK_SPEED;
         }
 
-        formsRow.appendChild(formCard);
-      });
+        const pct = ((DEMON_ATTACK_SPEED - demonTimerLeft) / DEMON_ATTACK_SPEED) * 100;
+        document.getElementById('demonTimerFill').style.width = `${pct}%`;
+        document.getElementById('demonTimerTxt').textContent = `${Math.max(0, demonTimerLeft).toFixed(1)}s`;
+      }, 100);
+    }
+
+    function demonStrikePlayer() {
+      if (playerCurHp <= 0 || !demon || demon.curHp <= 0) return;
+
+      haptic('heavy');
+      playHurtSound();
+
+      // Анимация выпада демона
+      const demonEl = document.getElementById('demonModel');
+      const playerEl = document.getElementById('playerModel');
+      demonEl.classList.add('demon-attacking');
+      playerEl.classList.add('fighter-hurt');
+
+      setTimeout(() => {
+        demonEl.classList.remove('demon-attacking');
+        playerEl.classList.remove('fighter-hurt');
+      }, 200);
+
+      // Расчет урона демона с учетом брони игрока
+      const hashira = getHashira();
+      const totalDef = hashira.baseDef + save.bonusDef + Math.floor(save.level * 1.3);
+      const incomingDmg = Math.max(6, demon.dmg - Math.floor(totalDef * 0.6));
+
+      playerCurHp -= incomingDmg;
+      updatePlayerHp();
+
+      // Всплывающий урон на игроке
+      showFlyingDamage(incomingDmg, false, true);
+
+      // Проверка поражения Столпа
+      if (playerCurHp <= 0) {
+        onPlayerDefeated();
+      }
+    }
+
+    function onPlayerDefeated() {
+      clearInterval(demonTimerInterval);
+      haptic('heavy');
+      document.getElementById('defeatModal').classList.add('open');
+    }
+
+    function healPlayerAndRetry() {
+      haptic('success');
+      playerCurHp = playerMaxHp;
+      updatePlayerHp();
+      document.getElementById('defeatModal').classList.remove('open');
+      startDemonAttackCycle();
     }
 
     /* ==============================================================
-       5. БОЕВАЯ СИСТЕМА (АТАКА, СРЕЗЫ КЛИНКА И ЗВУК)
+       5. АТАКА ИГРОКА (ТАП И СТИЛИ ДЫХАНИЯ)
        ============================================================== */
     let audioCtx = null;
     function playKatanaSound() {
@@ -1145,207 +1216,287 @@
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const now = audioCtx.currentTime;
-
-        // Взмах воздуха
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(1400, now);
-        osc.frequency.exponentialRampToValueAtTime(200, now + 0.12);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc.frequency.setValueAtTime(1200, now);
+        osc.frequency.exponentialRampToValueAtTime(250, now + 0.1);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(now);
-        osc.stop(now + 0.12);
+        osc.stop(now + 0.1);
       } catch (e) {}
     }
 
-    function attackDemon(e) {
-      if (!currentDemon || currentDemon.currentHp <= 0) return;
+    function playHurtSound() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(60, now + 0.2);
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } catch (e) {}
+    }
+
+    function playerStrike(e) {
+      if (!demon || demon.curHp <= 0 || playerCurHp <= 0) return;
 
       playKatanaSound();
       haptic('medium');
 
-      const hashira = getCurrentHashira();
-      const baseDmg = hashira.baseDmg + gameState.bonusDmg + Math.floor(gameState.level * 2.5);
-
-      // Крит шанс 20%
-      const isCrit = Math.random() < 0.2;
-      const finalDmg = isCrit ? Math.round(baseDmg * 1.8) : baseDmg;
-
-      currentDemon.currentHp -= finalDmg;
-      updateDemonHpBar();
-
-      // Визуальный срез клинка
-      animateBladeSlash();
-
-      // Всплывающее число урона
-      showDamageNumber(finalDmg, isCrit, e);
-
-      // Проверка победы над демоном
-      if (currentDemon.currentHp <= 0) {
-        onDemonDefeated();
-      }
-    }
-
-    function animateBladeSlash() {
-      const slash = document.getElementById('slashFx');
-      const angle = (Math.random() * 60) - 30; // -30 до +30 deg
-      slash.style.transform = `rotate(${angle}deg) scale(1.1)`;
-      slash.style.opacity = '1';
-
-      const flash = document.getElementById('hitFlash');
-      flash.style.opacity = '0.5';
+      // Анимация выпада Столпа
+      const playerEl = document.getElementById('playerModel');
+      const demonEl = document.getElementById('demonModel');
+      playerEl.classList.add('player-attacking');
+      demonEl.classList.add('fighter-hurt');
 
       setTimeout(() => {
-        slash.style.opacity = '0';
-        flash.style.opacity = '0';
-      }, 100);
-    }
+        playerEl.classList.remove('player-attacking');
+        demonEl.classList.remove('fighter-hurt');
+      }, 150);
 
-    function showDamageNumber(dmg, isCrit, e) {
-      const arena = document.getElementById('demonArena');
-      const rect = arena.getBoundingClientRect();
-      const num = document.createElement('div');
-      num.className = 'damage-number';
-      num.textContent = isCrit ? `CRIT! -${dmg}` : `-${dmg}`;
+      // Расчет урона игрока
+      const hashira = getHashira();
+      const baseDmg = hashira.baseDmg + save.bonusDmg + Math.floor(save.level * 2.5);
+      const isCrit = Math.random() < 0.22;
+      const finalDmg = isCrit ? Math.round(baseDmg * 1.8) : baseDmg;
 
-      const clientX = e?.clientX || (rect.left + rect.width / 2);
-      const clientY = e?.clientY || (rect.top + rect.height / 2);
+      demon.curHp -= finalDmg;
+      updateDemonHp();
 
-      num.style.left = `${clientX - rect.left}px`;
-      num.style.top = `${clientY - rect.top}px`;
+      showFlyingDamage(finalDmg, isCrit, false);
 
-      if (isCrit) {
-        num.style.color = '#fbbf24';
-        num.style.fontSize = '1.7rem';
+      if (demon.curHp <= 0) {
+        onDemonKilled();
       }
-
-      arena.appendChild(num);
-      setTimeout(() => num.remove(), 750);
     }
 
-    // Использование активируемого дыхания
-    function useBreathingSkill(formIdx, formName, multiplier) {
-      if (!currentDemon || currentDemon.currentHp <= 0) return;
+    function useBreathingSkill(idx, formName, mult) {
+      if (!demon || demon.curHp <= 0 || playerCurHp <= 0) return;
 
       playKatanaSound();
       haptic('heavy');
 
-      const hashira = getCurrentHashira();
-      const baseDmg = hashira.baseDmg + gameState.bonusDmg + Math.floor(gameState.level * 2.5);
-      const skillDmg = Math.round(baseDmg * multiplier * 2.2);
+      const playerEl = document.getElementById('playerModel');
+      const demonEl = document.getElementById('demonModel');
+      playerEl.classList.add('player-attacking');
+      demonEl.classList.add('fighter-hurt');
 
-      currentDemon.currentHp -= skillDmg;
-      updateDemonHpBar();
+      setTimeout(() => {
+        playerEl.classList.remove('player-attacking');
+        demonEl.classList.remove('fighter-hurt');
+      }, 200);
 
-      // Мощная анимация
-      animateBladeSlash();
-      showDamageNumber(skillDmg, true, null);
+      const hashira = getHashira();
+      const baseDmg = hashira.baseDmg + save.bonusDmg + Math.floor(save.level * 2.5);
+      const skillDmg = Math.round(baseDmg * mult * 2.2);
 
-      if (currentDemon.currentHp <= 0) {
-        onDemonDefeated();
+      demon.curHp -= skillDmg;
+      updateDemonHp();
+
+      showFlyingDamage(skillDmg, true, false);
+
+      if (demon.curHp <= 0) {
+        onDemonKilled();
       }
     }
 
+    function showFlyingDamage(dmg, isCrit, onPlayer) {
+      const arena = document.getElementById('battleField');
+      const el = document.createElement('div');
+      el.className = 'flying-dmg';
+      el.textContent = onPlayer ? `-${dmg}` : (isCrit ? `CRIT! -${dmg}` : `-${dmg}`);
+
+      if (onPlayer) {
+        el.style.left = '25%';
+        el.style.top = '45%';
+        el.style.color = '#ef4444';
+      } else {
+        el.style.left = '75%';
+        el.style.top = '45%';
+        el.style.color = isCrit ? '#fbbf24' : '#fff';
+      }
+
+      arena.appendChild(el);
+      setTimeout(() => el.remove(), 750);
+    }
+
     /* ==============================================================
-       6. ПОБЕДА И ОТКРЫТИЕ СУНДУКА (LEVEL UP CHEST)
+       6. ПОБЕДА И НАГРАДНОЙ СУНДУК
        ============================================================== */
-    function onDemonDefeated() {
+    function onDemonKilled() {
+      clearInterval(demonTimerInterval);
       haptic('success');
-      gameState.level += 1;
-      gameState.coins += 25 + (gameState.level * 5);
-      gameState.exp += 50;
 
-      // Награды сундука
-      const addDmg = 4 + Math.floor(gameState.level * 0.8);
-      const addHp = 20 + Math.floor(gameState.level * 5);
-      const addDef = 2 + Math.floor(gameState.level * 0.4);
-      const addCoins = 30 + (gameState.level * 10);
+      save.level += 1;
+      save.coins += 25 + (save.level * 5);
+      save.exp += 50;
 
-      // Проверка: открылось ли новое дыхание на этом уровне (кратно 10)
-      const isBreathingMilestone = (gameState.level % 10 === 0);
-      const hashira = getCurrentHashira();
-      const unlockedFormIdx = Math.floor(gameState.level / 10);
+      // Бонусы от сундука
+      const addDmg = 4 + Math.floor(save.level * 0.8);
+      const addHp = 25 + Math.floor(save.level * 6);
+      const addDef = 2 + Math.floor(save.level * 0.4);
+      const addCoins = 30 + (save.level * 10);
 
-      document.getElementById('modalNewLevel').textContent = gameState.level;
+      // Проверка открытия нового стиля дыхания (каждые 10 уровней)
+      const isMilestone = (save.level % 10 === 0);
+      const hashira = getHashira();
+      const unlockedIdx = Math.floor(save.level / 10);
+
+      document.getElementById('chestLvlNum').textContent = save.level;
       document.getElementById('rewDmg').textContent = `+${addDmg} DMG`;
       document.getElementById('rewHp').textContent = `+${addHp} HP`;
       document.getElementById('rewDef').textContent = `+${addDef} DEF`;
       document.getElementById('rewCoins').textContent = `+${addCoins} Coins`;
 
       const breathRow = document.getElementById('rewBreathingRow');
-      if (isBreathingMilestone && unlockedFormIdx < hashira.forms.length) {
+      if (isMilestone && unlockedIdx < hashira.forms.length) {
         breathRow.style.display = 'flex';
-        document.getElementById('rewBreathingName').textContent = hashira.forms[unlockedFormIdx];
+        document.getElementById('rewBreathingName').textContent = hashira.forms[unlockedIdx];
       } else {
         breathRow.style.display = 'none';
       }
 
-      // Сохраняем временные бонусы для применения по клику
-      window.pendingChestReward = { addDmg, addHp, addDef, addCoins };
-
-      // Показываем модальный сундук
+      window.chestReward = { addDmg, addHp, addDef, addCoins };
       document.getElementById('chestModal').classList.add('open');
     }
 
     function claimChestReward() {
       haptic('heavy');
-      if (window.pendingChestReward) {
-        gameState.bonusDmg += window.pendingChestReward.addDmg;
-        gameState.bonusHp += window.pendingChestReward.addHp;
-        gameState.bonusDef += window.pendingChestReward.addDef;
-        gameState.coins += window.pendingChestReward.addCoins;
-        window.pendingChestReward = null;
+      if (window.chestReward) {
+        save.bonusDmg += window.chestReward.addDmg;
+        save.bonusHp += window.chestReward.addHp;
+        save.bonusDef += window.chestReward.addDef;
+        save.coins += window.chestReward.addCoins;
+        window.chestReward = null;
       }
 
-      saveGame();
+      persist();
       document.getElementById('chestModal').classList.remove('open');
 
-      // Обновляем статы и спавним нового усиленного демона
-      updatePlayerUI();
-      spawnDemon();
+      refreshGameView();
+      // Полное восстановление HP после победы
+      playerCurHp = playerMaxHp;
+      updatePlayerHp();
+      spawnNextDemon();
     }
 
     /* ==============================================================
-       7. СИСТЕМА ВЫБОРА СТОЛПА
+       7. ВЫБОР СТОЛПА
        ============================================================== */
-    function openHashiraSelectModal() {
+    function openHashiraSelect(isManual = false) {
       haptic('light');
-      renderHashiraSelectGrid();
-      document.getElementById('selectionModal').classList.add('open');
+      renderHashiraGrid();
+      document.getElementById('hashiraSelectModal').classList.add('open');
     }
 
-    function renderHashiraSelectGrid() {
-      const grid = document.getElementById('hashiraSelectGrid');
+    function renderHashiraGrid() {
+      const grid = document.getElementById('hashiraGrid');
       grid.innerHTML = '';
 
-      HASHIRA_DATA.forEach(h => {
-        const isSelected = (h.id === gameState.hashiraId);
+      HASHIRAS.forEach(h => {
+        const isActive = (h.id === save.hashiraId);
         const card = document.createElement('div');
-        card.className = `hashira-select-card ${isSelected ? 'selected' : ''}`;
-        card.style.setProperty('--card-color', h.color);
-        card.style.setProperty('--card-glow', h.glow);
+        card.className = `hashira-card-item ${isActive ? 'active' : ''}`;
+        card.style.setProperty('--pillar-color', h.color);
+        card.style.setProperty('--pillar-glow', h.glow);
 
         card.innerHTML = `
-          <img class="hashira-select-img" src="${h.image}" alt="${h.name}">
-          <div class="hashira-select-name">${h.name}</div>
-          <div class="hashira-select-title">${h.title}</div>
-          <div class="hashira-select-stats">
-            ⚔️ ${h.baseDmg} DMG | ❤️ ${h.baseHp} HP
+          <img src="${h.image}" alt="${h.name}">
+          <div class="name">${h.name}</div>
+          <div class="title">${h.title}</div>
+          <div class="stats">
+            ⚔️ ${h.baseDmg} DMG | ❤️ ${h.baseHp} HP | 🛡️ ${h.baseDef} DEF
           </div>
         `;
 
         card.onclick = () => {
           haptic('medium');
-          gameState.hashiraId = h.id;
-          saveGame();
-          document.getElementById('selectionModal').classList.remove('open');
-          updatePlayerUI();
+          save.hashiraId = h.id;
+          save.chosen = true;
+          persist();
+          document.getElementById('hashiraSelectModal').classList.remove('open');
+
+          refreshGameView();
+          playerCurHp = playerMaxHp;
+          updatePlayerHp();
+          spawnNextDemon();
         };
 
         grid.appendChild(card);
+      });
+    }
+
+    /* ==============================================================
+       8. СИНХРОНИЗАЦИЯ ИНТЕРФЕЙСА
+       ============================================================== */
+    function refreshGameView() {
+      const h = getHashira();
+
+      // Установка цветов темы
+      document.documentElement.style.setProperty('--hashira-color', h.color);
+      document.documentElement.style.setProperty('--hashira-glow', h.glow);
+      document.getElementById('ambientGlow').style.background = `radial-gradient(circle at 50% 20%, ${h.glow} 0%, transparent 60%)`;
+
+      // Модель и имя Столпа
+      document.getElementById('playerImg').src = h.image;
+      document.getElementById('playerName').textContent = h.name;
+
+      // Характеристики
+      const totalDmg = h.baseDmg + save.bonusDmg + Math.floor(save.level * 2.5);
+      playerMaxHp = h.baseHp + save.bonusHp + (save.level * 18);
+      const totalDef = h.baseDef + save.bonusDef + Math.floor(save.level * 1.3);
+
+      document.getElementById('statDmg').textContent = totalDmg;
+      document.getElementById('statHp').textContent = playerMaxHp;
+      document.getElementById('statDef').textContent = totalDef;
+
+      document.getElementById('lblLevel').textContent = save.level;
+      document.getElementById('lblCoins').textContent = save.coins;
+      document.getElementById('lblExp').textContent = save.exp;
+
+      // Отрисовка дыханий (+1 каждые 10 уровней)
+      renderBreathingButtons(h);
+    }
+
+    function renderBreathingButtons(h) {
+      const container = document.getElementById('breathingRow');
+      container.innerHTML = '';
+
+      const unlockedCount = Math.min(h.forms.length, 1 + Math.floor(save.level / 10));
+      document.getElementById('formsCountTxt').textContent = `${unlockedCount} / ${h.forms.length} Открыто`;
+
+      h.forms.forEach((name, idx) => {
+        const isUnlocked = idx < unlockedCount;
+        const reqLvl = idx === 0 ? 1 : idx * 10;
+        const btn = document.createElement('div');
+        btn.className = `form-btn-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+
+        btn.innerHTML = `
+          <div class="form-lvl-tag">${isUnlocked ? `ФОРМА ${idx + 1} ⚡` : `УРОВЕНЬ ${reqLvl} 🔒`}</div>
+          <div class="form-title-txt">${name}</div>
+          <div class="form-bonus-txt">${isUnlocked ? `+${(idx + 1) * 22}% Урона` : 'Заблокировано'}</div>
+        `;
+
+        if (isUnlocked) {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            useBreathingSkill(idx + 1, name, (idx + 1) * 1.4);
+          };
+        }
+
+        container.appendChild(btn);
       });
     }
 
@@ -1354,9 +1505,16 @@
       window.open(url, '_blank');
     }
 
-    // Инициализация игры при старте
-    updatePlayerUI();
-    spawnDemon();
+    // Старт игры: если Столп еще не выбран — сразу открываем выбор
+    refreshGameView();
+    playerCurHp = playerMaxHp;
+    updatePlayerHp();
+
+    if (!save.chosen) {
+      openHashiraSelect();
+    } else {
+      spawnNextDemon();
+    }
   </script>
 </body>
 </html>
