@@ -2220,46 +2220,105 @@
 
 
     <!-- VIEW 4: КИБЕР-ХАБ (6 ИНСТРУМЕНТОВ БЕЗ КРД) -->
+        <!-- VIEW 4: КИБЕР-ХАБ (6 ИНСТРУМЕНТОВ) -->
     <div id="viewTools" class="app-tab-view" style="display: none;">
       <div class="calc-app-wrap">
         <div class="calc-card-box">
           <div class="calc-section-header">
-            <div class="calc-tag">05 // КИБЕР-СЕРВИСЫ</div>
+            <div class="calc-tag">05 // КИБЕР-ХАБ 2.0</div>
             <h2 class="calc-title">Кибер-Хаб EcosystemNever</h2>
-            <p class="calc-desc">Интерактивные прикладные сервисы экосистемы.</p>
+            <p class="calc-desc">Интерактивные прикладные сервисы: колесо скидок, топ, QR и кинотеатр.</p>
           </div>
 
           <!-- СЕЛЕКТОР ИНСТРУМЕНТОВ -->
-          <div class="chat-channel-bar" id="miniToolsTabBar">
+          <div class="chat-channel-bar" id="miniToolsTabBar" style="gap: 6px; overflow-x: auto; padding-bottom: 4px;">
             <button class="chat-chan-btn active" onclick="switchMiniToolSubTab('wheel', this)">🎰 Колесо</button>
             <button class="chat-chan-btn" onclick="switchMiniToolSubTab('top', this)">🏆 Топ</button>
             <button class="chat-chan-btn" onclick="switchMiniToolSubTab('term', this)">💻 Терминал</button>
-            <button class="chat-chan-btn" onclick="switchMiniToolSubTab('short', this)">🔗 Ссылки</button>
+            <button class="chat-chan-btn" onclick="switchMiniToolSubTab('short', this)">🔗 Ссылки & QR</button>
             <button class="chat-chan-btn" onclick="switchMiniToolSubTab('party', this)">🍿 Party</button>
             <button class="chat-chan-btn" onclick="switchMiniToolSubTab('drop', this)">📁 Drop</button>
           </div>
 
-          <!-- 1. ПОД-ТАБ: КОЛЕСО ФОРТУНЫ -->
+          <!-- 1. ПОД-ТАБ: КОЛЕСО СКИДОК -->
           <div class="mini-tool-subpanel" id="subPanelWheel">
             <div style="text-align: center; margin: 15px 0;">
               <div class="wheel-stage" style="margin: 0 auto;">
                 <div class="wheel-pointer"></div>
                 <canvas id="miniWheelCanvas" class="wheel-canvas" width="280" height="280"></canvas>
               </div>
-              <div style="font-size: 0.72rem; color: #94a3b8; margin: 12px 0 6px;">Вращайте колесо и получайте скидки до -50% у @light18101!</div>
+              <div style="font-size: 0.72rem; color: #22c55e; margin: 12px 0 6px; font-weight: 700;">
+                ⚡ БЕЗЛИМИТНЫЕ СПИНЫ: Крутите сколько хотите в любое время!
+              </div>
               <button class="btn-submit-order" id="btnMiniSpinWheel" onclick="spinMiniLuckyWheel()">
-                🎰 КРУТИТЬ КОЛЕСО ФОРТУНЫ
+                🎰 КРУТИТЬ КОЛЕСО СКИДОК
               </button>
+
+              <!-- КАРТОЧКА ВЫИГРЫША -->
+              <div id="miniWheelPrizeCard" style="display: none; margin-top: 14px; padding: 12px; background: rgba(0, 240, 255, 0.08); border: 1px solid #00f0ff; border-radius: 12px;">
+                <div style="font-size: 0.7rem; color: #94a3b8;">ТВОЙ ПРИЗ:</div>
+                <div id="miniWheelPrizeTitle" style="font-size: 1.1rem; font-weight: 900; color: #fbbf24; margin: 4px 0;">-30% Скидка</div>
+                <div class="short-link-pill" style="font-size: 0.85rem; padding: 6px 14px; margin: 6px 0;">
+                  <span id="miniWheelPrizeCode">NEVER-PROMO-30</span>
+                  <button class="btn-glass" style="padding: 2px 6px; font-size: 0.65rem;" onclick="copyMiniWheelCode()">📋</button>
+                </div>
+                <div style="display: flex; gap: 6px; justify-content: center; margin-top: 8px;">
+                  <button class="btn-submit-order" style="padding: 6px 12px; font-size: 0.72rem;" onclick="sendMiniPromoToFounder()">
+                    ✈️ Активировать у @light18101
+                  </button>
+                  <button class="btn-glass" style="padding: 6px 12px; font-size: 0.72rem;" onclick="applyMiniPromoToCalc()">
+                    🧮 В Калькулятор
+                  </button>
+                </div>
+              </div>
+
+              <!-- ПАНЕЛЬ СОЗДАТЕЛЯ (СКРЫТА ДЛЯ ОБЫЧНЫХ ПОЛЬЗОВАТЕЛЕЙ) -->
+              <div style="margin-top: 15px; text-align: center;">
+                <button type="button" class="btn-glass" id="btnMiniUnlockFounder" style="font-size: 0.68rem; opacity: 0.7; padding: 4px 10px;" onclick="unlockMiniFounderPromo()">
+                  🔒 Панель Создателя (@light18101)
+                </button>
+              </div>
+
+              <div class="promo-creator-card" id="miniFounderPromoCardBox" style="margin-top: 12px; text-align: left; display: none;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+                  <div>
+                    <span style="font-size: 0.65rem; font-weight: 800; color: #fbbf24;">👑 FOUNDER (@light18101)</span>
+                    <div style="font-size: 0.85rem; font-weight: 800; color: #fff;">Выдача промокодов клиентам</div>
+                  </div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="promo-tag-btn active" onclick="selectMiniFounderDiscount(10, this)">-10%</button>
+                    <button class="promo-tag-btn" onclick="selectMiniFounderDiscount(20, this)">-20%</button>
+                    <button class="promo-tag-btn" onclick="selectMiniFounderDiscount(30, this)">-30%</button>
+                    <button class="promo-tag-btn" onclick="selectMiniFounderDiscount(50, this)">-50%</button>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <input type="text" class="calc-input-field" id="miniFounderClientInput" placeholder="Имя заказчика..." style="flex: 1; padding: 6px 10px; font-size: 0.75rem;">
+                  <button class="btn-submit-order" style="padding: 6px 12px; font-size: 0.72rem; width: auto;" onclick="generateMiniFounderPromo()">
+                    ⚡ Создать
+                  </button>
+                </div>
+                <div id="miniFounderPromoResult" style="display: none; margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.5); border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.4);">
+                  <div id="miniFounderPromoMsgTxt" style="font-size: 0.72rem; color: #fde68a; font-family: 'JetBrains Mono', monospace; white-space: pre-wrap;"></div>
+                  <div style="display: flex; gap: 6px; margin-top: 6px;">
+                    <button class="btn-glass" style="padding: 4px 10px; font-size: 0.68rem;" onclick="copyMiniFounderPromoMsg()">📋 Копировать</button>
+                    <button class="btn-submit-order" style="padding: 4px 10px; font-size: 0.68rem; width: auto;" onclick="shareMiniFounderPromoTg()">✈️ Переслать</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- 2. ПОД-ТАБ: ЛИДЕРБОРД -->
+          <!-- 2. ПОД-ТАБ: ЛИДЕРБОРД (БЕЗ БОТОВ!) -->
           <div class="mini-tool-subpanel" id="subPanelTop" style="display: none;">
-            <div class="top-podium" style="margin: 15px 0 20px;">
+            <div style="text-align: center; margin: 6px 0; font-size: 0.68rem; color: #fbbf24; font-weight: 700;">
+              ⚡ РЕАЛЬНЫЙ ЗАЛ СЛАВЫ (БЕЗ БОТОВ)
+            </div>
+            <div class="top-podium" style="margin: 10px 0 16px;">
               <div class="podium-slot slot-2" style="width: 95px;">
                 <div class="podium-avatar" style="width: 48px; height: 48px; font-size: 1.3rem;">🥈</div>
-                <div style="font-size: 0.7rem; font-weight: 800; color: #fff;">CyberHunter</div>
-                <div style="font-size: 0.58rem; color: #94a3b8;">1,850 EXP</div>
+                <div style="font-size: 0.7rem; font-weight: 800; color: #fff;" id="miniPodiumUser2Name">Ты (Игрок)</div>
+                <div style="font-size: 0.58rem; color: #38bdf8;" id="miniPodiumUser2Exp">350 EXP</div>
                 <div class="podium-pedestal" style="height: 60px;">2</div>
               </div>
               <div class="podium-slot slot-1" style="width: 105px;">
@@ -2270,32 +2329,32 @@
               </div>
               <div class="podium-slot slot-3" style="width: 95px;">
                 <div class="podium-avatar" style="width: 48px; height: 48px; font-size: 1.3rem;">🥉</div>
-                <div style="font-size: 0.7rem; font-weight: 800; color: #fff;">NeonKitsune</div>
-                <div style="font-size: 0.58rem; color: #94a3b8;">1,420 EXP</div>
+                <div style="font-size: 0.7rem; font-weight: 800; color: #cbd5e1;" id="miniPodiumUser3Name">Свободно</div>
+                <div style="font-size: 0.58rem; color: #94a3b8;">Займи место!</div>
                 <div class="podium-pedestal" style="height: 45px;">3</div>
               </div>
             </div>
+
+            <!-- ФОРМА ВСТУПЛЕНИЯ В ЛИДЕРБОРД -->
+            <div style="background: rgba(0, 240, 255, 0.05); padding: 10px; border-radius: 10px; border: 1px solid rgba(0, 240, 255, 0.2); margin-bottom: 12px;">
+              <div style="font-size: 0.72rem; font-weight: 800; color: #fff; margin-bottom: 4px;">⚡ Занять место в Лидерборде:</div>
+              <div style="display: flex; gap: 6px;">
+                <input type="text" class="calc-input-field" id="miniJoinTopUsernameInput" placeholder="@username..." style="padding: 6px 8px; font-size: 0.72rem;">
+                <button class="btn-submit-order" style="padding: 6px 12px; font-size: 0.72rem; width: auto;" onclick="joinMiniRealLeaderboard()">Вступить</button>
+              </div>
+            </div>
+
             <table class="leaderboard-table" style="font-size: 0.72rem;">
-              <tbody>
+              <tbody id="miniRealLeaderboardTbody">
                 <tr>
-                  <td><span class="badge-user-rank" style="color: #fbbf24;">#1</span></td>
+                  <td><span class="badge-user-rank" style="color: #fbbf24;">#1 👑</span></td>
                   <td><strong>Miras (@light18101)</strong></td>
                   <td><strong style="color: #fbbf24;">5,400 EXP</strong></td>
                 </tr>
                 <tr>
-                  <td><span class="badge-user-rank">#2</span></td>
-                  <td><strong>CyberHunter</strong></td>
-                  <td>1,850 EXP</td>
-                </tr>
-                <tr>
-                  <td><span class="badge-user-rank">#3</span></td>
-                  <td><strong>NeonKitsune</strong></td>
-                  <td>1,420 EXP</td>
-                </tr>
-                <tr>
-                  <td><span class="badge-user-rank">#4</span></td>
-                  <td><strong>Ты (Игрок)</strong></td>
-                  <td><strong style="color: var(--accent);"><span id="lblUserExpRank">100</span> EXP</strong></td>
+                  <td><span class="badge-user-rank" style="color: #38bdf8;">#2 🥈</span></td>
+                  <td><strong id="miniLeaderCurrentUsername">Ты (Игрок)</strong></td>
+                  <td><strong style="color: var(--accent);"><span id="lblUserExpRank">350</span> EXP</strong></td>
                 </tr>
               </tbody>
             </table>
@@ -2313,68 +2372,130 @@
                 <div style="font-size: 0.65rem; color: #64748b;">guest@never: ~</div>
               </div>
               <div class="term-body" id="miniTermBody" style="height: 200px; font-size: 0.75rem;">
-                <div>⚡ ECOSYSTEMNEVER SHELL v2.4</div>
-                <div>Команды: <strong style="color:#fff;">help</strong>, <strong style="color:#fff;">secret</strong>, <strong style="color:#fff;">projects</strong>, <strong style="color:#fff;">clear</strong></div>
+                <div>⚡ ECOSYSTEMNEVER SECURE SHELL v2.4</div>
+                <div style="color: #94a3b8; margin: 4px 0;">Доступные команды: <strong style="color:#00f0ff;">help</strong>, <strong style="color:#00f0ff;">secret</strong>, <strong style="color:#00f0ff;">projects</strong>, <strong style="color:#00f0ff;">founder</strong>, <strong style="color:#00f0ff;">matrix</strong>, <strong style="color:#00f0ff;">clear</strong></div>
               </div>
               <div style="padding: 8px 10px; background: #060912; border-top: 1px solid var(--border-subtle);">
                 <div class="term-input-line">
                   <span class="term-prompt" style="font-size: 0.75rem;">$</span>
-                  <input type="text" class="term-input" id="miniTermInput" placeholder="help, secret..." onkeydown="handleMiniTerminalKey(event)">
+                  <input type="text" class="term-input" id="miniTermInput" placeholder="help, secret, projects..." onkeydown="handleMiniTerminalKey(event)">
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 4. ПОД-ТАБ: NEVERSHORT -->
+          <!-- 4. ПОД-ТАБ: NEVERSHORT И РЕАЛЬНЫЙ QR -->
           <div class="mini-tool-subpanel" id="subPanelShort" style="display: none;">
             <div style="text-align: center; margin: 10px 0;">
-              <div style="font-size: 0.75rem; color: #cbd5e1; margin-bottom: 8px;">Сокращатель ссылок и генератор QR:</div>
-              <input type="url" class="calc-input-field" id="miniShortInput" placeholder="Вставьте длинный URL...">
+              <div style="font-size: 0.75rem; color: #22c55e; font-weight: 700; margin-bottom: 6px;">
+                ✓ РЕАЛЬНЫЙ СКАНИРУЕМЫЙ QR-КОД
+              </div>
+              <input type="url" class="calc-input-field" id="miniShortInput" placeholder="Вставьте любой URL...">
               <button class="btn-submit-order" style="margin-top: 8px; padding: 10px;" onclick="generateMiniShortLink()">
-                ⚡ СОКРАТИТЬ И СОЗДАТЬ QR
+                ⚡ СОЗДАТЬ QR & ССЫЛКУ
               </button>
-              <div id="miniShortResultBox" style="display: none; margin-top: 12px; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; border: 1px solid var(--accent);">
-                <div class="short-link-pill" style="font-size: 0.85rem; padding: 6px 14px;">
-                  <span id="miniShortTxt">never.link/x7k9</span>
+              
+              <div id="miniShortResultBox" style="display: none; margin-top: 12px; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 12px; border: 1px solid var(--accent);">
+                <div class="short-link-pill" style="font-size: 0.8rem; padding: 6px 12px;">
+                  <span id="miniShortTxt">https://never.link/x7k9</span>
                   <button class="btn-glass" style="padding: 2px 6px; font-size: 0.65rem;" onclick="copyMiniShort()">📋</button>
+                  <button class="btn-glass" style="padding: 2px 6px; font-size: 0.65rem;" onclick="openMiniShort()">🔗</button>
                 </div>
-                <div id="miniShortQrWrap" style="background: #fff; padding: 6px; border-radius: 8px; display: inline-block; margin-top: 8px;"></div>
+                <div style="background: #ffffff; padding: 10px; border-radius: 10px; display: inline-block; margin-top: 10px;">
+                  <img id="miniRealQrImg" style="width: 160px; height: 160px; display: block;" src="" alt="Real QR Code" />
+                </div>
+                <div style="margin-top: 8px;">
+                  <button class="btn-submit-order" style="padding: 6px 12px; font-size: 0.72rem; width: auto;" onclick="downloadMiniQrPng()">
+                    📥 Скачать QR (PNG)
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- 5. ПОД-ТАБ: NEVERPARTY -->
           <div class="mini-tool-subpanel" id="subPanelParty" style="display: none;">
-            <div style="margin-top: 10px;">
-              <div style="font-size: 0.75rem; color: #fff; font-weight: 800; margin-bottom: 6px;">🍿 Комната синхронного просмотра:</div>
-              <div style="font-size: 0.68rem; color: #94a3b8; margin-bottom: 10px;">Комната #NEVER-809 (3 самурая онлайн)</div>
-              <div class="party-chat-box" style="height: 180px;">
-                <div class="party-chat-feed" id="miniPartyFeed">
-                  <div class="party-chat-msg"><strong>Miras:</strong> Комната открыта, воспроизведение синхронизировано!</div>
-                  <div class="party-chat-msg"><strong>CyberHunter:</strong> Звук и картинка супер 🔥</div>
-                </div>
-                <div class="party-chat-input-row">
-                  <input type="text" class="party-input-url" id="miniPartyInput" placeholder="Чат..." onkeydown="if(event.key==='Enter') sendMiniPartyMsg()">
-                  <button class="btn-primary" style="padding: 4px 10px; font-size: 0.72rem;" onclick="sendMiniPartyMsg()">Отпр.</button>
+            <div style="margin-top: 8px;">
+              <!-- КНОПКА ОТДЕЛЬНОГО КИНОТЕАТРА -->
+              <div style="margin-bottom: 12px; text-align: center;">
+                <a href="../party/index.html" target="_blank" class="btn-submit-order" style="display: block; text-decoration: none; padding: 12px; font-size: 0.82rem; background: linear-gradient(135deg, #00f0ff, #7000ff); color: #000; font-weight: 800; box-shadow: 0 0 20px rgba(0,240,255,0.4);">
+                  🍿 Открыть Кибер-Кинотеатр NeverParty (Отдельный сайт) ➔
+                </a>
+              </div>
+
+              <div id="miniPartyLobbyView">
+                <div style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 8px;">Активные залы совместного просмотра:</div>
+                <div id="miniPartyRoomsList">
+                  <div class="party-room-chip" style="padding: 8px 10px;">
+                    <div>
+                      <div style="font-size: 0.75rem; font-weight: 800; color: #fff;">#NEVER-809: Презентация Экосистемы</div>
+                      <div style="font-size: 0.62rem; color: #94a3b8;">Создатель: Miras (@light18101) • 3 онлайн</div>
+                    </div>
+                    <button class="btn-submit-order" style="padding: 4px 10px; font-size: 0.68rem; width: auto;" onclick="joinMiniPartyRoom('NEVER-809', 'Презентация Экосистемы', 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1')">
+                      Войти ➔
+                    </button>
+                  </div>
+
+                  <div class="party-room-chip" style="padding: 8px 10px;">
+                    <div>
+                      <div style="font-size: 0.75rem; font-weight: 800; color: #fff;">#ANIME-777: Demon Slayer Beats</div>
+                      <div style="font-size: 0.62rem; color: #94a3b8;">Создатель: Самурай • 6 онлайн</div>
+                    </div>
+                    <button class="btn-submit-order" style="padding: 4px 10px; font-size: 0.68rem; width: auto;" onclick="joinMiniPartyRoom('ANIME-777', 'Demon Slayer Beats', 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1')">
+                      Войти ➔
+                    </button>
+                  </div>
                 </div>
               </div>
-              <button class="btn-glass" style="width: 100%; margin-top: 8px; padding: 8px; font-size: 0.75rem;" onclick="openExternalUrl('https://miras101208miras-cpu.github.io/EcosystemNever/#tools')">
-                🎬 Открыть полноэкранный плеер
-              </button>
+
+              <!-- ВНУТРИ КОМНАТЫ PARTY В MINI APP -->
+              <div id="miniPartyActiveRoomView" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <div style="font-size: 0.72rem; color: #00f0ff; font-weight: 800;" id="miniPartyRoomLabel">#NEVER-809</div>
+                  <div style="display: flex; gap: 4px;">
+                    <button class="btn-glass" style="padding: 2px 8px; font-size: 0.65rem;" onclick="copyMiniPartyInvite()">📋 Пригласить</button>
+                    <button class="btn-glass" style="padding: 2px 8px; font-size: 0.65rem; color: #ef4444;" onclick="showMiniPartyLobby()">🚪 Лобби</button>
+                  </div>
+                </div>
+
+                <div class="party-screen" style="border-radius: 8px; margin-bottom: 8px;">
+                  <iframe id="miniPartyIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+                  <button class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem;" onclick="toggleMiniPartyPlay()">⏯️ Пауза/Старт</button>
+                  <input type="text" class="calc-input-field" id="miniPartyVideoUrlInput" placeholder="YouTube ссылка..." style="flex: 1; padding: 4px 8px; font-size: 0.72rem;">
+                  <button class="btn-submit-order" style="padding: 4px 10px; font-size: 0.72rem; width: auto;" onclick="loadMiniPartyCustomVideo()">Сменить</button>
+                </div>
+
+                <div class="party-chat-box" style="height: 160px; font-size: 0.72rem;">
+                  <div class="party-chat-feed" id="miniPartyFeed">
+                    <div class="party-chat-msg"><strong>Miras (Founder):</strong> Комната открыта, воспроизведение синхронизировано!</div>
+                  </div>
+                  <div class="party-chat-input-row">
+                    <input type="text" class="party-input-url" id="miniPartyInput" placeholder="Сообщение..." onkeydown="if(event.key==='Enter') sendMiniPartyMsg()">
+                    <button class="btn-submit-order" style="padding: 4px 10px; font-size: 0.7rem; width: auto;" onclick="sendMiniPartyMsg()">Отправить</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- 6. ПОД-ТАБ: NEVERDROP -->
           <div class="mini-tool-subpanel" id="subPanelDrop" style="display: none;">
             <div style="text-align: center; margin: 15px 0;">
-              <div class="drop-zone" onclick="document.getElementById('miniDropFileInput').click()" style="padding: 20px 10px;">
+              <div class="drop-zone-box" onclick="document.getElementById('miniDropFileInput').click()" style="padding: 24px 12px;">
+                <div style="font-size: 1.8rem;">📁</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #fff; margin-top: 4px;">Выберите файл для отправки</div>
+                <div style="font-size: 0.68rem; color: #94a3b8;">Прямая передача через 4-значный PIN</div>
                 <input type="file" id="miniDropFileInput" style="display: none;" onchange="handleMiniDropFile(event)">
-                <div style="font-size: 1.8rem;">📦</div>
-                <div style="font-size: 0.8rem; font-weight: 800; color: #fff;">Выбрать файл для передачи</div>
               </div>
-              <div id="miniDropPinResult" style="display: none;">
-                <div style="font-size: 0.7rem; color: #94a3b8;">ПИН-КОД ПОЛУЧЕНИЯ:</div>
-                <div class="drop-pin-badge" id="miniDropPinVal" style="font-size: 1.8rem; padding: 6px 16px;">8294</div>
+              <div id="miniDropPinResult" style="display: none; margin-top: 14px; padding: 12px; background: rgba(0, 240, 255, 0.08); border: 1px solid #00f0ff; border-radius: 10px;">
+                <div style="font-size: 0.68rem; color: #94a3b8;">ОДНОРАЗОВЫЙ PIN-КОД:</div>
+                <div style="font-size: 1.8rem; font-weight: 900; letter-spacing: 0.2em; color: #00f0ff; font-family: 'JetBrains Mono', monospace;" id="miniDropPinVal">
+                  8391
+                </div>
+                <div style="font-size: 0.68rem; color: #cbd5e1; margin-top: 4px;">Сообщите этот код получателю</div>
               </div>
             </div>
           </div>
@@ -4025,10 +4146,20 @@
 
   
 
+    
     /* ==============================================================
-       MINI APP: ЛОГИКА ИНСТРУМЕНТОВ (БЕСКОНЕЧНЫЙ СПИН, РЕАЛЬНЫЙ QR,
-       МУЛЬТИ-КОМНАТЫ PARTY, ЖИВОЙ ТОП, ПРОМОКОДЫ)
+       MINI APP CYBER-HUB COMPLETE LOGIC & DATA
        ============================================================== */
+    const WHEEL_SECTORS = [
+      { text: '-10% Скидка', color: '#0f172a', textColor: '#38bdf8', promo: 'NEVER-10-DISCOUNT', discount: 10 },
+      { text: '+150 EXP', color: '#1e1b4b', textColor: '#a855f7', promo: 'EXP-150-BOOST', discount: 0 },
+      { text: '5 TON Бонус', color: '#022c22', textColor: '#34d399', promo: 'TON-5-CRYPTO', discount: 0 },
+      { text: '-25% VIP Скидка', color: '#172554', textColor: '#60a5fa', promo: 'VIP-25-NEVER', discount: 25 },
+      { text: '+500 Монет', color: '#312e81', textColor: '#c084fc', promo: 'COINS-500-GOLD', discount: 0 },
+      { text: '-50% МЕГА-СКИДКА', color: '#450a0a', textColor: '#f87171', promo: 'MEGA-50-FOUNDER', discount: 50 },
+      { text: 'VIP Статус 2.0', color: '#422006', textColor: '#fbbf24', promo: 'VIP-STATUS-PASS', discount: 15 },
+      { text: 'Повторный Спин 🔄', color: '#134e4a', textColor: '#2dd4bf', promo: 'FREE-SPIN-AGAIN', discount: 0 }
+    ];
 
     function switchMiniToolSubTab(subTabKey, btn) {
       document.querySelectorAll('#miniToolsTabBar .chat-chan-btn').forEach(b => b.classList.remove('active'));
@@ -4038,11 +4169,11 @@
       const panel = document.getElementById('subPanel' + subTabKey.charAt(0).toUpperCase() + subTabKey.slice(1));
       if (panel) panel.style.display = 'block';
 
-      if (subTabKey === 'wheel') setTimeout(drawMiniWheel, 100);
+      if (subTabKey === 'wheel') setTimeout(drawMiniWheel, 50);
+      if (subTabKey === 'term') document.getElementById('miniTermInput')?.focus();
       haptic('light');
     }
 
-    // 1. БЕСКОНЕЧНОЕ КОЛЕСО MINI APP
     let miniWheelCurrentAngle = 0;
     let isSpinningMiniWheel = false;
     let lastMiniWonPrize = null;
@@ -4080,7 +4211,7 @@
       });
 
       ctx.beginPath();
-      ctx.arc(radius, radius, 24, 0, 2 * Math.PI);
+      ctx.arc(radius, radius, 26, 0, 2 * Math.PI);
       ctx.fillStyle = '#04060a';
       ctx.strokeStyle = '#00f0ff';
       ctx.lineWidth = 2.5;
@@ -4164,8 +4295,188 @@
       showFlyingToast('🎟️ Промокод применен в Калькуляторе!');
     }
 
-    // ВЫДАЧА ПРОМОКОДОВ СОЗДАТЕЛЕМ В MINI APP
+    // ТЕРМИНАЛ
+    function handleMiniTerminalKey(event) {
+      if (event.key !== 'Enter') return;
+      const input = document.getElementById('miniTermInput');
+      if (!input) return;
+      const cmd = input.value.trim();
+      input.value = '';
+
+      const body = document.getElementById('miniTermBody');
+      if (!body) return;
+
+      const userLine = document.createElement('div');
+      userLine.innerHTML = '<span style="color:#22c55e;">guest@never:~$</span> ' + cmd;
+      body.appendChild(userLine);
+
+      const resp = document.createElement('div');
+      resp.style.color = '#cbd5e1';
+
+      const low = cmd.toLowerCase();
+      if (low === 'help') {
+        resp.innerHTML = '⚡ Команды: <strong style="color:#00f0ff;">secret</strong>, <strong style="color:#00f0ff;">projects</strong>, <strong style="color:#00f0ff;">founder</strong>, <strong style="color:#00f0ff;">matrix</strong>, <strong style="color:#00f0ff;">clear</strong>';
+      } else if (low === 'secret') {
+        resp.innerHTML = '<span style="color:#fbbf24;">🎉 ЧИТ-КОД: "SECRET30" дает -30% на любую разработку! Введи в калькуляторе.</span>';
+      } else if (low === 'projects') {
+        resp.innerHTML = '1. EcosystemNever Portal<br>2. Demon Slayer Portfolio<br>3. NeverParty Cinema<br>4. NeverMessenger & Cloud';
+      } else if (low === 'founder') {
+        resp.innerHTML = 'Основатель: Miras (@light18101)<br>Telegram: https://t.me/light18101';
+      } else if (low === 'matrix') {
+        resp.innerHTML = '<span style="color:#22c55e;">01000101 01100011 01101111 01110011 (NEVER ONLINE)</span>';
+      } else if (low === 'clear') {
+        body.innerHTML = '';
+        return;
+      } else {
+        resp.innerHTML = '<span style="color:#ef4444;">Команда "' + cmd + '" не найдена. Введите "help".</span>';
+      }
+
+      body.appendChild(resp);
+      body.scrollTop = body.scrollHeight;
+      haptic('light');
+    }
+
+    // СОКРАЩАТЕЛЬ И РЕАЛЬНЫЙ QR-КОД
+    let miniCurrentShortUrl = '';
+
+    function generateMiniShortLink() {
+      const input = document.getElementById('miniShortInput');
+      if (!input?.value.trim()) {
+        showFlyingToast('⚠️ Введите URL!');
+        return;
+      }
+      let target = input.value.trim();
+      if (!target.startsWith('http://') && !target.startsWith('https://')) {
+        target = 'https://' + target;
+      }
+
+      const code = Math.random().toString(36).substring(2, 6);
+      const shortUrl = 'https://never.link/' + code;
+      miniCurrentShortUrl = target;
+
+      document.getElementById('miniShortTxt').textContent = shortUrl;
+      document.getElementById('miniShortResultBox').style.display = 'block';
+
+      const img = document.getElementById('miniRealQrImg');
+      if (img) {
+        img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=' + encodeURIComponent(target);
+      }
+
+      showFlyingToast('✅ Реальный QR-код сгенерирован!');
+      haptic('success');
+    }
+
+    function generateMiniRealShortAndQr() {
+      generateMiniShortLink();
+    }
+
+    function copyMiniShort() {
+      const txt = document.getElementById('miniShortTxt')?.textContent || '';
+      try { navigator.clipboard?.writeText(txt); } catch(e) {}
+      showFlyingToast('📋 Скопировано: ' + txt);
+      haptic('light');
+    }
+
+    function openMiniShort() {
+      if (miniCurrentShortUrl) {
+        window.open(miniCurrentShortUrl, '_blank');
+      }
+    }
+
+    function downloadMiniQrPng() {
+      const img = document.getElementById('miniRealQrImg');
+      if (!img?.src) return;
+      const link = document.createElement('a');
+      link.href = img.src;
+      link.download = 'Never_QR.png';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showFlyingToast('📥 Скачивание QR началось');
+      haptic('light');
+    }
+
+    // NEVERDROP
+    function handleMiniDropFile(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const pin = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('miniDropPinVal').textContent = pin;
+      document.getElementById('miniDropPinResult').style.display = 'block';
+      showFlyingToast('✅ PIN для получения файла: ' + pin);
+      haptic('success');
+    }
+
+    // ИНИЦИАЛИЗАЦИЯ КОЛЕСА
+    setTimeout(drawMiniWheel, 300);
+
+  
+
+
+    /* ==============================================================
+       ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ ПАУЗЫ, PARTY, ЛИДЕРБОРДА И СОЗДАТЕЛЯ
+       ============================================================== */
+
+    // 1. ПАУЗА БОЯ
+    let isBattlePaused = false;
+
+    function openBattlePauseModal() {
+      isBattlePaused = true;
+      const modal = document.getElementById('modalBattlePause');
+      if (modal) modal.style.display = 'flex';
+      haptic('light');
+    }
+
+    function closeBattlePauseModal() {
+      const modal = document.getElementById('modalBattlePause');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function resumeBattle() {
+      isBattlePaused = false;
+      closeBattlePauseModal();
+      showFlyingToast('⚔️ Бой возобновлен!');
+      haptic('medium');
+    }
+
+    function restartBattleClean() {
+      isBattlePaused = false;
+      closeBattlePauseModal();
+      playerCurHp = getHashira().baseHp;
+      updatePlayerHp();
+      spawnNextDemon();
+      showFlyingToast('🔄 Бой начат заново!');
+      haptic('success');
+    }
+
+    // 2. ДОСТУП СОЗДАТЕЛЯ
     let miniSelectedFounderDiscount = 10;
+
+    function unlockMiniFounderPromo() {
+      const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user?.username;
+      if (tgUser === 'light18101') {
+        revealMiniFounderCard();
+        return;
+      }
+
+      const pin = prompt('Введите секретный PIN Создателя (@light18101):');
+      if (pin === '1810' || pin === 'light18101') {
+        revealMiniFounderCard();
+        showFlyingToast('👑 Доступ Создателя открыт!');
+        haptic('success');
+      } else if (pin) {
+        showFlyingToast('⛔ Неверный PIN!');
+        haptic('warning');
+      }
+    }
+
+    function revealMiniFounderCard() {
+      const box = document.getElementById('miniFounderPromoCardBox');
+      if (box) box.style.display = 'block';
+      const btn = document.getElementById('btnMiniUnlockFounder');
+      if (btn) btn.style.display = 'none';
+    }
 
     function selectMiniFounderDiscount(disc, btn) {
       miniSelectedFounderDiscount = disc;
@@ -4179,12 +4490,11 @@
       const randHex = Math.random().toString(36).substring(2, 6).toUpperCase();
       const code = 'NEVER-LIGHT-' + miniSelectedFounderDiscount + '-' + randHex;
 
-      const msg = 'Привет, ' + clientName + '! 🚀\nТвой персональный промокод от Создателя @light18101:\n🎟️ Код: ' + code + '\n💰 Скидка: -' + miniSelectedFounderDiscount + '% на разработку!\nАктивируй в нашем App или напиши мне в ответ.';
+      const msg = 'Привет, ' + clientName + '! 🚀\nТвой промокод от Создателя @light18101:\n🎟️ Код: ' + code + '\n💰 Скидка: -' + miniSelectedFounderDiscount + '% на разработку!\nАктивируй в нашем App или напиши мне в ответ.';
 
       document.getElementById('miniFounderPromoMsgTxt').textContent = msg;
       document.getElementById('miniFounderPromoResult').style.display = 'block';
 
-      saveActivePromoCode(code, miniSelectedFounderDiscount);
       showFlyingToast('✅ Промокод ' + code + ' создан!');
       haptic('success');
     }
@@ -4200,7 +4510,7 @@
     function shareMiniFounderPromoTg() {
       const txt = document.getElementById('miniFounderPromoMsgTxt')?.textContent;
       if (!txt) return;
-      const url = 'https://t.me/share/url?url=' + encodeURIComponent('https://miras101208miras-cpu.github.io/EcosystemNever/app/?v=6') + '&text=' + encodeURIComponent(txt);
+      const url = 'https://t.me/share/url?url=' + encodeURIComponent('https://miras101208miras-cpu.github.io/EcosystemNever/app/?v=8') + '&text=' + encodeURIComponent(txt);
       if (window.Telegram?.WebApp?.openTelegramLink) {
         window.Telegram.WebApp.openTelegramLink(url);
       } else {
@@ -4208,7 +4518,26 @@
       }
     }
 
-    // 2. NEVERPARTY В MINI APP
+    // 3. ЖИВОЙ ЛИДЕРБОРД
+    function joinMiniRealLeaderboard() {
+      const input = document.getElementById('miniJoinTopUsernameInput');
+      let name = input?.value.trim();
+      if (!name) {
+        showFlyingToast('⚠️ Введите ваш Telegram @username!');
+        return;
+      }
+      if (!name.startsWith('@')) name = '@' + name;
+
+      document.getElementById('miniLeaderCurrentUsername').textContent = name;
+      document.getElementById('miniPodiumUser2Name').textContent = name;
+      document.getElementById('miniPodiumUser3Name').textContent = 'Свободно';
+
+      showFlyingToast('🎉 Вы внесены в Лидерборд!');
+      haptic('success');
+      if (input) input.value = '';
+    }
+
+    // 4. NEVERPARTY В MINI APP
     let miniCurrentPartyRoom = {
       id: 'NEVER-809',
       title: 'Презентация Экосистемы',
@@ -4234,38 +4563,11 @@
       haptic('light');
     }
 
-    function joinMiniPartyByCode() {
-      const code = document.getElementById('miniPartyCodeInput')?.value.trim().toUpperCase();
-      if (!code) return;
-      joinMiniPartyRoom(code, 'Комната ' + code, 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1');
-    }
-
-    function createMiniPartyRoom() {
-      const title = prompt('Название комнаты (например: Вечерний стрим):', 'Моя Party-Комната');
-      if (!title) return;
-      const url = prompt('YouTube ссылка на видео:', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-
-      let embed = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
-      if (url && url.includes('v=')) {
-        const vId = url.split('v=')[1]?.split('&')[0];
-        embed = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
-      } else if (url && url.includes('youtu.be/')) {
-        const vId = url.split('youtu.be/')[1]?.split('?')[0];
-        embed = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
-      }
-
-      const randomId = 'ROOM-' + Math.floor(100 + Math.random() * 900);
-
-      const list = document.getElementById('miniPartyRoomsList');
-      if (list) {
-        const div = document.createElement('div');
-        div.className = 'party-room-chip';
-        div.style.padding = '8px 10px';
-        div.innerHTML = '<div><div style="font-size:0.75rem;font-weight:800;color:#fff;">#' + randomId + ': ' + title + '</div><div style="font-size:0.62rem;color:#94a3b8;">Создатель: Вы • 1 онлайн</div></div><button class="btn-submit-order" style="padding:4px 10px;font-size:0.68rem;width:auto;" onclick="joinMiniPartyRoom(\'' + randomId + '\', \'' + title + '\', \'' + embed + '\')">Войти ➔</button>';
-        list.prepend(div);
-      }
-
-      joinMiniPartyRoom(randomId, title, embed);
+    function copyMiniPartyInvite() {
+      const link = 'https://miras101208miras-cpu.github.io/EcosystemNever/party/?room=' + miniCurrentPartyRoom.id;
+      try { navigator.clipboard?.writeText(link); } catch(e) {}
+      showFlyingToast('📋 Ссылка на комнату скопирована!');
+      haptic('light');
     }
 
     function toggleMiniPartyPlay() {
@@ -4319,190 +4621,6 @@
       feed.appendChild(div);
       feed.scrollTop = feed.scrollHeight;
     }
-
-    function copyMiniPartyInvite() {
-      const link = 'https://miras101208miras-cpu.github.io/EcosystemNever/app/?v=6#party?room=' + miniCurrentPartyRoom.id;
-      try { navigator.clipboard?.writeText(link); } catch(e) {}
-      showFlyingToast('📋 Ссылка на комнату скопирована!');
-      haptic('light');
-    }
-
-    // 3. ЖИВОЙ ЛИДЕРБОРД В MINI APP (БЕЗ БОТОВ!)
-    function joinMiniRealLeaderboard() {
-      const input = document.getElementById('miniJoinTopUsernameInput');
-      let name = input?.value.trim();
-      if (!name) {
-        showFlyingToast('⚠️ Введите ваш Telegram @username!');
-        return;
-      }
-      if (!name.startsWith('@')) name = '@' + name;
-
-      document.getElementById('miniLeaderCurrentUsername').textContent = name;
-      document.getElementById('miniPodiumUser2Name').textContent = name;
-      document.getElementById('miniPodiumUser3Name').textContent = 'Свободно';
-
-      showFlyingToast('🎉 Вы внесены в Лидерборд!');
-      haptic('success');
-      if (input) input.value = '';
-    }
-
-    // 4. 100% РЕАЛЬНЫЙ СКАНИРУЕМЫЙ QR В MINI APP
-    let miniCurrentShortUrl = '';
-
-    function generateMiniRealShortAndQr() {
-      const input = document.getElementById('miniShortInput');
-      if (!input?.value.trim()) {
-        showFlyingToast('⚠️ Введите URL!');
-        return;
-      }
-      let target = input.value.trim();
-      if (!target.startsWith('http://') && !target.startsWith('https://')) {
-        target = 'https://' + target;
-      }
-
-      const code = Math.random().toString(36).substring(2, 6);
-      const shortUrl = 'https://never.link/' + code;
-      miniCurrentShortUrl = target;
-
-      document.getElementById('miniShortTxt').textContent = shortUrl;
-      document.getElementById('miniShortResultBox').style.display = 'block';
-
-      // 100% РЕАЛЬНЫЙ СКАНИРУЕМЫЙ QR
-      const img = document.getElementById('miniRealQrImg');
-      if (img) {
-        img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=' + encodeURIComponent(target);
-      }
-
-      showFlyingToast('✅ Реальный QR-код сгенерирован!');
-      haptic('success');
-    }
-
-    function copyMiniShort() {
-      const txt = document.getElementById('miniShortTxt')?.textContent || '';
-      try { navigator.clipboard?.writeText(txt); } catch(e) {}
-      showFlyingToast('📋 Скопировано: ' + txt);
-      haptic('light');
-    }
-
-    function openMiniShort() {
-      if (miniCurrentShortUrl) {
-        window.open(miniCurrentShortUrl, '_blank');
-      }
-    }
-
-    function downloadMiniQrPng() {
-      const img = document.getElementById('miniRealQrImg');
-      if (!img?.src) return;
-      const link = document.createElement('a');
-      link.href = img.src;
-      link.download = 'Never_QR.png';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      showFlyingToast('📥 Скачивание QR началось');
-      haptic('light');
-    }
-
-    // 5. ПРИМЕНЕНИЕ ПРОМОКОДА В КАЛЬКУЛЯТОРЕ MINI APP
-    function applyMiniPromoCode() {
-      const input = document.getElementById('miniCalcPromoInput');
-      if (!input) return;
-      const code = input.value.trim().toUpperCase();
-      if (!code) return;
-
-      let stored = {};
-      try { stored = JSON.parse(localStorage.getItem('never_active_promos') || '{}'); } catch(e) {}
-      const discount = VALID_PROMOS[code] || stored[code] || (code.startsWith('NEVER-LIGHT-') ? parseInt(code.split('-')[2]) : null);
-
-      const statusBox = document.getElementById('miniCalcPromoStatusBox');
-      if (discount) {
-        window.activePromoDiscount = discount;
-        window.activePromoCode = code;
-        if (statusBox) {
-          statusBox.innerHTML = '<span style="color: #22c55e; font-weight: 800;">✓ Скидка -' + discount + '% учтена!</span>';
-          statusBox.style.display = 'block';
-        }
-        updateMiniCalcSummary();
-        showFlyingToast('🎉 Промокод применен: Скидка ' + discount + '%!');
-        haptic('success');
-      } else {
-        if (statusBox) {
-          statusBox.innerHTML = '<span style="color: #ef4444; font-weight: 800;">✕ Неверный промокод</span>';
-          statusBox.style.display = 'block';
-        }
-        haptic('warning');
-      }
-    }
-
-
-
-
-    let isBattlePaused = false;
-
-    function openBattlePauseModal() {
-      isBattlePaused = true;
-      const modal = document.getElementById('modalBattlePause');
-      if (modal) modal.style.display = 'flex';
-      haptic('light');
-    }
-
-    function closeBattlePauseModal() {
-      const modal = document.getElementById('modalBattlePause');
-      if (modal) modal.style.display = 'none';
-    }
-
-    function resumeBattle() {
-      isBattlePaused = false;
-      closeBattlePauseModal();
-      showFlyingToast('⚔️ Бой возобновлен!');
-      haptic('medium');
-    }
-
-    function restartBattleClean() {
-      isBattlePaused = false;
-      closeBattlePauseModal();
-      playerCurHp = getHashira().baseHp;
-      updatePlayerHp();
-      spawnNextDemon();
-      showFlyingToast('🔄 Бой начат заново!');
-      haptic('success');
-    }
-
-
-    function unlockMiniFounderPromo() {
-      // Авто-проверка Telegram
-      const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user?.username;
-      if (tgUser === 'light18101') {
-        revealMiniFounderCard();
-        return;
-      }
-
-      const pin = prompt('Введите PIN Создателя (@light18101):');
-      if (pin === '1810' || pin === 'light18101') {
-        revealMiniFounderCard();
-        showFlyingToast('👑 Доступ Создателя открыт!');
-        haptic('success');
-      } else if (pin) {
-        showFlyingToast('⛔ Неверный PIN!');
-        haptic('warning');
-      }
-    }
-
-    function revealMiniFounderCard() {
-      const box = document.getElementById('miniFounderPromoCardBox');
-      if (box) box.style.display = 'block';
-      const btn = document.getElementById('btnMiniUnlockFounder');
-      if (btn) btn.style.display = 'none';
-    }
-
-    // Автоматическая проверка при открытии Mini App
-    setTimeout(() => {
-      const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user?.username;
-      if (tgUser === 'light18101') {
-        revealMiniFounderCard();
-      }
-    }, 500);
 
 </script>
 </body>
