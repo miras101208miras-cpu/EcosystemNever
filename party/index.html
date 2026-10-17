@@ -513,6 +513,32 @@
       </div>
 
       <div class="stage-controls">
+        <!-- БЛОК: МАРАФОН КРД (ДЕМОН СЛЕЙЕР ПО СЕРИЯМ ПО ОЧЕРЕДИ) - НА САМОМ ВИДНОМ МЕСТЕ -->
+        <div class="krd-marathon-box" style="padding: 14px 16px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(15, 23, 42, 0.95)); border: 2px solid #ef4444; border-radius: 14px; box-shadow: 0 0 30px rgba(239, 68, 68, 0.35);">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.6rem; filter: drop-shadow(0 0 8px #ef4444);">⚔️</span>
+              <div>
+                <strong style="color: #fca5a5; font-size: 1.05rem; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">МАРАФОН КРД: КЛИНОК, РАССЕКАЮЩИЙ ДЕМОНОВ</strong>
+                <div style="font-size: 0.75rem; color: #fecaca; margin-top: 2px;" id="lblKrdCurrentEp">Сезон 1 • Нажми кнопку чтобы включить 1 серию и смотреть по очереди</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" id="btnStartKrdMarathon" style="background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; padding: 10px 20px; font-size: 0.85rem; font-weight: 800; border: 1px solid #fca5a5; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); cursor: pointer;" onclick="startKrdFromStart()">
+                🔥 НАЧАТЬ С 1 СЕЗОНА 1 СЕРИИ ▶
+              </button>
+              <button type="button" class="btn btn-glass" style="padding: 10px 16px; font-size: 0.85rem; border-color: rgba(239, 68, 68, 0.6); color: #fca5a5; font-weight: 700; cursor: pointer;" onclick="playNextKrdEpisode()">
+                Следующая серия ⏭️
+              </button>
+            </div>
+          </div>
+
+          <!-- СЕРИИ 1 СЕЗОНА ПО ПОРЯДКУ -->
+          <div class="krd-episodes-bar" id="krdEpisodesBar" style="display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px;">
+            <!-- Серии генерируются JS -->
+          </div>
+        </div>
+
         <div class="sync-banner">
           <div>
             📺 Текущее видео: <strong id="lblCurrentVideoTitle" style="color: #fff;">Презентация EcosystemNever</strong>
@@ -542,38 +568,13 @@
         </div>
 
         <div class="quick-tracks">
+          <button class="quick-btn" style="background: linear-gradient(135deg, #ef4444, #991b1b); border-color: #fca5a5; color: #fff; font-weight: 800; box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);" onclick="startKrdFromStart()">⚔️ КРД: 1 сезон 1 серия</button>
+          <button class="quick-btn" style="background: rgba(239, 68, 68, 0.15); border-color: #ef4444; color: #fca5a5;" onclick="playNextKrdEpisode()">⏭️ След. серия КРД</button>
           <button class="quick-btn" style="background: rgba(34, 197, 94, 0.15); border-color: #22c55e; color: #4ade80;" onclick="setQuickVideo('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', 'Google Cloud Stream (Full HD)')">📁 Google Видео Демо</button>
           <span style="color: #64748b;">Быстрый выбор:</span>
           <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1', 'EcosystemNever Official Anthem')">🎵 Anthem</button>
           <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1', 'Lofi Hip Hop Chill / Beats')">🎧 Lofi Chill</button>
           <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1', 'Cyberpunk 2077 Night City')">🏙️ Cyberpunk Showcase</button>
-          <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1', 'Demon Slayer OST Highlights')">⚔️ Demon Slayer OST</button>
-        </div>
-
-        <!-- БЛОК: МАРАФОН КРД (DEMON SLAYER ПО СЕРИЯМ ПО ОЧЕРЕДИ) -->
-        <div class="krd-marathon-box" style="margin-top: 14px; padding: 14px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.3rem;">⚔️</span>
-              <div>
-                <strong style="color: #f87171; font-size: 0.95rem; font-family: 'Montserrat', sans-serif;">МАРАФОН DEMON SLAYER (КРД)</strong>
-                <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 2px;" id="lblKrdCurrentEp">Сезон 1 • Смотри все серии подряд по очереди</div>
-              </div>
-            </div>
-            <div style="display: flex; gap: 6px;">
-              <button type="button" class="btn btn-primary" id="btnStartKrdMarathon" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; padding: 8px 16px; font-size: 0.78rem; font-weight: 800; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);" onclick="startKrdFromStart()">
-                ▶️ Начать с 1 сезона 1 серии
-              </button>
-              <button type="button" class="btn btn-glass" style="padding: 8px 14px; font-size: 0.78rem;" onclick="playNextKrdEpisode()">
-                Следующая серия ⏭️
-              </button>
-            </div>
-          </div>
-
-          <!-- СЕРИИ 1 СЕЗОНА ПО ПОРЯДКУ -->
-          <div class="krd-episodes-bar" id="krdEpisodesBar" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px;">
-            <!-- Серии генерируются JS -->
-          </div>
         </div>
       </div>
     </div>
