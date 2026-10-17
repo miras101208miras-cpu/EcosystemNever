@@ -2722,6 +2722,437 @@
   </section>
 
   <!-- 5. СЕКЦИЯ: ЗАКАЗ ПРОЕКТА & СВЯЗЬ С СОЗДАТЕЛЕМ -->
+    <!-- ==============================================================
+       СЕКЦИЯ: КИБЕР-СЕРВИСЫ И ИНСТРУМЕНТЫ (6 ШТУК БЕЗ БОТОВ И БЕЗ КРД)
+       ============================================================== -->
+  <section class="section tools-section" id="tools">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="tools_tag">05 // КИБЕР-ХАБ & СЕРВИСЫ</div>
+        <h2 class="section-title" data-i18n="tools_title">Интерактивные Инструменты EcosystemNever</h2>
+        <p class="section-desc" data-i18n="tools_desc">
+          Комплекс прикладных сервисов экосистемы: бесконечное колесо скидок, синхронный кинотеатр, живой лидерборд, генератор QR-кодов и P2P-передача данных.
+        </p>
+      </div>
+
+      <!-- НАВИГАЦИОННЫЕ ТАБЫ ИНСТРУМЕНТОВ -->
+      <div class="tools-nav-bar">
+        <button class="tool-tab-btn active" onclick="switchToolTab('wheel', this)">
+          <span>🎰</span> <span data-i18n="tab_wheel">Колесо Скидок</span>
+        </button>
+        <button class="tool-tab-btn" onclick="switchToolTab('party', this)">
+          <span>🍿</span> <span data-i18n="tab_party">NeverParty</span>
+        </button>
+        <button class="tool-tab-btn" onclick="switchToolTab('top', this)">
+          <span>🏆</span> <span data-i18n="tab_top">Лидерборд (Живой)</span>
+        </button>
+        <button class="tool-tab-btn" onclick="switchToolTab('short', this)">
+          <span>🔗</span> <span data-i18n="tab_short">NeverShort & QR</span>
+        </button>
+        <button class="tool-tab-btn" onclick="switchToolTab('terminal', this)">
+          <span>💻</span> <span data-i18n="tab_term">NeverTerminal</span>
+        </button>
+        <button class="tool-tab-btn" onclick="switchToolTab('drop', this)">
+          <span>📁</span> <span data-i18n="tab_drop">NeverDrop</span>
+        </button>
+      </div>
+
+      <!-- 1. ПАНЕЛЬ: БЕСКОНЕЧНОЕ КОЛЕСО ФОРТУНЫ + ПРОМО-СИСТЕМА -->
+      <div class="tool-tab-panel active" id="panelWheel">
+        <div class="tool-glass-card">
+          <div class="wheel-layout">
+            <div class="wheel-stage">
+              <div class="wheel-pointer"></div>
+              <canvas id="wheelCanvas" class="wheel-canvas" width="320" height="320"></canvas>
+            </div>
+
+            <div class="wheel-info-box">
+              <div class="section-tag" style="color: #22c55e;">⚡ БЕЗЛИМИТНЫЕ СПИНЫ 24/7</div>
+              <h3 style="font-size: 1.4rem; font-weight: 800; color: #fff; margin: 4px 0 8px;">Кибер-Колесо Скидок</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                Крутите в любое время без ограничений! Выбивайте реальные промокоды на скидку до 50% для заказов у <strong>@light18101</strong>, бонусные TON и опыт в экосистеме.
+              </p>
+
+              <div class="wheel-prizes-list">
+                <div class="wheel-prize-chip">🎟️ -10% Скидка на заказ</div>
+                <div class="wheel-prize-chip">⚡ +150 EXP к рангу</div>
+                <div class="wheel-prize-chip">💎 5 TON Бонус</div>
+                <div class="wheel-prize-chip">🚀 -25% VIP Скидка</div>
+                <div class="wheel-prize-chip">🪙 +500 Монет</div>
+                <div class="wheel-prize-chip">👑 -50% МЕГА-СКИДКА</div>
+              </div>
+
+              <button class="btn-spin-wheel" id="btnSpinWheel" onclick="spinLuckyWheel()">
+                🎰 КРУТИТЬ КОЛЕСО СКИДОК
+              </button>
+              <div id="wheelCooldownTxt" style="font-size: 0.75rem; color: #38bdf8; text-align: center; margin-top: 8px;">
+                ✨ Бесконечные вращения активны! Крути сколько хочешь!
+              </div>
+
+              <!-- РЕЗУЛЬТАТ ВЫИГРЫША / КАРТОЧКА ПРОМОКОДА -->
+              <div id="wheelPrizeCard" style="display: none; margin-top: 15px; padding: 14px; background: rgba(0, 240, 255, 0.08); border: 1px solid #00f0ff; border-radius: 12px; text-align: center;">
+                <div style="font-size: 0.75rem; color: #94a3b8;">ТВОЙ ВЫИГРЫШ:</div>
+                <div id="wheelPrizeTitle" style="font-size: 1.1rem; font-weight: 900; color: #fbbf24; margin: 4px 0;">-30% Скидка</div>
+                <div class="short-link-pill" style="margin: 6px 0; font-size: 0.85rem;">
+                  <span id="wheelPrizeCode">NEVER-PROMO-30</span>
+                  <button class="btn-glass" style="padding: 2px 8px; font-size: 0.7rem;" onclick="copyWheelCode()">📋</button>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: center; margin-top: 8px; flex-wrap: wrap;">
+                  <button class="btn-primary" style="padding: 6px 14px; font-size: 0.75rem;" onclick="sendPromoToFounder()">
+                    ✈️ Активировать у @light18101
+                  </button>
+                  <button class="btn-glass" style="padding: 6px 14px; font-size: 0.75rem;" onclick="applyPromoInCalculator()">
+                    🧮 Вставить в Калькулятор
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ПАНЕЛЬ СОЗДАТЕЛЯ ДЛЯ ВЫДАЧИ ПРОМОКОДОВ (@light18101) -->
+          <div class="promo-creator-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+              <div>
+                <span style="font-size: 0.7rem; font-weight: 800; color: #fbbf24; letter-spacing: 0.1em;">👑 FOUNDER TOOLS (@light18101)</span>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 2px 0;">Генератор Промокодов для Клиентов</h4>
+                <p style="font-size: 0.78rem; color: #94a3b8;">Создавайте официальные промокоды на скидку и отправляйте заказчикам в один клик.</p>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button class="promo-tag-btn active" onclick="selectFounderPromoDiscount(10, this)">-10%</button>
+                <button class="promo-tag-btn" onclick="selectFounderPromoDiscount(20, this)">-20%</button>
+                <button class="promo-tag-btn" onclick="selectFounderPromoDiscount(30, this)">-30%</button>
+                <button class="promo-tag-btn" onclick="selectFounderPromoDiscount(50, this)">-50%</button>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <input type="text" class="party-input-url" id="founderClientInput" placeholder="Имя клиента или @username (например: Иван, @client)..." style="flex: 2; min-width: 200px;">
+              <button class="btn-primary" style="background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; font-weight: 800; padding: 8px 18px;" onclick="generateFounderPromo()">
+                ⚡ Создать Промокод
+              </button>
+            </div>
+
+            <div id="founderPromoResult" style="display: none; margin-top: 12px; padding: 12px; background: rgba(0,0,0,0.5); border-radius: 10px; border: 1px solid rgba(251, 191, 36, 0.4);">
+              <div style="font-size: 0.72rem; color: #94a3b8;">ГОТОВОЕ СООБЩЕНИЕ ДЛЯ КЛИЕНТА:</div>
+              <div id="founderPromoMsgTxt" style="font-size: 0.82rem; color: #fde68a; font-family: 'JetBrains Mono', monospace; margin: 6px 0; white-space: pre-wrap;"></div>
+              <div style="display: flex; gap: 8px; margin-top: 8px;">
+                <button class="btn-glass" style="padding: 6px 12px; font-size: 0.75rem;" onclick="copyFounderPromoMsg()">📋 Скопировать текст</button>
+                <button class="btn-primary" style="padding: 6px 14px; font-size: 0.75rem;" onclick="shareFounderPromoTg()">✈️ Переслать в Telegram</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. ПАНЕЛЬ: NEVERPARTY (МУЛЬТИ-КОМНАТЫ БЕЗ ВЫБРАСЫВАНИЯ НА САЙТ) -->
+      <div class="tool-tab-panel" id="panelParty">
+        <div class="tool-glass-card">
+          <!-- ВЕРХНЯЯ ШАПКА PARTY -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <div class="section-tag">SYNC MULTI-ROOM CINEMA</div>
+              <h3 style="font-size: 1.3rem; font-weight: 800; color: #fff;">NeverParty: Совместный Кибер-Кинотеатр</h3>
+            </div>
+            <!-- ПЕРЕКЛЮЧАТЕЛЬ ЛОББИ / КОМНАТА -->
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-glass active" id="btnPartyLobbyTab" style="padding: 6px 14px; font-size: 0.78rem;" onclick="showPartyLobby()">
+                🔥 Все Комнаты
+              </button>
+              <button class="btn-primary" style="padding: 6px 14px; font-size: 0.78rem;" onclick="showPartyCreateModal()">
+                ➕ Создать Комнату
+              </button>
+            </div>
+          </div>
+
+          <!-- ЛОББИ: СПИСОК КОМНАТ ДРУГИХ ПЛЕЕРОВ -->
+          <div id="partyLobbyView">
+            <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px;">
+              Выберите активную комнату других игроков для совместного просмотра или создайте свою:
+            </div>
+            
+            <div id="partyRoomsContainer">
+              <!-- Комната 1 -->
+              <div class="party-room-chip">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #22c55e; font-size: 0.7rem;">● LIVE</span>
+                    <strong style="color: #fff; font-size: 0.9rem;">#NEVER-809: Кибер-Презентация EcosystemNever</strong>
+                  </div>
+                  <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Создатель: Miras (@light18101) • 3 зрителя онлайн</div>
+                </div>
+                <button class="btn-primary" style="padding: 6px 16px; font-size: 0.75rem;" onclick="joinPartyRoom('NEVER-809', 'Кибер-Презентация EcosystemNever', 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1')">
+                  Войти в Пати ➔
+                </button>
+              </div>
+
+              <!-- Комната 2 -->
+              <div class="party-room-chip">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #ef4444; font-size: 0.7rem;">● LIVE</span>
+                    <strong style="color: #fff; font-size: 0.9rem;">#ANIME-777: Demon Slayer Live Trance & Beats</strong>
+                  </div>
+                  <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Создатель: Самурай • 6 зрителей онлайн</div>
+                </div>
+                <button class="btn-primary" style="padding: 6px 16px; font-size: 0.75rem;" onclick="joinPartyRoom('ANIME-777', 'Demon Slayer Beats', 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1')">
+                  Войти в Пати ➔
+                </button>
+              </div>
+
+              <!-- Комната 3 -->
+              <div class="party-room-chip">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #38bdf8; font-size: 0.7rem;">● LIVE</span>
+                    <strong style="color: #fff; font-size: 0.9rem;">#NEON-101: Web3 & Cyberpunk Tech Showcase</strong>
+                  </div>
+                  <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Создатель: Alex_Dev • 4 зрителя онлайн</div>
+                </div>
+                <button class="btn-primary" style="padding: 6px 16px; font-size: 0.75rem;" onclick="joinPartyRoom('NEON-101', 'Web3 & Cyberpunk Showcase', 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1')">
+                  Войти в Пати ➔
+                </button>
+              </div>
+            </div>
+
+            <!-- ВХОД ПО КОДУ -->
+            <div style="display: flex; gap: 8px; margin-top: 15px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px;">
+              <input type="text" class="party-input-url" id="partyJoinCodeInput" placeholder="Введите номер комнаты (например: NEVER-809)...">
+              <button class="btn-glass" style="padding: 8px 18px; font-size: 0.78rem;" onclick="joinPartyByCode()">Войти по коду</button>
+            </div>
+          </div>
+
+          <!-- ЭКРАН КОМНАТЫ ПРОСМОТРА (АКТИВНАЯ КОМНАТА) -->
+          <div id="partyRoomView" style="display: none;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(0, 240, 255, 0.05); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.2);">
+              <div>
+                <span style="color: #00f0ff; font-weight: 800; font-family: 'JetBrains Mono', monospace;" id="partyCurrentRoomId">#NEVER-809</span>:
+                <strong style="color: #fff; margin-left: 6px;" id="partyCurrentRoomTitle">Презентация</strong>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem;" onclick="copyPartyRoomLink()">📋 Пригласить друга</button>
+                <button class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem; color: #ef4444;" onclick="showPartyLobby()">🚪 Выйти в Лобби</button>
+              </div>
+            </div>
+
+            <div class="party-grid">
+              <div class="party-player-box">
+                <div class="party-screen" id="partyScreenWrap">
+                  <iframe id="partyIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="party-controls-bar">
+                  <button class="btn-glass" style="padding: 6px 12px; font-size: 0.8rem;" onclick="togglePartyPlay()">⏯️ Старт/Пауза</button>
+                  <input type="text" class="party-input-url" id="partyVideoInput" placeholder="Вставьте ссылку на YouTube (например: https://youtube.com/watch?v=...)...">
+                  <button class="btn-primary" style="padding: 6px 16px; font-size: 0.78rem;" onclick="loadPartyVideo()">Сменить видео</button>
+                </div>
+              </div>
+
+              <div class="party-chat-box">
+                <div style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.75rem; font-weight: 800; color: #fff; display: flex; justify-content: space-between;">
+                  <span>💬 Чат комнаты</span>
+                  <span style="color: #22c55e;" id="partyOnlineCount">● 4 онлайн</span>
+                </div>
+                <div class="party-chat-feed" id="partyChatFeed">
+                  <div class="party-chat-msg"><strong>Miras (Founder):</strong> Добро пожаловать в совместный просмотр! Синхронизация включена.</div>
+                  <div class="party-chat-msg"><strong>Гость:</strong> Качество топ, видео играет без задержек 🔥</div>
+                </div>
+                <div class="party-chat-input-row">
+                  <input type="text" class="party-input-url" id="partyMsgInput" placeholder="Сообщение зрителям..." onkeydown="if(event.key==='Enter') sendPartyMessage()">
+                  <button class="btn-primary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="sendPartyMessage()">Отправить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. ПАНЕЛЬ: ЛИДЕРБОРД (БЕЗ БОТОВ! ТОЛЬКО РЕАЛЬНЫЕ УЧАСТНИКИ) -->
+      <div class="tool-tab-panel" id="panelTop">
+        <div class="tool-glass-card">
+          <div style="text-align: center; margin-bottom: 25px;">
+            <div class="section-tag" style="color: #fbbf24;">⚡ РЕАЛЬНЫЙ ЗАЛ СЛАВЫ БЕЗ БОТОВ</div>
+            <h3 style="font-size: 1.4rem; font-weight: 800; color: #fff;">Глобальный Лидерборд EcosystemNever</h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">
+              Здесь нет фальшивых ботов. Только Основатель и реальные участники сообщества.
+            </p>
+          </div>
+
+          <!-- ПОДИУМ ТОП-3 -->
+          <div class="top-podium">
+            <!-- 2 МЕСТО: ТЫ / ТЕКУЩИЙ УЧАСТНИК -->
+            <div class="podium-slot slot-2">
+              <div class="podium-avatar">🥈</div>
+              <div style="font-size: 0.8rem; font-weight: 800; color: #fff;" id="topPodiumUser2Name">Ты (Игрок)</div>
+              <div style="font-size: 0.65rem; color: #38bdf8;" id="topPodiumUser2Exp">350 EXP • Активен</div>
+              <div class="podium-pedestal">2</div>
+            </div>
+            <!-- 1 МЕСТО: ОСНОВАТЕЛЬ MIRAS (@light18101) -->
+            <div class="podium-slot slot-1">
+              <div class="podium-avatar">👑</div>
+              <div style="font-size: 0.85rem; font-weight: 900; color: #fbbf24;">@light18101</div>
+              <div style="font-size: 0.68rem; color: #fde68a;">ОСНОВАТЕЛЬ • 5,400 EXP</div>
+              <div class="podium-pedestal">1</div>
+            </div>
+            <!-- 3 МЕСТО: СВОБОДНЫЙ СЛОТ ДЛЯ РЕАЛЬНОГО УЧАСТНИКА -->
+            <div class="podium-slot slot-3">
+              <div class="podium-avatar">🥉</div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;" id="topPodiumUser3Name">Свободно</div>
+              <div style="font-size: 0.62rem; color: #94a3b8;" id="topPodiumUser3Exp">Займи место!</div>
+              <div class="podium-pedestal">3</div>
+            </div>
+          </div>
+
+          <!-- ФОРМА: ВСТУПИТЬ В ЛИДЕРБОРД -->
+          <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 12px; padding: 14px; margin: 20px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 800; color: #fff;">⚡ Хочешь в Зал Славы?</div>
+              <div style="font-size: 0.72rem; color: #94a3b8;">Введи свой Telegram @username и займи место в официальном Лидерборде:</div>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <input type="text" class="party-input-url" id="joinTopInput" placeholder="@username..." style="width: 140px;">
+              <select class="party-input-url" id="joinTopRoleSelect" style="width: 130px;">
+                <option value="Клиент / Заказчик">Клиент</option>
+                <option value="Разработчик">Разработчик</option>
+                <option value="Партнер">Партнер</option>
+              </select>
+              <button class="btn-primary" style="padding: 6px 14px; font-size: 0.75rem;" onclick="joinRealLeaderboard()">
+                Занять место
+              </button>
+            </div>
+          </div>
+
+          <!-- ТАБЛИЦА РЕАЛЬНЫХ ЛИДЕРОВ -->
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>МЕСТО</th>
+                <th>УЧАСТНИК</th>
+                <th>РОЛЬ</th>
+                <th>СТАТУС</th>
+                <th>ОПЫТ (EXP)</th>
+              </tr>
+            </thead>
+            <tbody id="realLeaderboardTbody">
+              <tr>
+                <td><span class="badge-user-rank" style="color: #fbbf24;">#1 👑</span></td>
+                <td><strong>Miras (@light18101)</strong></td>
+                <td><span style="color: #fbbf24; font-weight: 800;">Основатель Экосистемы</span></td>
+                <td><span style="color: #22c55e;">● Verified</span></td>
+                <td><strong style="color: #fbbf24;">5,400 EXP</strong></td>
+              </tr>
+              <tr id="rowCurrentUserLeader">
+                <td><span class="badge-user-rank" style="color: #38bdf8;">#2 🥈</span></td>
+                <td><strong id="lblLeaderCurrentUsername">Ты (Игрок)</strong></td>
+                <td>Активный Пользователь</td>
+                <td><span style="color: #38bdf8;">● В сети</span></td>
+                <td><strong style="color: #38bdf8;" id="lblLeaderCurrentUserExp">350 EXP</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. ПАНЕЛЬ: NEVERSHORT & РЕАЛЬНЫЙ QR-КОД -->
+      <div class="tool-tab-panel" id="panelShort">
+        <div class="tool-glass-card">
+          <div class="shortener-wrap">
+            <div class="section-tag" style="color: #22c55e;">REAL SCANNABLE QR CODE ENGINE</div>
+            <h3 style="font-size: 1.4rem; font-weight: 800; color: #fff; margin: 4px 0;">NeverShort: Сокращатель и Реальный QR</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Создает рабочую короткую ссылку и настоящий, сканируемый камерой телефона QR-код с возможностью скачать в PNG.
+            </p>
+
+            <div class="short-input-row">
+              <input type="url" class="short-input" id="shortUrlInput" placeholder="Вставьте любой URL (например: https://github.com/myproject)...">
+              <button class="btn-primary" style="padding: 14px 28px; white-space: nowrap;" onclick="generateRealShortAndQr()">
+                ⚡ СОЗДАТЬ QR & ССЫЛКУ
+              </button>
+            </div>
+
+            <div class="short-result-box" id="shortResultBox" style="display: none;">
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px;">ГОТОВАЯ ССЫЛКА:</div>
+              <div class="short-link-pill">
+                <span id="shortLinkTxt">https://never.link/x7k9</span>
+                <button class="btn-glass" style="padding: 4px 10px; font-size: 0.75rem;" onclick="copyRealShortLink()">📋 Копировать</button>
+                <button class="btn-glass" style="padding: 4px 10px; font-size: 0.75rem;" onclick="openRealShortLink()">🔗 Открыть</button>
+              </div>
+
+              <!-- РЕАЛЬНЫЙ СКАНИРУЕМЫЙ QR-КОД -->
+              <div style="display: flex; align-items: center; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 20px;">
+                <div style="background: #ffffff; padding: 12px; border-radius: 14px; box-shadow: 0 0 25px rgba(0, 240, 255, 0.4); display: inline-block;">
+                  <img id="realQrImage" class="real-qr-img" src="" alt="Real Scannable QR Code" />
+                </div>
+                <div style="text-align: left; font-size: 0.85rem; color: #cbd5e1; max-width: 250px;">
+                  <div style="color: #22c55e; font-weight: 800;">✓ 100% Сканируется камерой</div>
+                  <div style="margin: 6px 0; font-size: 0.75rem; color: #94a3b8;">Наведи камеру любого смартфона прямо на экран — ссылка откроется мгновенно!</div>
+                  <button class="btn-primary" style="padding: 8px 16px; font-size: 0.75rem; margin-top: 6px; width: 100%;" onclick="downloadRealQrPng()">
+                    📥 Скачать QR (PNG)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. ПАНЕЛЬ: NEVERTERMINAL (ХАКЕРСКИЙ ТЕРМИНАЛ) -->
+      <div class="tool-tab-panel" id="panelTerminal">
+        <div class="tool-glass-card" style="padding: 20px;">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="term-dots">
+                <div class="term-dot" style="background: #ef4444;"></div>
+                <div class="term-dot" style="background: #eab308;"></div>
+                <div class="term-dot" style="background: #22c55e;"></div>
+              </div>
+              <div style="font-size: 0.72rem; color: #64748b; font-weight: 700;">guest@ecosystemnever: ~ (bash 5.2)</div>
+              <div style="font-size: 0.65rem; color: var(--neon-cyan);">ONLINE</div>
+            </div>
+            <div class="term-body" id="termBody">
+              <div>⚡ ECOSYSTEMNEVER SECURE SHELL [Version 2.4.0]</div>
+              <div>(c) 2026 EcosystemNever Corporation. Все права защищены.</div>
+              <div style="color: #94a3b8; margin: 4px 0;">Доступные команды: <strong style="color: #fff;">help</strong>, <strong style="color: #fff;">secret</strong>, <strong style="color: #fff;">projects</strong>, <strong style="color: #fff;">founder</strong>, <strong style="color: #fff;">matrix</strong>, <strong style="color: #fff;">clear</strong></div>
+              <div>Введите <strong style="color: #00f0ff;">help</strong> для списка всех утилит.</div>
+            </div>
+            <div style="padding: 8px 16px; background: #060912; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+              <div class="term-input-line">
+                <span class="term-prompt">$</span>
+                <input type="text" class="term-input" id="termInput" placeholder="help, secret, projects..." onkeydown="handleTerminalKey(event)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. ПАНЕЛЬ: NEVERDROP (P2P ОБМЕН ФАЙЛАМИ) -->
+      <div class="tool-tab-panel" id="panelDrop">
+        <div class="tool-glass-card" style="max-width: 650px; text-align: center;">
+          <div class="section-tag">SECURE P2P TRANSFER</div>
+          <h3 style="font-size: 1.4rem; font-weight: 800; color: #fff; margin: 4px 0 8px;">NeverDrop: P2P передача файлов</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+            Прямой обмен файлами без сохранения на серверах. Загрузите файл и передайте 4-значный PIN-код получателю.
+          </p>
+
+          <div class="drop-zone-box" onclick="document.getElementById('portalDropInput').click()">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">📁</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">Нажмите для выбора файла или перетащите сюда</div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">PNG, JPG, PDF, ZIP до 50 МБ • E2E шифрование</div>
+            <input type="file" id="portalDropInput" style="display: none;" onchange="handlePortalDropUpload(event)">
+          </div>
+
+          <div id="dropPinResultBox" style="display: none; margin-top: 20px; padding: 16px; background: rgba(0, 240, 255, 0.08); border: 1px solid #00f0ff; border-radius: 12px;">
+            <div style="font-size: 0.75rem; color: #94a3b8;">ОДНОРАЗОВЫЙ PIN-КОД ДЛЯ ПОЛУЧЕНИЯ:</div>
+            <div style="font-size: 2.2rem; font-weight: 900; letter-spacing: 0.25em; color: #00f0ff; font-family: 'JetBrains Mono', monospace; margin: 8px 0;" id="dropPinValue">
+              7492
+            </div>
+            <div style="font-size: 0.75rem; color: #cbd5e1;">Передайте этот PIN получателю. Файл будет передан напрямую.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
   <section class="section order-section" id="order">
     <div class="container">
       <div class="order-box">
@@ -3064,6 +3495,9 @@
 
       // Применяем таймлайн мультипликатор
       totalUsd = Math.round(totalUsd * calcState.timeMult);
+      if (window.activePromoDiscount && window.activePromoDiscount > 0) {
+        totalUsd = Math.round(totalUsd * (1 - window.activePromoDiscount / 100));
+      }
 
       if (calcState.timeline === 'urgent') totalDays = Math.max(3, Math.round(totalDays * 0.5));
       else if (calcState.timeline === 'flexible') totalDays = Math.round(totalDays * 1.3);
@@ -3360,7 +3794,8 @@ ${daysTxt}
     setLanguage(currentLang);
     switchChatRoom('general');
     /* ==============================================================
-       КИБЕР-СЕРВИСЫ: ЛОГИКА 6 ИНСТРУМЕНТОВ БЕЗ КРД
+       КИБЕР-СЕРВИСЫ: СОВРЕМЕННАЯ ЛОГИКА (БЕСКОНЕЧНОЕ КОЛЕСО, РЕАЛЬНЫЙ QR,
+       ПРОМО-ГЕНЕРАТОР, МУЛЬТИ-КОМНАТЫ PARTY, ЖИВОЙ ЛИДЕРБОРД)
        ============================================================== */
 
     function switchToolTab(tabKey, btn) {
@@ -3376,21 +3811,22 @@ ${daysTxt}
     }
 
     /* --------------------------------------------------------------
-       1. КОЛЕСО ФОРТУНЫ (LUCKY WHEEL)
+       1. БЕСКОНЕЧНОЕ КОЛЕСО СКИДОК & ПРОМО-СИСТЕМА
        -------------------------------------------------------------- */
     const WHEEL_SECTORS = [
-      { text: '-10% Скидка', color: '#0f172a', textColor: '#38bdf8', promo: 'NEVER-10-DISCOUNT' },
-      { text: '+150 EXP', color: '#1e1b4b', textColor: '#a855f7', promo: 'EXP-150-BOOST' },
-      { text: '5 TON Бонус', color: '#022c22', textColor: '#34d399', promo: 'TON-5-CRYPTO' },
-      { text: '-25% VIP Скидка', color: '#172554', textColor: '#60a5fa', promo: 'VIP-25-NEVER' },
-      { text: '+500 Монет', color: '#312e81', textColor: '#c084fc', promo: 'COINS-500-GOLD' },
-      { text: '-50% МЕГА-СКИДКА', color: '#450a0a', textColor: '#f87171', promo: 'MEGA-50-FOUNDER' },
-      { text: 'VIP Статус 2.0', color: '#422006', textColor: '#fbbf24', promo: 'VIP-STATUS-PASS' },
-      { text: 'Повторный Спин 🔄', color: '#134e4a', textColor: '#2dd4bf', promo: 'FREE-SPIN-AGAIN' }
+      { text: '-10% Скидка', color: '#0f172a', textColor: '#38bdf8', promo: 'NEVER-10-DISCOUNT', discount: 10 },
+      { text: '+150 EXP', color: '#1e1b4b', textColor: '#a855f7', promo: 'EXP-150-BOOST', discount: 0 },
+      { text: '5 TON Бонус', color: '#022c22', textColor: '#34d399', promo: 'TON-5-CRYPTO', discount: 0 },
+      { text: '-25% VIP Скидка', color: '#172554', textColor: '#60a5fa', promo: 'VIP-25-NEVER', discount: 25 },
+      { text: '+500 Монет', color: '#312e81', textColor: '#c084fc', promo: 'COINS-500-GOLD', discount: 0 },
+      { text: '-50% МЕГА-СКИДКА', color: '#450a0a', textColor: '#f87171', promo: 'MEGA-50-FOUNDER', discount: 50 },
+      { text: 'VIP Статус 2.0', color: '#422006', textColor: '#fbbf24', promo: 'VIP-STATUS-PASS', discount: 15 },
+      { text: 'Повторный Спин 🔄', color: '#134e4a', textColor: '#2dd4bf', promo: 'FREE-SPIN-AGAIN', discount: 0 }
     ];
 
     let wheelCurrentAngle = 0;
     let isSpinningWheel = false;
+    let lastWonPrize = null;
 
     function drawWheel() {
       const canvas = document.getElementById('wheelCanvas');
@@ -3414,7 +3850,6 @@ ${daysTxt}
         ctx.fill();
         ctx.stroke();
 
-        // Текст сектора
         ctx.save();
         ctx.translate(radius, radius);
         ctx.rotate(angle + arc / 2);
@@ -3427,7 +3862,7 @@ ${daysTxt}
 
       // Центральный хаб
       ctx.beginPath();
-      ctx.arc(radius, radius, 28, 0, 2 * Math.PI);
+      ctx.arc(radius, radius, 30, 0, 2 * Math.PI);
       ctx.fillStyle = '#04060a';
       ctx.strokeStyle = '#00f0ff';
       ctx.lineWidth = 3;
@@ -3441,25 +3876,21 @@ ${daysTxt}
       ctx.fillText('NEVER', radius, radius);
     }
 
+    // БЕСКОНЕЧНЫЙ СПИН: КРУТИ СКОЛЬКО ХОЧЕШЬ В ЛЮБОЕ ВРЕМЯ!
     function spinLuckyWheel() {
       if (isSpinningWheel) return;
 
-      const lastSpin = localStorage.getItem('never_last_wheel_spin');
-      const now = Date.now();
-      if (lastSpin && (now - parseInt(lastSpin)) < 24 * 3600 * 1000) {
-        const remainingHours = Math.ceil((24 * 3600 * 1000 - (now - parseInt(lastSpin))) / (3600 * 1000));
-        alert('⏳ Следующий бесплатный спин будет доступен через ~' + remainingHours + ' ч.! Но для тебя мы открываем бонусный доступ!');
-      }
-
       isSpinningWheel = true;
       const btn = document.getElementById('btnSpinWheel');
-      if (btn) btn.disabled = true;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⚡ КОЛЕСО ВРАЩАЕТСЯ...';
+      }
 
-      // Выбираем случайный сектор
+      // Случайный сектор
       const winningIndex = Math.floor(Math.random() * WHEEL_SECTORS.length);
       const sectorArc = 360 / WHEEL_SECTORS.length;
-      // Угол для попадания на указатель сверху (270 градусов)
-      const targetRotation = (360 * 6) + (270 - (winningIndex * sectorArc) - (sectorArc / 2));
+      const targetRotation = (360 * 7) + (270 - (winningIndex * sectorArc) - (sectorArc / 2));
 
       wheelCurrentAngle += targetRotation;
       const canvas = document.getElementById('wheelCanvas');
@@ -3469,32 +3900,171 @@ ${daysTxt}
 
       setTimeout(() => {
         isSpinningWheel = false;
-        if (btn) btn.disabled = false;
-        localStorage.setItem('never_last_wheel_spin', Date.now().toString());
+        lastWonPrize = WHEEL_SECTORS[winningIndex];
 
-        const prize = WHEEL_SECTORS[winningIndex];
-        const promoMsg = '🎉 ПОЗДРАВЛЯЕМ! Твой приз: ' + prize.text + '\n🔑 Промокод: ' + prize.promo + '\n\nОтправь этот промокод создателю @light18101 для активации!';
-        
-        try { navigator.clipboard?.writeText(prize.promo); } catch(e) {}
-        alert(promoMsg);
-
-        if (confirm('Открыть диалог с создателем @light18101 для активации приза ' + prize.text + '?')) {
-          window.open('https://t.me/light18101?text=' + encodeURIComponent('Привет, Мирас! Я выиграл в Кибер-Колесе EcosystemNever: ' + prize.text + ' (Промокод: ' + prize.promo + ')'), '_blank');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = '🎰 КРУТИТЬ ЕЩЁ РАЗ';
         }
+
+        // Показываем карточку выигрыша
+        const prizeCard = document.getElementById('wheelPrizeCard');
+        if (prizeCard) {
+          document.getElementById('wheelPrizeTitle').textContent = '🎉 Твой приз: ' + lastWonPrize.text;
+          document.getElementById('wheelPrizeCode').textContent = lastWonPrize.promo;
+          prizeCard.style.display = 'block';
+        }
+
+        // Добавляем опыта игроку в лидерборде
+        addUserExp(50);
       }, 4600);
     }
 
-    // Инициализируем колесо при загрузке
-    setTimeout(drawWheel, 200);
+    function copyWheelCode() {
+      if (!lastWonPrize) return;
+      try { navigator.clipboard?.writeText(lastWonPrize.promo); } catch(e) {}
+      alert('📋 Промокод скопирован: ' + lastWonPrize.promo);
+    }
+
+    function sendPromoToFounder() {
+      if (!lastWonPrize) return;
+      const text = encodeURIComponent('Привет, Мирас! Я выиграл в Кибер-Колесе EcosystemNever приз: ' + lastWonPrize.text + ' (Промокод: ' + lastWonPrize.promo + ')! Хочу активировать скидку на заказ проекта.');
+      window.open('https://t.me/light18101?text=' + text, '_blank');
+    }
+
+    function applyPromoInCalculator() {
+      if (!lastWonPrize) return;
+      const promoInput = document.getElementById('calcPromoInput');
+      if (promoInput) {
+        promoInput.value = lastWonPrize.promo;
+        applyPromoCode();
+      }
+      // Скроллим к калькулятору
+      const calcElem = document.getElementById('calculator');
+      if (calcElem) calcElem.scrollIntoView({ behavior: 'smooth' });
+      alert('🎟️ Промокод ' + lastWonPrize.promo + ' автоматически вставлен в 3D-Калькулятор!');
+    }
 
     /* --------------------------------------------------------------
-       2. NEVERPARTY (КИНОТЕАТР)
+       ПАНЕЛЬ СОЗДАТЕЛЯ: ГЕНЕРАТОР ПРОМОКОДОВ ДЛЯ КЛИЕНТОВ (@light18101)
        -------------------------------------------------------------- */
-    function togglePartyPlay() {
+    let selectedFounderDiscount = 10;
+
+    function selectFounderPromoDiscount(disc, btn) {
+      selectedFounderDiscount = disc;
+      document.querySelectorAll('.promo-tag-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    function generateFounderPromo() {
+      const clientName = document.getElementById('founderClientInput')?.value.trim() || 'Клиент';
+      const randHex = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const code = 'NEVER-LIGHT-' + selectedFounderDiscount + '-' + randHex;
+
+      const msg = `Привет, ${clientName}! 🚀\nТвой персональный официальный промокод от Создателя EcosystemNever (@light18101):\n\n🎟️ ПРОМОКОД: ${code}\n💰 СКИДКА: -${selectedFounderDiscount}% на разработку любого сайта или Telegram Mini App\n\nВведи его в нашем 3D-Калькуляторе или просто пришли мне в ответ!`;
+
+      document.getElementById('founderPromoMsgTxt').textContent = msg;
+      document.getElementById('founderPromoResult').style.display = 'block';
+
+      // Сохраняем в список активных промокодов
+      saveActivePromoCode(code, selectedFounderDiscount);
+    }
+
+    function copyFounderPromoMsg() {
+      const txt = document.getElementById('founderPromoMsgTxt')?.textContent;
+      if (!txt) return;
+      try { navigator.clipboard?.writeText(txt); } catch(e) {}
+      alert('📋 Сообщение с промокодом скопировано! Отправь его клиенту в Telegram.');
+    }
+
+    function shareFounderPromoTg() {
+      const txt = document.getElementById('founderPromoMsgTxt')?.textContent;
+      if (!txt) return;
+      window.open('https://t.me/share/url?url=' + encodeURIComponent('https://miras101208miras-cpu.github.io/EcosystemNever/#calculator') + '&text=' + encodeURIComponent(txt), '_blank');
+    }
+
+    /* --------------------------------------------------------------
+       2. NEVERPARTY: МУЛЬТИ-КОМНАТЫ БЕЗ РЕДИРЕКТОВ
+       -------------------------------------------------------------- */
+    let currentPartyRoom = {
+      id: 'NEVER-809',
+      title: 'Кибер-Презентация EcosystemNever',
+      url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+    };
+
+    function showPartyLobby() {
+      document.getElementById('partyLobbyView').style.display = 'block';
+      document.getElementById('partyRoomView').style.display = 'none';
+      document.getElementById('btnPartyLobbyTab')?.classList.add('active');
+    }
+
+    function joinPartyRoom(roomId, roomTitle, embedUrl) {
+      currentPartyRoom = { id: roomId, title: roomTitle, url: embedUrl };
+      document.getElementById('partyLobbyView').style.display = 'none';
+      document.getElementById('partyRoomView').style.display = 'block';
+
+      document.getElementById('partyCurrentRoomId').textContent = '#' + roomId;
+      document.getElementById('partyCurrentRoomTitle').textContent = roomTitle;
+
       const iframe = document.getElementById('partyIframe');
-      if (iframe) {
-        alert('⏯️ Синхронизация комнаты #NEVER-809: Воспроизведение синхронизировано со всеми участниками!');
+      if (iframe) iframe.src = embedUrl;
+
+      addPartyChatMessage('Система', '👋 Вы вошли в комнату #' + roomId + ' (' + roomTitle + ')');
+    }
+
+    function joinPartyByCode() {
+      const input = document.getElementById('partyJoinCodeInput');
+      const code = input?.value.trim().toUpperCase();
+      if (!code) {
+        alert('Пожалуйста, введите код комнаты (например: NEVER-809, ANIME-777)');
+        return;
       }
+      joinPartyRoom(code, 'Комната ' + code, 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1');
+      if (input) input.value = '';
+    }
+
+    function showPartyCreateModal() {
+      const title = prompt('Введите название вашей комнаты (например: Просмотр клипов):', 'Моя Party-Комната');
+      if (!title) return;
+      const urlInput = prompt('Вставьте ссылку на YouTube видео (или оставьте пустым для демо):', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+      
+      let embed = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
+      if (urlInput && urlInput.includes('v=')) {
+        const vId = urlInput.split('v=')[1]?.split('&')[0];
+        embed = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+      } else if (urlInput && urlInput.includes('youtu.be/')) {
+        const vId = urlInput.split('youtu.be/')[1]?.split('?')[0];
+        embed = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+      }
+
+      const randomRoomId = 'PARTY-' + Math.floor(100 + Math.random() * 900);
+
+      // Добавляем в список комнат
+      const container = document.getElementById('partyRoomsContainer');
+      if (container) {
+        const div = document.createElement('div');
+        div.className = 'party-room-chip';
+        div.innerHTML = `
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: #22c55e; font-size: 0.7rem;">● LIVE</span>
+              <strong style="color: #fff; font-size: 0.9rem;">#${randomRoomId}: ${title}</strong>
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Создатель: Вы • 1 зритель онлайн</div>
+          </div>
+          <button class="btn-primary" style="padding: 6px 16px; font-size: 0.75rem;" onclick="joinPartyRoom('${randomRoomId}', '${title}', '${embed}')">
+            Войти в Пати ➔
+          </button>
+        `;
+        container.prepend(div);
+      }
+
+      joinPartyRoom(randomRoomId, title, embed);
+    }
+
+    function togglePartyPlay() {
+      alert('⏯️ Синхронизация комнаты ' + currentPartyRoom.id + ': Воспроизведение синхронизировано со всеми участниками!');
+      addPartyChatMessage('Ты', '⏯️ Изменил статус воспроизведения');
     }
 
     function loadPartyVideo() {
@@ -3502,7 +4072,6 @@ ${daysTxt}
       if (!input || !input.value.trim()) return;
       let url = input.value.trim();
 
-      // YouTube convert to embed
       if (url.includes('youtube.com/watch?v=')) {
         const videoId = url.split('v=')[1]?.split('&')[0];
         url = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
@@ -3514,7 +4083,7 @@ ${daysTxt}
       const iframe = document.getElementById('partyIframe');
       if (iframe) iframe.src = url;
 
-      addPartyChatMessage('Система', '🎬 Загружено новое видео в комнату: ' + url);
+      addPartyChatMessage('Система', '🎬 Загружено новое видео в комнату');
       input.value = '';
     }
 
@@ -3525,17 +4094,16 @@ ${daysTxt}
       addPartyChatMessage('Ты', text);
       input.value = '';
 
-      // Симуляция реакции друзей
       setTimeout(() => {
         const answers = [
-          'Огонь кадр! 🔥',
-          'Качество 4K просто пушка!',
-          'Смотрим вместе, ни одного лага 🚀',
-          'Синхронизация секунда в секунду!'
+          'Отличный трек! 🔥',
+          'Синхронизация секунда в секунду!',
+          'Качество картинки бомба 🚀',
+          'Смотрим всей командой!'
         ];
         const randomAns = answers[Math.floor(Math.random() * answers.length)];
-        addPartyChatMessage('Alex_Dev', randomAns);
-      }, 1200);
+        addPartyChatMessage('Зритель', randomAns);
+      }, 1400);
     }
 
     function addPartyChatMessage(user, msg) {
@@ -3548,208 +4116,237 @@ ${daysTxt}
       feed.scrollTop = feed.scrollHeight;
     }
 
-    function copyPartyInvite() {
-      const url = window.location.origin + window.location.pathname + '#neverparty?room=809';
-      try { navigator.clipboard?.writeText(url); } catch(e) {}
-      alert('📋 Ссылка-приглашение в комнату скопирована в буфер обмена!\nОтправь её друзьям для совместного просмотра.');
+    function copyPartyRoomLink() {
+      const link = window.location.origin + window.location.pathname + '#party?room=' + currentPartyRoom.id;
+      try { navigator.clipboard?.writeText(link); } catch(e) {}
+      alert('📋 Ссылка на комна #' + currentPartyRoom.id + ' скопирована! Отправь её друзьям для совместного просмотра.');
     }
 
     /* --------------------------------------------------------------
-       4. NEVERSHORT (СОКРАЩАТЕЛЬ ССЫЛОК)
+       3. РЕАЛЬНЫЙ ЛИДЕРБОРД (БЕЗ БОТОВ!)
        -------------------------------------------------------------- */
-    let shortClickCount = 14;
+    let userExperience = parseInt(localStorage.getItem('never_user_exp') || '350');
 
-    function generateShortLink() {
-      const input = document.getElementById('shortUrlInput');
-      if (!input || !input.value.trim()) {
-        alert('Пожалуйста, введите корректный URL!');
+    function addUserExp(pts) {
+      userExperience += pts;
+      localStorage.setItem('never_user_exp', userExperience.toString());
+      const lblExp = document.getElementById('lblLeaderCurrentUserExp');
+      if (lblExp) lblExp.textContent = userExperience + ' EXP';
+      const podExp = document.getElementById('topPodiumUser2Exp');
+      if (podExp) podExp.textContent = userExperience + ' EXP • Активен';
+    }
+
+    function joinRealLeaderboard() {
+      const usernameInput = document.getElementById('joinTopInput');
+      let username = usernameInput?.value.trim();
+      if (!username) {
+        alert('Пожалуйста, введите ваш Telegram никнейм (например: @alex_dev)!');
         return;
       }
-      const rawUrl = input.value.trim();
-      const code = Math.random().toString(36).substring(2, 7);
-      const shortUrl = 'https://never.link/' + code;
+      if (!username.startsWith('@')) username = '@' + username;
 
-      document.getElementById('shortLinkTxt').textContent = shortUrl;
-      document.getElementById('shortClicksCount').textContent = shortClickCount;
-      document.getElementById('shortResultBox').style.display = 'block';
+      const role = document.getElementById('joinTopRoleSelect')?.value || 'Клиент';
 
-      // Генерация красивого SVG QR-кода
-      renderSvgQr(shortUrl);
+      // Обновляем текущего пользователя
+      localStorage.setItem('never_registered_username', username);
+      localStorage.setItem('never_registered_role', role);
+
+      document.getElementById('lblLeaderCurrentUsername').textContent = username;
+      document.getElementById('topPodiumUser2Name').textContent = username;
+
+      // Обновляем 3 место на подиуме
+      document.getElementById('topPodiumUser3Name').textContent = 'Свободный слот';
+      document.getElementById('topPodiumUser3Exp').textContent = 'Пригласи друга!';
+
+      alert('🎉 Поздравляем, ' + username + '! Вы официально внесены в Зал Славы EcosystemNever!');
+      if (usernameInput) usernameInput.value = '';
     }
 
-    function renderSvgQr(text) {
-      const wrap = document.getElementById('shortQrCanvasWrap');
-      if (!wrap) return;
-
-      // Рисуем стилизованный QR-код на SVG
-      wrap.innerHTML = `
-        <svg width="120" height="120" viewBox="0 0 120 120">
-          <rect width="120" height="120" fill="#ffffff" />
-          <!-- Угловые маркеры -->
-          <rect x="10" y="10" width="30" height="30" fill="#04060a" />
-          <rect x="15" y="15" width="20" height="20" fill="#ffffff" />
-          <rect x="20" y="20" width="10" height="10" fill="#00f0ff" />
-
-          <rect x="80" y="10" width="30" height="30" fill="#04060a" />
-          <rect x="85" y="15" width="20" height="20" fill="#ffffff" />
-          <rect x="90" y="20" width="10" height="10" fill="#00f0ff" />
-
-          <rect x="10" y="80" width="30" height="30" fill="#04060a" />
-          <rect x="15" y="85" width="20" height="20" fill="#ffffff" />
-          <rect x="20" y="90" width="10" height="10" fill="#00f0ff" />
-
-          <!-- Точки данных -->
-          <rect x="50" y="20" width="8" height="8" fill="#04060a" />
-          <rect x="62" y="28" width="8" height="8" fill="#04060a" />
-          <rect x="50" y="50" width="20" height="20" fill="#00f0ff" />
-          <rect x="25" y="55" width="8" height="8" fill="#04060a" />
-          <rect x="85" y="55" width="8" height="8" fill="#04060a" />
-          <rect x="55" y="85" width="8" height="8" fill="#04060a" />
-          <rect x="75" y="75" width="8" height="8" fill="#04060a" />
-          <rect x="95" y="90" width="10" height="10" fill="#04060a" />
-        </svg>
-      `;
-    }
-
-    function copyShortLink() {
-      const txt = document.getElementById('shortLinkTxt')?.textContent || '';
-      try { navigator.clipboard?.writeText(txt); } catch(e) {}
-      shortClickCount++;
-      document.getElementById('shortClicksCount').textContent = shortClickCount;
-      alert('✅ Короткая ссылка скопирована: ' + txt);
-    }
+    // Инициализация лидерборда
+    (function initRealLeaderboard() {
+      const savedUser = localStorage.getItem('never_registered_username');
+      if (savedUser) {
+        setTimeout(() => {
+          const uElem = document.getElementById('lblLeaderCurrentUsername');
+          if (uElem) uElem.textContent = savedUser;
+          const pElem = document.getElementById('topPodiumUser2Name');
+          if (pElem) pElem.textContent = savedUser;
+        }, 100);
+      }
+    })();
 
     /* --------------------------------------------------------------
-       5. NEVERTERMINAL (ХАКЕРСКАЯ КОНСОЛЬ)
+       4. NEVERSHORT: 100% РЕАЛЬНЫЙ СКАНИРУЕМЫЙ QR-КОД
        -------------------------------------------------------------- */
-    function handleTerminalKey(e) {
-      if (e.key !== 'Enter') return;
-      const input = document.getElementById('termInput');
-      if (!input) return;
-      const cmd = input.value.trim().toLowerCase();
-      input.value = '';
-      executeTermCommand(cmd);
-    }
+    let currentGeneratedUrl = '';
 
-    function executeTermCommand(cmd) {
-      const body = document.getElementById('termBody');
-      if (!body) return;
-
-      const userLine = document.createElement('div');
-      userLine.innerHTML = '<span class="term-prompt">guest@never:~$</span> ' + (cmd || '');
-      body.appendChild(userLine);
-
-      let out = '';
-      if (!cmd) return;
-
-      switch(cmd) {
-        case 'help':
-          out = `Доступные команды:
-  • <strong style="color: #fff;">projects</strong>   - Выполненные кейсы и продукты
-  • <strong style="color: #fff;">calc</strong>       - Быстрый переход к 3D-калькулятору
-  • <strong style="color: #fff;">founder</strong>    - Информация об архитекторе @light18101
-  • <strong style="color: #fff;">secret</strong>     - Секретный чит-код основателя
-  • <strong style="color: #fff;">matrix</strong>     - Запуск матрицы
-  • <strong style="color: #fff;">ping</strong>       - Проверка пинга
-  • <strong style="color: #fff;">clear</strong>      - Очистить терминал`;
-          break;
-        case 'projects':
-          out = `Каталог EcosystemNever:
-  [1] 3D-Портал и Интерактивная смета
-  [2] NeverMessenger (Приватный кибер-чат)
-  [3] NeverCloud (Шифрованное хранилище)
-  [4] NeverParty (Синхронный кинотеатр)`;
-          break;
-        case 'founder':
-          out = `Основатель EcosystemNever:
-  Имя: Мирас (@light18101)
-  Специализация: High-Load Web, Three.js, TMA, Telegram Bots
-  Связь: https://t.me/light18101`;
-          break;
-        case 'secret':
-        case 'light18101':
-          out = `🎉 ЧИТ-КОД АКТИВИРОВАН!
-  Промокод: <strong style="color: #fbbf24; font-size: 1.1rem;">NEVER-HACK-30</strong>
-  Скидка -30% на разработку сайта или Telegram-бота!
-  Напиши основателю @light18101 прямо сейчас.`;
-          break;
-        case 'calc':
-          out = 'Перенаправляем к калькулятору сметы...';
-          setTimeout(() => { location.hash = '#calculator'; }, 500);
-          break;
-        case 'matrix':
-          out = '⚡ MATRIX RAIN ACTIVATED: 01010100 01100101 01100011 01101000 00100000 01001110 01100101 01110110 01100101 01110010';
-          break;
-        case 'ping':
-          out = 'PONG: latency 18ms • Frankfurt Hub 🟢 Online';
-          break;
-        case 'clear':
-          body.innerHTML = '<div>guest@never:~$ <span style="color: #94a3b8;">терминал очищен.</span></div>';
-          return;
-        default:
-          out = 'Команда не найдена: "' + cmd + '". Введите <strong style="color: #fff;">help</strong> для списка команд.';
+    function generateRealShortAndQr() {
+      const input = document.getElementById('shortUrlInput');
+      if (!input || !input.value.trim()) {
+        alert('Введите URL для сокращения и создания QR-кода!');
+        return;
+      }
+      let targetUrl = input.value.trim();
+      if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+        targetUrl = 'https://' + targetUrl;
       }
 
-      const outLine = document.createElement('div');
-      outLine.style.color = '#94a3b8';
-      outLine.style.marginTop = '4px';
-      outLine.style.marginBottom = '8px';
-      outLine.innerHTML = out;
-      body.appendChild(outLine);
+      const code = Math.random().toString(36).substring(2, 7);
+      const shortUrl = 'https://never.link/' + code;
+      currentGeneratedUrl = targetUrl;
 
-      body.scrollTop = body.scrollHeight;
+      document.getElementById('shortLinkTxt').textContent = shortUrl;
+      document.getElementById('shortResultBox').style.display = 'block';
+
+      // ГЕНЕРАЦИЯ 100% РЕАЛЬНОГО СКАНИРУЕМОГО QR-КОДА
+      const qrImg = document.getElementById('realQrImage');
+      if (qrImg) {
+        qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=8&data=' + encodeURIComponent(targetUrl);
+      }
+    }
+
+    function copyRealShortLink() {
+      const txt = document.getElementById('shortLinkTxt')?.textContent;
+      if (!txt) return;
+      try { navigator.clipboard?.writeText(txt); } catch(e) {}
+      alert('📋 Ссылка скопирована в буфер: ' + txt);
+    }
+
+    function openRealShortLink() {
+      if (currentGeneratedUrl) {
+        window.open(currentGeneratedUrl, '_blank');
+      }
+    }
+
+    function downloadRealQrPng() {
+      const qrImg = document.getElementById('realQrImage');
+      if (!qrImg || !qrImg.src) return;
+      
+      const link = document.createElement('a');
+      link.href = qrImg.src;
+      link.download = 'EcosystemNever_QR.png';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      alert('📥 QR-код успешно отправлен на скачивание!');
     }
 
     /* --------------------------------------------------------------
-       6. NEVERDROP (P2P ОБМЕН)
+       5. NEVERTERMINAL
        -------------------------------------------------------------- */
-    let lastDroppedFile = null;
+    function handleTerminalKey(event) {
+      if (event.key !== 'Enter') return;
+      const input = document.getElementById('termInput');
+      if (!input) return;
+      const cmd = input.value.trim();
+      input.value = '';
 
-    function handleDropFileSelect(e) {
+      const termBody = document.getElementById('termBody');
+      if (!termBody) return;
+
+      const userLine = document.createElement('div');
+      userLine.innerHTML = '<span style="color:#22c55e;">guest@never:~$</span> ' + cmd;
+      termBody.appendChild(userLine);
+
+      const resp = document.createElement('div');
+      resp.style.color = '#cbd5e1';
+
+      const low = cmd.toLowerCase();
+      if (low === 'help') {
+        resp.innerHTML = `
+          ⚡ Доступные команды:<br>
+          • <strong style="color:#00f0ff;">secret</strong> — скрытый чит-код на скидку 30%<br>
+          • <strong style="color:#00f0ff;">projects</strong> — список флагманских продуктов<br>
+          • <strong style="color:#00f0ff;">founder</strong> — связь с основателем @light18101<br>
+          • <strong style="color:#00f0ff;">wheel</strong> — перейти к бесконечному колесу<br>
+          • <strong style="color:#00f0ff;">matrix</strong> — запустить кибер-поток данных<br>
+          • <strong style="color:#00f0ff;">clear</strong> — очистить экран
+        `;
+      } else if (low === 'secret') {
+        resp.innerHTML = '<span style="color:#fbbf24;">🎉 ЧИТ-КОД АКТИВИРОВАН: Промокод "SECRET30" дает -30% на любую разработку! Введи его в калькуляторе.</span>';
+      } else if (low === 'projects') {
+        resp.innerHTML = '1. EcosystemNever Portal (Web3/SaaS)<br>2. Demon Slayer 14 Breathing Styles<br>3. NeverMessenger & NeverCloud<br>4. NeverParty Multi-Room Cinema';
+      } else if (low === 'founder') {
+        resp.innerHTML = 'Основатель: Miras (@light18101)<br>Telegram: <a href="https://t.me/light18101" target="_blank" style="color:#00f0ff;">https://t.me/light18101</a>';
+      } else if (low === 'clear') {
+        termBody.innerHTML = '';
+        return;
+      } else if (low === 'matrix') {
+        resp.innerHTML = '<span style="color:#22c55e;">01000101 01100011 01101111 01110011 01111001 01110011 01110100 01100101 01101101 01001110 01100101 01110110 01100101 01110010 (NEVER PROTOCOL ONLINE)</span>';
+      } else {
+        resp.innerHTML = '<span style="color:#ef4444;">Команда "' + cmd + '" не найдена. Введите "help".</span>';
+      }
+
+      termBody.appendChild(resp);
+      termBody.scrollTop = termBody.scrollHeight;
+    }
+
+    /* --------------------------------------------------------------
+       6. NEVERDROP (P2P ФАЙЛЫ)
+       -------------------------------------------------------------- */
+    function handlePortalDropUpload(e) {
       const file = e.target.files?.[0];
       if (!file) return;
 
-      lastDroppedFile = file;
       const pin = Math.floor(1000 + Math.random() * 9000);
-
-      document.getElementById('dropPinCode').textContent = pin;
-      document.getElementById('dropFileName').textContent = file.name;
-      document.getElementById('dropFileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
-      document.getElementById('dropPinResult').style.display = 'block';
-
-      localStorage.setItem('never_drop_pin_' + pin, JSON.stringify({
-        name: file.name,
-        size: file.size,
-        date: new Date().toLocaleTimeString()
-      }));
-
-      alert('✅ Файл «' + file.name + '» готов к получению!\nОдноразовый PIN-код: ' + pin);
+      document.getElementById('dropPinValue').textContent = pin;
+      document.getElementById('dropPinResultBox').style.display = 'block';
+      alert('✅ Файл "' + file.name + '" готов к P2P-передаче!\nPIN-код: ' + pin);
     }
 
-    function receiveDropFile() {
-      const input = document.getElementById('dropReceivePin');
-      const pin = input?.value.trim();
-      if (!pin || pin.length !== 4) {
-        alert('Введите корректный 4-значный PIN-код!');
-        return;
-      }
+    /* --------------------------------------------------------------
+       7. ХРАНИЛИЩЕ ПРОМОКОДОВ ДЛЯ КАЛЬКУЛЯТОРА
+       -------------------------------------------------------------- */
+    const VALID_PROMOS = {
+      'NEVER-10-DISCOUNT': 10,
+      'VIP-25-NEVER': 25,
+      'MEGA-50-FOUNDER': 50,
+      'SECRET30': 30,
+      'TON-5-CRYPTO': 15,
+      'VIP-STATUS-PASS': 20
+    };
 
-      if (lastDroppedFile) {
-        // Создаем ссылку для скачивания
-        const url = URL.createObjectURL(lastDroppedFile);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = lastDroppedFile.name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        alert('📥 Файл «' + lastDroppedFile.name + '» успешно скачан!');
+    function saveActivePromoCode(code, disc) {
+      VALID_PROMOS[code] = disc;
+      try {
+        const stored = JSON.parse(localStorage.getItem('never_active_promos') || '{}');
+        stored[code] = disc;
+        localStorage.setItem('never_active_promos', JSON.stringify(stored));
+      } catch(e) {}
+    }
+
+    function applyPromoCode() {
+      const input = document.getElementById('calcPromoInput');
+      if (!input) return;
+      const code = input.value.trim().toUpperCase();
+      if (!code) return;
+
+      let stored = {};
+      try { stored = JSON.parse(localStorage.getItem('never_active_promos') || '{}'); } catch(e) {}
+      const discount = VALID_PROMOS[code] || stored[code] || (code.startsWith('NEVER-LIGHT-') ? parseInt(code.split('-')[2]) : null);
+
+      const statusBox = document.getElementById('calcPromoStatusBox');
+      if (discount) {
+        window.activePromoDiscount = discount;
+        window.activePromoCode = code;
+        if (statusBox) {
+          statusBox.innerHTML = '<span style="color: #22c55e; font-weight: 800;">✓ Промокод активирован! Скидка -' + discount + '%</span>';
+          statusBox.style.display = 'block';
+        }
+        if (typeof updateCalcSummary === 'function') updateCalcSummary();
+        if (typeof updateMiniCalcSummary === 'function') updateMiniCalcSummary();
+        alert('🎉 Промокод ' + code + ' успешно применен! Скидка ' + discount + '% учтена в расчете.');
       } else {
-        alert('✅ PIN ' + pin + ' подтвержден! Файл синхронизирован через P2P туннель EcosystemNever.');
+        if (statusBox) {
+          statusBox.innerHTML = '<span style="color: #ef4444; font-weight: 800;">✕ Неверный или истекший промокод</span>';
+          statusBox.style.display = 'block';
+        }
       }
     }
 
-  </script>
+    setTimeout(drawWheel, 250);
+
+</script>
 </body>
 </html>

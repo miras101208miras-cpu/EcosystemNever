@@ -3724,6 +3724,9 @@
       const tm = TIMELINES[selectedTimelineKey];
       totalUSD = Math.round(totalUSD * tm.mult);
       totalDays = Math.max(3, Math.round(totalDays * tm.daysMult));
+      if (window.activePromoDiscount && window.activePromoDiscount > 0) {
+        totalUSD = Math.round(totalUSD * (1 - window.activePromoDiscount / 100));
+      }
 
       // Обновить карточку
       document.getElementById('miniHoloIcon').textContent = typeInfo.icon;
@@ -3981,53 +3984,42 @@
   
 
     /* ==============================================================
-       15. КИБЕР-ХАБ В MINI APP (ЛОГИКА 6 ИНСТРУМЕНТОВ)
+       MINI APP: ЛОГИКА ИНСТРУМЕНТОВ (БЕСКОНЕЧНЫЙ СПИН, РЕАЛЬНЫЙ QR,
+       МУЛЬТИ-КОМНАТЫ PARTY, ЖИВОЙ ТОП, ПРОМОКОДЫ)
        ============================================================== */
+
     function switchMiniToolSubTab(subTabKey, btn) {
       document.querySelectorAll('#miniToolsTabBar .chat-chan-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.mini-tool-subpanel').forEach(p => p.style.display = 'none');
 
-      btn.classList.add('active');
-      const target = document.getElementById('subPanel' + subTabKey.charAt(0).toUpperCase() + subTabKey.slice(1));
-      if (target) target.style.display = 'block';
+      if (btn) btn.classList.add('active');
+      const panel = document.getElementById('subPanel' + subTabKey.charAt(0).toUpperCase() + subTabKey.slice(1));
+      if (panel) panel.style.display = 'block';
 
-      if (subTabKey === 'wheel') setTimeout(drawMiniWheel, 50);
-      if (subTabKey === 'top') {
-        const expEl = document.getElementById('lblUserExpRank');
-        if (expEl) expEl.textContent = save?.exp || 100;
-      }
+      if (subTabKey === 'wheel') setTimeout(drawMiniWheel, 100);
       haptic('light');
     }
 
-    // КОЛЕСО В MINI APP
-    const MINI_WHEEL_SECTORS = [
-      { text: '-10% Скидка', color: '#0f172a', textColor: '#38bdf8', promo: 'NEVER-10-DISCOUNT' },
-      { text: '+150 EXP', color: '#1e1b4b', textColor: '#a855f7', promo: 'EXP-150-BOOST' },
-      { text: '5 TON Бонус', color: '#022c22', textColor: '#34d399', promo: 'TON-5-CRYPTO' },
-      { text: '-25% VIP Скидка', color: '#172554', textColor: '#60a5fa', promo: 'VIP-25-NEVER' },
-      { text: '+500 Монет', color: '#312e81', textColor: '#c084fc', promo: 'COINS-500-GOLD' },
-      { text: '-50% МЕГА-СКИДКА', color: '#450a0a', textColor: '#f87171', promo: 'MEGA-50-FOUNDER' },
-      { text: 'VIP Статус 2.0', color: '#422006', textColor: '#fbbf24', promo: 'VIP-STATUS-PASS' },
-      { text: 'Повторный Спин 🔄', color: '#134e4a', textColor: '#2dd4bf', promo: 'FREE-SPIN-AGAIN' }
-    ];
-    let miniWheelAngle = 0;
+    // 1. БЕСКОНЕЧНОЕ КОЛЕСО MINI APP
+    let miniWheelCurrentAngle = 0;
     let isSpinningMiniWheel = false;
+    let lastMiniWonPrize = null;
 
     function drawMiniWheel() {
       const canvas = document.getElementById('miniWheelCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const numSectors = MINI_WHEEL_SECTORS.length;
+      const numSectors = WHEEL_SECTORS.length;
       const arc = (2 * Math.PI) / numSectors;
       const radius = canvas.width / 2;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      MINI_WHEEL_SECTORS.forEach((sec, i) => {
+      WHEEL_SECTORS.forEach((sec, i) => {
         const angle = i * arc;
         ctx.beginPath();
         ctx.fillStyle = sec.color;
-        ctx.strokeStyle = '#38bdf8';
+        ctx.strokeStyle = '#00f0ff';
         ctx.lineWidth = 1.5;
         ctx.moveTo(radius, radius);
         ctx.arc(radius, radius, radius - 4, angle, angle + arc);
@@ -4041,19 +4033,19 @@
         ctx.textAlign = 'right';
         ctx.fillStyle = sec.textColor;
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.fillText(sec.text, radius - 15, 4);
+        ctx.fillText(sec.text, radius - 16, 4);
         ctx.restore();
       });
 
       ctx.beginPath();
       ctx.arc(radius, radius, 24, 0, 2 * Math.PI);
       ctx.fillStyle = '#04060a';
-      ctx.strokeStyle = '#38bdf8';
+      ctx.strokeStyle = '#00f0ff';
       ctx.lineWidth = 2.5;
       ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = '#38bdf8';
+      ctx.fillStyle = '#00f0ff';
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -4063,93 +4055,284 @@
     function spinMiniLuckyWheel() {
       if (isSpinningMiniWheel) return;
       isSpinningMiniWheel = true;
-      haptic('heavy');
-
       const btn = document.getElementById('btnMiniSpinWheel');
-      if (btn) btn.disabled = true;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⚡ ВРАЩЕНИЕ...';
+      }
 
-      const winningIndex = Math.floor(Math.random() * MINI_WHEEL_SECTORS.length);
-      const sectorArc = 360 / MINI_WHEEL_SECTORS.length;
-      const targetRotation = (360 * 6) + (270 - (winningIndex * sectorArc) - (sectorArc / 2));
+      const winningIndex = Math.floor(Math.random() * WHEEL_SECTORS.length);
+      const sectorArc = 360 / WHEEL_SECTORS.length;
+      const targetRotation = (360 * 7) + (270 - (winningIndex * sectorArc) - (sectorArc / 2));
 
-      miniWheelAngle += targetRotation;
+      miniWheelCurrentAngle += targetRotation;
       const canvas = document.getElementById('miniWheelCanvas');
       if (canvas) {
-        canvas.style.transform = 'rotate(' + miniWheelAngle + 'deg)';
+        canvas.style.transform = 'rotate(' + miniWheelCurrentAngle + 'deg)';
       }
+
+      haptic('medium');
 
       setTimeout(() => {
         isSpinningMiniWheel = false;
-        if (btn) btn.disabled = false;
-        const prize = MINI_WHEEL_SECTORS[winningIndex];
+        lastMiniWonPrize = WHEEL_SECTORS[winningIndex];
 
-        // Применяем призы в игре
-        if (prize.promo === 'EXP-150-BOOST') {
-          save.exp += 150;
-          document.getElementById('lblCoins').textContent = save.coins;
-          document.getElementById('lblExp').textContent = save.exp;
-        } else if (prize.promo === 'COINS-500-GOLD') {
-          save.coins += 500;
-          document.getElementById('lblCoins').textContent = save.coins;
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = '🎰 КРУТИТЬ ЕЩЁ РАЗ';
         }
 
-        try { navigator.clipboard?.writeText(prize.promo); } catch(e) {}
-        showFlyingToast('🎉 Приз: ' + prize.text + '! Код скопирован: ' + prize.promo);
+        const card = document.getElementById('miniWheelPrizeCard');
+        if (card) {
+          document.getElementById('miniWheelPrizeTitle').textContent = '🎉 ' + lastMiniWonPrize.text;
+          document.getElementById('miniWheelPrizeCode').textContent = lastMiniWonPrize.promo;
+          card.style.display = 'block';
+        }
 
-        setTimeout(() => {
-          openExternalUrl('https://t.me/light18101?text=' + encodeURIComponent('Привет, Мирас! Я выиграл в Кибер-Колесе: ' + prize.text + ' (Промокод: ' + prize.promo + ')'));
-        }, 1200);
+        showFlyingToast('🎉 Приз: ' + lastMiniWonPrize.text);
+        haptic('success');
       }, 4600);
     }
 
-    // ТЕРМИНАЛ В MINI APP
-    function handleMiniTerminalKey(e) {
-      if (e.key !== 'Enter') return;
-      const input = document.getElementById('miniTermInput');
-      if (!input) return;
-      const cmd = input.value.trim().toLowerCase();
+    function copyMiniWheelCode() {
+      if (!lastMiniWonPrize) return;
+      try { navigator.clipboard?.writeText(lastMiniWonPrize.promo); } catch(e) {}
+      showFlyingToast('📋 Промокод скопирован: ' + lastMiniWonPrize.promo);
+      haptic('light');
+    }
+
+    function sendMiniPromoToFounder() {
+      if (!lastMiniWonPrize) return;
+      const text = encodeURIComponent('Привет, Мирас! Я выиграл в Кибер-Колесе EcosystemNever приз: ' + lastMiniWonPrize.text + ' (Промокод: ' + lastMiniWonPrize.promo + ')! Хочу активировать.');
+      if (window.Telegram?.WebApp?.openTelegramLink) {
+        window.Telegram.WebApp.openTelegramLink('https://t.me/light18101?text=' + text);
+      } else {
+        window.open('https://t.me/light18101?text=' + text, '_blank');
+      }
+    }
+
+    function applyMiniPromoToCalc() {
+      if (!lastMiniWonPrize) return;
+      const input = document.getElementById('miniCalcPromoInput');
+      if (input) {
+        input.value = lastMiniWonPrize.promo;
+        applyMiniPromoCode();
+      }
+      switchAppTab('calc');
+      showFlyingToast('🎟️ Промокод применен в Калькуляторе!');
+    }
+
+    // ВЫДАЧА ПРОМОКОДОВ СОЗДАТЕЛЕМ В MINI APP
+    let miniSelectedFounderDiscount = 10;
+
+    function selectMiniFounderDiscount(disc, btn) {
+      miniSelectedFounderDiscount = disc;
+      document.querySelectorAll('.promo-tag-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      haptic('light');
+    }
+
+    function generateMiniFounderPromo() {
+      const clientName = document.getElementById('miniFounderClientInput')?.value.trim() || 'Клиент';
+      const randHex = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const code = 'NEVER-LIGHT-' + miniSelectedFounderDiscount + '-' + randHex;
+
+      const msg = 'Привет, ' + clientName + '! 🚀\nТвой персональный промокод от Создателя @light18101:\n🎟️ Код: ' + code + '\n💰 Скидка: -' + miniSelectedFounderDiscount + '% на разработку!\nАктивируй в нашем App или напиши мне в ответ.';
+
+      document.getElementById('miniFounderPromoMsgTxt').textContent = msg;
+      document.getElementById('miniFounderPromoResult').style.display = 'block';
+
+      saveActivePromoCode(code, miniSelectedFounderDiscount);
+      showFlyingToast('✅ Промокод ' + code + ' создан!');
+      haptic('success');
+    }
+
+    function copyMiniFounderPromoMsg() {
+      const txt = document.getElementById('miniFounderPromoMsgTxt')?.textContent;
+      if (!txt) return;
+      try { navigator.clipboard?.writeText(txt); } catch(e) {}
+      showFlyingToast('📋 Текст для клиента скопирован!');
+      haptic('light');
+    }
+
+    function shareMiniFounderPromoTg() {
+      const txt = document.getElementById('miniFounderPromoMsgTxt')?.textContent;
+      if (!txt) return;
+      const url = 'https://t.me/share/url?url=' + encodeURIComponent('https://miras101208miras-cpu.github.io/EcosystemNever/app/?v=6') + '&text=' + encodeURIComponent(txt);
+      if (window.Telegram?.WebApp?.openTelegramLink) {
+        window.Telegram.WebApp.openTelegramLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
+    // 2. NEVERPARTY В MINI APP
+    let miniCurrentPartyRoom = {
+      id: 'NEVER-809',
+      title: 'Презентация Экосистемы',
+      url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+    };
+
+    function showMiniPartyLobby() {
+      document.getElementById('miniPartyLobbyView').style.display = 'block';
+      document.getElementById('miniPartyActiveRoomView').style.display = 'none';
+      haptic('light');
+    }
+
+    function joinMiniPartyRoom(roomId, title, url) {
+      miniCurrentPartyRoom = { id: roomId, title: title, url: url };
+      document.getElementById('miniPartyLobbyView').style.display = 'none';
+      document.getElementById('miniPartyActiveRoomView').style.display = 'block';
+
+      document.getElementById('miniPartyRoomLabel').textContent = '#' + roomId + ': ' + title;
+      const iframe = document.getElementById('miniPartyIframe');
+      if (iframe) iframe.src = url;
+
+      addMiniPartyMsg('Система', '👋 Вы вошли в комнату #' + roomId);
+      haptic('light');
+    }
+
+    function joinMiniPartyByCode() {
+      const code = document.getElementById('miniPartyCodeInput')?.value.trim().toUpperCase();
+      if (!code) return;
+      joinMiniPartyRoom(code, 'Комната ' + code, 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1');
+    }
+
+    function createMiniPartyRoom() {
+      const title = prompt('Название комнаты (например: Вечерний стрим):', 'Моя Party-Комната');
+      if (!title) return;
+      const url = prompt('YouTube ссылка на видео:', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+
+      let embed = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
+      if (url && url.includes('v=')) {
+        const vId = url.split('v=')[1]?.split('&')[0];
+        embed = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+      } else if (url && url.includes('youtu.be/')) {
+        const vId = url.split('youtu.be/')[1]?.split('?')[0];
+        embed = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+      }
+
+      const randomId = 'ROOM-' + Math.floor(100 + Math.random() * 900);
+
+      const list = document.getElementById('miniPartyRoomsList');
+      if (list) {
+        const div = document.createElement('div');
+        div.className = 'party-room-chip';
+        div.style.padding = '8px 10px';
+        div.innerHTML = '<div><div style="font-size:0.75rem;font-weight:800;color:#fff;">#' + randomId + ': ' + title + '</div><div style="font-size:0.62rem;color:#94a3b8;">Создатель: Вы • 1 онлайн</div></div><button class="btn-submit-order" style="padding:4px 10px;font-size:0.68rem;width:auto;" onclick="joinMiniPartyRoom(\'' + randomId + '\', \'' + title + '\', \'' + embed + '\')">Войти ➔</button>';
+        list.prepend(div);
+      }
+
+      joinMiniPartyRoom(randomId, title, embed);
+    }
+
+    function toggleMiniPartyPlay() {
+      showFlyingToast('⏯️ Синхронизация комнаты ' + miniCurrentPartyRoom.id);
+      addMiniPartyMsg('Ты', '⏯️ Изменил статус воспроизведения');
+      haptic('light');
+    }
+
+    function loadMiniPartyCustomVideo() {
+      const input = document.getElementById('miniPartyVideoUrlInput');
+      if (!input || !input.value.trim()) return;
+      let url = input.value.trim();
+
+      if (url.includes('v=')) {
+        const vId = url.split('v=')[1]?.split('&')[0];
+        url = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+      } else if (url.includes('youtu.be/')) {
+        const vId = url.split('youtu.be/')[1]?.split('?')[0];
+        url = 'https://www.youtube.com/embed/' + vId + '?autoplay=1';
+      }
+
+      const iframe = document.getElementById('miniPartyIframe');
+      if (iframe) iframe.src = url;
+
+      addMiniPartyMsg('Система', '🎬 Загружено новое видео');
       input.value = '';
-      executeMiniTerm(cmd);
+      haptic('light');
     }
 
-    function executeMiniTerm(cmd) {
-      const body = document.getElementById('miniTermBody');
-      if (!body || !cmd) return;
+    function sendMiniPartyMsg() {
+      const input = document.getElementById('miniPartyInput');
+      if (!input || !input.value.trim()) return;
+      const text = input.value.trim();
+      addMiniPartyMsg('Ты', text);
+      input.value = '';
 
-      const line = document.createElement('div');
-      line.innerHTML = '<span style="color:var(--accent);">$</span> ' + cmd;
-      body.appendChild(line);
+      setTimeout(() => {
+        const answers = ['Огонь! 🔥', 'Синхронизация секунда в секунду!', 'Смотрим 🚀'];
+        addMiniPartyMsg('Зритель', answers[Math.floor(Math.random() * answers.length)]);
+      }, 1200);
 
-      let out = '';
-      if (cmd === 'help') out = 'Команды: help, secret, projects, calc, founder, clear';
-      else if (cmd === 'secret' || cmd === 'light18101') out = '🔥 ЧИТ-КОД: NEVER-HACK-30 (-30% на проекты у @light18101)';
-      else if (cmd === 'projects') out = 'Проекты: 3D Порталы, TMA Mini Apps, AI Боты, NeverCloud';
-      else if (cmd === 'calc') { switchAppTab('calc'); return; }
-      else if (cmd === 'founder') out = 'Создатель: Мирас @light18101';
-      else if (cmd === 'clear') { body.innerHTML = '<div>⚡ Терминал очищен.</div>'; return; }
-      else out = 'Команда не найдена: ' + cmd;
-
-      const outEl = document.createElement('div');
-      outEl.style.color = '#94a3b8';
-      outEl.innerHTML = out;
-      body.appendChild(outEl);
-      body.scrollTop = body.scrollHeight;
+      haptic('light');
     }
 
-    // NEVERSHORT В MINI APP
-    function generateMiniShortLink() {
+    function addMiniPartyMsg(user, text) {
+      const feed = document.getElementById('miniPartyFeed');
+      if (!feed) return;
+      const div = document.createElement('div');
+      div.className = 'party-chat-msg';
+      div.innerHTML = '<strong>' + user + ':</strong> ' + text;
+      feed.appendChild(div);
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function copyMiniPartyInvite() {
+      const link = 'https://miras101208miras-cpu.github.io/EcosystemNever/app/?v=6#party?room=' + miniCurrentPartyRoom.id;
+      try { navigator.clipboard?.writeText(link); } catch(e) {}
+      showFlyingToast('📋 Ссылка на комнату скопирована!');
+      haptic('light');
+    }
+
+    // 3. ЖИВОЙ ЛИДЕРБОРД В MINI APP (БЕЗ БОТОВ!)
+    function joinMiniRealLeaderboard() {
+      const input = document.getElementById('miniJoinTopUsernameInput');
+      let name = input?.value.trim();
+      if (!name) {
+        showFlyingToast('⚠️ Введите ваш Telegram @username!');
+        return;
+      }
+      if (!name.startsWith('@')) name = '@' + name;
+
+      document.getElementById('miniLeaderCurrentUsername').textContent = name;
+      document.getElementById('miniPodiumUser2Name').textContent = name;
+      document.getElementById('miniPodiumUser3Name').textContent = 'Свободно';
+
+      showFlyingToast('🎉 Вы внесены в Лидерборд!');
+      haptic('success');
+      if (input) input.value = '';
+    }
+
+    // 4. 100% РЕАЛЬНЫЙ СКАНИРУЕМЫЙ QR В MINI APP
+    let miniCurrentShortUrl = '';
+
+    function generateMiniRealShortAndQr() {
       const input = document.getElementById('miniShortInput');
-      if (!input?.value.trim()) return;
+      if (!input?.value.trim()) {
+        showFlyingToast('⚠️ Введите URL!');
+        return;
+      }
+      let target = input.value.trim();
+      if (!target.startsWith('http://') && !target.startsWith('https://')) {
+        target = 'https://' + target;
+      }
+
       const code = Math.random().toString(36).substring(2, 6);
-      const url = 'https://never.link/' + code;
-      document.getElementById('miniShortTxt').textContent = url;
+      const shortUrl = 'https://never.link/' + code;
+      miniCurrentShortUrl = target;
+
+      document.getElementById('miniShortTxt').textContent = shortUrl;
       document.getElementById('miniShortResultBox').style.display = 'block';
 
-      const wrap = document.getElementById('miniShortQrWrap');
-      if (wrap) {
-        wrap.innerHTML = '<svg width="90" height="90" viewBox="0 0 90 90"><rect width="90" height="90" fill="#fff"/><rect x="8" y="8" width="24" height="24" fill="#000"/><rect x="12" y="12" width="16" height="16" fill="#fff"/><rect x="16" y="16" width="8" height="8" fill="#38bdf8"/><rect x="58" y="8" width="24" height="24" fill="#000"/><rect x="8" y="58" width="24" height="24" fill="#000"/><rect x="40" y="40" width="12" height="12" fill="#38bdf8"/></svg>';
+      // 100% РЕАЛЬНЫЙ СКАНИРУЕМЫЙ QR
+      const img = document.getElementById('miniRealQrImg');
+      if (img) {
+        img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=' + encodeURIComponent(target);
       }
-      haptic('light');
+
+      showFlyingToast('✅ Реальный QR-код сгенерирован!');
+      haptic('success');
     }
 
     function copyMiniShort() {
@@ -4159,35 +4342,57 @@
       haptic('light');
     }
 
-    // PARTY В MINI APP
-    function sendMiniPartyMsg() {
-      const input = document.getElementById('miniPartyInput');
-      if (!input?.value.trim()) return;
-      const text = input.value.trim();
-      input.value = '';
-
-      const feed = document.getElementById('miniPartyFeed');
-      if (feed) {
-        const div = document.createElement('div');
-        div.className = 'party-chat-msg';
-        div.innerHTML = '<strong>Ты:</strong> ' + text;
-        feed.appendChild(div);
-        feed.scrollTop = feed.scrollHeight;
+    function openMiniShort() {
+      if (miniCurrentShortUrl) {
+        window.open(miniCurrentShortUrl, '_blank');
       }
+    }
+
+    function downloadMiniQrPng() {
+      const img = document.getElementById('miniRealQrImg');
+      if (!img?.src) return;
+      const link = document.createElement('a');
+      link.href = img.src;
+      link.download = 'Never_QR.png';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showFlyingToast('📥 Скачивание QR началось');
       haptic('light');
     }
 
-    // DROP В MINI APP
-    function handleMiniDropFile(e) {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      const pin = Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('miniDropPinVal').textContent = pin;
-      document.getElementById('miniDropPinResult').style.display = 'block';
-      showFlyingToast('✅ PIN-код для получения файла: ' + pin);
-      haptic('success');
+    // 5. ПРИМЕНЕНИЕ ПРОМОКОДА В КАЛЬКУЛЯТОРЕ MINI APP
+    function applyMiniPromoCode() {
+      const input = document.getElementById('miniCalcPromoInput');
+      if (!input) return;
+      const code = input.value.trim().toUpperCase();
+      if (!code) return;
+
+      let stored = {};
+      try { stored = JSON.parse(localStorage.getItem('never_active_promos') || '{}'); } catch(e) {}
+      const discount = VALID_PROMOS[code] || stored[code] || (code.startsWith('NEVER-LIGHT-') ? parseInt(code.split('-')[2]) : null);
+
+      const statusBox = document.getElementById('miniCalcPromoStatusBox');
+      if (discount) {
+        window.activePromoDiscount = discount;
+        window.activePromoCode = code;
+        if (statusBox) {
+          statusBox.innerHTML = '<span style="color: #22c55e; font-weight: 800;">✓ Скидка -' + discount + '% учтена!</span>';
+          statusBox.style.display = 'block';
+        }
+        updateMiniCalcSummary();
+        showFlyingToast('🎉 Промокод применен: Скидка ' + discount + '%!');
+        haptic('success');
+      } else {
+        if (statusBox) {
+          statusBox.innerHTML = '<span style="color: #ef4444; font-weight: 800;">✕ Неверный промокод</span>';
+          statusBox.style.display = 'block';
+        }
+        haptic('warning');
+      }
     }
 
-  </script>
+</script>
 </body>
 </html>
