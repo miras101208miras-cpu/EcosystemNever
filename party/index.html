@@ -507,7 +507,7 @@
   <main>
     <!-- LEFT: CINEMA SCREEN & CONTROLS -->
     <div class="cinema-stage">
-      <div class="theater-screen">
+      <div class="theater-screen" ondragover="event.preventDefault(); this.style.borderColor='#fbbf24';" ondragleave="this.style.borderColor='var(--border)';" ondrop="handleDropVideoFile(event)" title="Можно перетащить видеофайл из Проводника прямо сюда!">
         <video id="mainTheaterVideo" controls playsinline autoplay style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; background: #000; z-index: 2;"></video>
         <iframe id="mainTheaterIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
@@ -531,6 +531,11 @@
           <button class="btn btn-glass" onclick="searchGoogleVideo()" title="Поиск видео в Google">
             🔍 Google Видео
           </button>
+          
+          <button type="button" class="btn btn-glass" style="border-color: #fbbf24; color: #fbbf24; font-weight: 800;" onclick="document.getElementById('localVideoFileInput').click()" title="Выбрать MP4, MKV, MOV видео с компьютера">
+            📁 Видео с ПК
+          </button>
+          <input type="file" id="localVideoFileInput" accept="video/*,.mp4,.mkv,.mov,.webm,.avi" style="display: none;" onchange="handleLocalVideoSelect(event)">
           <button class="btn btn-glass" onclick="broadcastTogglePlay()">
             ⏯️ Пауза / Старт
           </button>
@@ -908,6 +913,47 @@
 
     // START MQTT
     initMqtt();
-  </script>
+  
+
+    // 7. ВОСПРОИЗВЕДЕНИЕ ВИДЕО С КОМПЬЮТЕРА (ПРОVОДНИК / ФАЙЛ)
+    function playLocalFile(file) {
+      if (!file) return;
+      const blobUrl = URL.createObjectURL(file);
+      const iframe = document.getElementById('mainTheaterIframe');
+      const video = document.getElementById('mainTheaterVideo');
+
+      if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+      if (video) {
+        video.style.display = 'block';
+        video.src = blobUrl;
+        video.play().catch(e => console.log('Autoplay info:', e.message));
+      }
+
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+      const title = '📁 ' + file.name + ' (' + sizeMb + ' МБ)';
+      document.getElementById('lblCurrentVideoTitle').textContent = title;
+
+      renderSystemBubble('🎬 Вы запустили видео с компьютера: <strong>' + file.name + '</strong>');
+
+      broadcastPacket({
+        type: 'chat',
+        user: userName,
+        text: '📁 Запустил локальное видео с компьютера: ' + file.name
+      });
+    }
+
+    function handleLocalVideoSelect(event) {
+      const file = event.target.files?.[0];
+      if (file) playLocalFile(file);
+    }
+
+    function handleDropVideoFile(event) {
+      event.preventDefault();
+      event.currentTarget.style.borderColor = 'var(--border)';
+      const file = event.dataTransfer?.files?.[0];
+      if (file) playLocalFile(file);
+    }
+
+</script>
 </body>
 </html>

@@ -2463,6 +2463,10 @@
                 </div>
 
                 <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+                  <button type="button" class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem; border-color: #fbbf24; color: #fbbf24; white-space: nowrap;" onclick="document.getElementById('miniLocalVideoInput').click()">
+                    📁 Файл с ПК
+                  </button>
+                  <input type="file" id="miniLocalVideoInput" accept="video/*" style="display: none;" onchange="handleMiniLocalVideo(event)">
                   <button class="btn-glass" style="padding: 4px 10px; font-size: 0.72rem;" onclick="toggleMiniPartyPlay()">⏯️ Пауза/Старт</button>
                   <input type="text" class="calc-input-field" id="miniPartyVideoUrlInput" placeholder="Google Диск, YouTube или MP4 ссылка..." style="flex: 1; padding: 4px 8px; font-size: 0.72rem;">
                   <button class="btn-submit-order" style="padding: 4px 10px; font-size: 0.72rem; width: auto;" onclick="loadMiniPartyCustomVideo()">Сменить</button>
@@ -4636,6 +4640,19 @@
       div.innerHTML = '<strong>' + user + ':</strong> ' + text;
       feed.appendChild(div);
       feed.scrollTop = feed.scrollHeight;
+    }
+
+
+
+    function handleMiniLocalVideo(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const blobUrl = URL.createObjectURL(file);
+      const iframe = document.getElementById('miniPartyIframe');
+      if (iframe) iframe.src = blobUrl;
+      showFlyingToast('🎬 Видео ' + file.name + ' запущено!');
+      addMiniPartyMsg('Ты', '📁 Запустил видео с устройства: ' + file.name);
+      haptic('success');
     }
 
 </script>
