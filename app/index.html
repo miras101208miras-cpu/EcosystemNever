@@ -2357,18 +2357,18 @@
        3. ДЕМОНЫ ПО УРОВНЯМ (МОЛНИЕНОСНАЯ СКОРОСТЬ АТАКИ БОССОВ)
        ============================================================== */
     function getDemonStats(lvl) {
-      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 3.5, dmg: 45, speed: 0.25 };
-      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 3.0, dmg: 40, speed: 0.28 };
-      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.7, dmg: 35, speed: 0.32 };
-      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.4, dmg: 30, speed: 0.36 };
-      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 2.1, dmg: 26, speed: 0.40 };
-      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.9, dmg: 23, speed: 0.45 };
-      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.7, dmg: 20, speed: 0.50 };
-      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.5, dmg: 17, speed: 0.55 };
-      if (lvl >= 20) return { name: 'Руи', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.35, dmg: 14, speed: 0.60 };
-      if (lvl >= 10) return { name: 'Кёгай', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.25, dmg: 12, speed: 0.65 };
-      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.15, dmg: 10, speed: 0.70 };
-      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0, dmg: 9, speed: 0.75 };
+      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 3.5, dmg: 140, speed: 0.35 };
+      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 3.0, dmg: 120, speed: 0.40 };
+      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.7, dmg: 105, speed: 0.45 };
+      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.4, dmg: 90, speed: 0.50 };
+      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 2.1, dmg: 75, speed: 0.55 };
+      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.9, dmg: 65, speed: 0.60 };
+      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.7, dmg: 55, speed: 0.65 };
+      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.5, dmg: 45, speed: 0.70 };
+      if (lvl >= 20) return { name: 'Руи', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.35, dmg: 35, speed: 0.75 };
+      if (lvl >= 10) return { name: 'Кёгай', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.25, dmg: 28, speed: 0.80 };
+      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.15, dmg: 22, speed: 0.85 };
+      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0, dmg: 16, speed: 0.90 };
     }
 
     function spawnNextDemon() {
@@ -2453,7 +2453,15 @@
       const hashira = getHashira();
       const totalDef = hashira.baseDef + save.bonusDef + Math.floor((save.level - 1) * 0.8);
       // Увеличенный опасный урон демона с учетом защиты
-      const incomingDmg = Math.max(4, Math.round(demon.dmg - (totalDef * 0.4)));
+      // Сокрушительный урон босса: побеждает пассивного игрока максимум за 1.5 - 2 минуты!
+      // Гарантированный процент урона от максимального HP игрока (1.8% - 2.8% за удар)
+      const isBoss = (save.level % 10 === 0) || save.level >= 5;
+      const minHpPct = isBoss ? 0.024 : 0.016; 
+      const minDmgFloor = Math.max(14, Math.round(playerMaxHp * minHpPct));
+
+      const rawDmg = Math.round(demon.dmg * 2.5);
+      const defMitigation = Math.round(totalDef * 0.3);
+      const incomingDmg = Math.max(minDmgFloor, rawDmg - defMitigation);
 
       playerCurHp -= incomingDmg;
       updatePlayerHp();
