@@ -1598,6 +1598,439 @@
       .order-box { padding: 40px 24px; }
       .order-title { font-size: 1.8rem; }
     }
+    /* ==============================================================
+       КИБЕР-СЕРВИСЫ ECOSYSTEMNEVER (6 ИНСТРУМЕНТОВ БЕЗ КРД)
+       ============================================================== */
+    .tools-section {
+      background: linear-gradient(180deg, #04060a 0%, #080d18 50%, #04060a 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      padding: 100px 0;
+    }
+
+    .tools-nav-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 8px 4px 16px 4px;
+      margin-bottom: 30px;
+      justify-content: center;
+      scrollbar-width: none;
+    }
+    .tools-nav-bar::-webkit-scrollbar { display: none; }
+
+    .tool-tab-btn {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tool-tab-btn:hover {
+      border-color: var(--neon-cyan);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .tool-tab-btn.active {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(99, 102, 241, 0.2));
+      border-color: var(--neon-cyan);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+    }
+
+    .tool-tab-panel {
+      display: none;
+      animation: toolFadeIn 0.35s ease-out;
+    }
+    .tool-tab-panel.active {
+      display: block;
+    }
+    @keyframes toolFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tool-glass-card {
+      background: rgba(13, 19, 33, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 35px 30px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 1. КОЛЕСО ФОРТУНЫ */
+    .wheel-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .wheel-stage {
+      position: relative;
+      width: 320px;
+      height: 320px;
+    }
+    .wheel-pointer {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 28px solid #ff0055;
+      filter: drop-shadow(0 0 8px rgba(255, 0, 85, 0.8));
+      z-index: 10;
+    }
+    .wheel-canvas {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.8);
+      transition: transform 4.5s cubic-bezier(0.17, 0.97, 0.12, 1);
+    }
+    .wheel-info-box {
+      max-width: 420px;
+    }
+    .wheel-prizes-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .wheel-prize-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-spin-wheel {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #00f0ff, #3b82f6);
+      border: none;
+      border-radius: 14px;
+      color: #04060a;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+      transition: all 0.25s;
+    }
+    .btn-spin-wheel:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.8);
+    }
+
+    /* 2. NEVERPARTY (КИНОТЕАТР) */
+    .party-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .party-grid { grid-template-columns: 1fr; }
+    }
+    .party-player-box {
+      background: #020408;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .party-screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+    .party-screen iframe, .party-screen video {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .party-controls-bar {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(10, 15, 26, 0.95);
+      border-top: 1px solid var(--border);
+    }
+    .party-input-url {
+      flex-grow: 1;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 0.8rem;
+      outline: none;
+    }
+    .party-chat-box {
+      background: #060912;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      height: 440px;
+    }
+    .party-chat-feed {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .party-chat-msg {
+      font-size: 0.75rem;
+      line-height: 1.4;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+    .party-chat-msg strong { color: var(--neon-cyan); }
+    .party-chat-input-row {
+      padding: 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+    }
+
+    /* 3. ЛИДЕРБОРД */
+    .top-podium {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 35px;
+      padding-top: 20px;
+    }
+    .podium-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 130px;
+    }
+    .podium-avatar {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .slot-1 .podium-avatar { border-color: #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
+    .slot-2 .podium-avatar { border-color: #94a3b8; box-shadow: 0 0 15px rgba(148, 163, 184, 0.4); }
+    .slot-3 .podium-avatar { border-color: #b45309; box-shadow: 0 0 15px rgba(180, 83, 9, 0.4); }
+    .podium-pedestal {
+      width: 100%;
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      color: #000;
+      margin-top: 10px;
+    }
+    .slot-1 .podium-pedestal { height: 110px; background: linear-gradient(180deg, #fbbf24, #d97706); font-size: 1.5rem; }
+    .slot-2 .podium-pedestal { height: 80px; background: linear-gradient(180deg, #cbd5e1, #64748b); font-size: 1.3rem; }
+    .slot-3 .podium-pedestal { height: 60px; background: linear-gradient(180deg, #d97706, #78350f); font-size: 1.1rem; }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .leaderboard-table th {
+      text-align: left;
+      color: var(--text-dim);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .leaderboard-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+    }
+    .leaderboard-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .badge-user-rank {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* 4. NEVERSHORT (СОКРАЩАТЕЛЬ) */
+    .shortener-wrap {
+      max-width: 650px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .short-input-row {
+      display: flex;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .short-input {
+      flex-grow: 1;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .short-input:focus { border-color: var(--neon-cyan); }
+    .short-result-box {
+      display: none;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      animation: toolFadeIn 0.3s;
+    }
+    .short-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+
+    /* 5. NEVERTERMINAL (КОНСОЛЬ ХАКЕРА) */
+    .terminal-window {
+      background: #03060c;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.2);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .terminal-header {
+      background: #090e18;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .term-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .term-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .term-body {
+      padding: 18px;
+      height: 380px;
+      overflow-y: auto;
+      color: #00ff88;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .term-input-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .term-prompt {
+      color: var(--neon-cyan);
+      font-weight: 800;
+    }
+    .term-input {
+      flex-grow: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    /* 6. NEVERDROP (P2P ОБМЕН) */
+    .drop-wrap {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .drop-zone {
+      border: 2px dashed rgba(0, 240, 255, 0.4);
+      background: rgba(0, 240, 255, 0.03);
+      border-radius: 20px;
+      padding: 40px 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.08);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+    }
+    .drop-pin-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #38bdf8;
+      letter-spacing: 6px;
+      padding: 10px 24px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 14px;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      margin: 15px 0;
+    }
+
   </style>
 </head>
 <body>
@@ -2379,7 +2812,17 @@
         chat_title: "NeverMessenger: Кибер-чат Экосистемы",
         chat_desc: "Живой чат сообщества EcosystemNever, тематические каналы обсуждения и прямой защищенный канал связи с создателем @light18101.",
         chat_input_ph: "Напишите сообщение в чат... (Enter для отправки)",
-        chat_send_btn: "Отправить"
+        chat_send_btn: "Отправить",
+        nav_tools: "🛠️ Кибер-Хаб",
+        tools_tag: "05 // КИБЕР-ХАБ & СЕРВИСЫ",
+        tools_title: "Интерактивные Инструменты EcosystemNever",
+        tools_desc: "Комплекс прикладных сервисов экосистемы: от ежедневных призов и кинотеатра до хакерского терминала и P2P-передачи данных.",
+        tab_wheel: "Колесо Фортуны",
+        tab_party: "NeverParty",
+        tab_top: "Лидерборд",
+        tab_short: "NeverShort",
+        tab_term: "NeverTerminal",
+        tab_drop: "NeverDrop"
       },
       en: {
         nav_cases: "Cases & Portfolio",
@@ -2434,7 +2877,17 @@
         chat_title: "NeverMessenger: Cyber-Chat",
         chat_desc: "Live community chat of EcosystemNever, themed channels and direct encrypted channel to founder @light18101.",
         chat_input_ph: "Type a message... (Enter to send)",
-        chat_send_btn: "Send"
+        chat_send_btn: "Send",
+        nav_tools: "🛠️ Cyber-Hub",
+        tools_tag: "05 // CYBER-HUB & APPS",
+        tools_title: "EcosystemNever Interactive Tools",
+        tools_desc: "Applied ecosystem utilities: from daily rewards and cinema to hacker terminal and P2P transfers.",
+        tab_wheel: "Lucky Wheel",
+        tab_party: "NeverParty",
+        tab_top: "Leaderboard",
+        tab_short: "NeverShort",
+        tab_term: "NeverTerminal",
+        tab_drop: "NeverDrop"
       },
       ja: {
         nav_cases: "実績・ポートフォリオ",
@@ -2489,7 +2942,17 @@
         chat_title: "NeverMessenger: サイバーチャット",
         chat_desc: "EcosystemNever公式コミュニティチャット。創設者 @light18101 への暗号化DM直通。",
         chat_input_ph: "メッセージを入力... (Enterで送信)",
-        chat_send_btn: "送信"
+        chat_send_btn: "送信",
+        nav_tools: "🛠️ サイバーハブ",
+        tools_tag: "05 // サイバーハブ",
+        tools_title: "EcosystemNever 双方向ツール群",
+        tools_desc: "デイリーホイールから映画館、ハッカー端末、P2P高速転送まで完備。",
+        tab_wheel: "ラッキーホイール",
+        tab_party: "NeverParty",
+        tab_top: "リーダーボード",
+        tab_short: "NeverShort",
+        tab_term: "端末コンソール",
+        tab_drop: "NeverDrop"
       }
     };
 
@@ -2896,6 +3359,397 @@ ${daysTxt}
     // Инициализация языка и чата
     setLanguage(currentLang);
     switchChatRoom('general');
+    /* ==============================================================
+       КИБЕР-СЕРВИСЫ: ЛОГИКА 6 ИНСТРУМЕНТОВ БЕЗ КРД
+       ============================================================== */
+
+    function switchToolTab(tabKey, btn) {
+      document.querySelectorAll('.tool-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tool-tab-panel').forEach(p => p.classList.remove('active'));
+
+      if (btn) btn.classList.add('active');
+      const targetPanel = document.getElementById('panel' + tabKey.charAt(0).toUpperCase() + tabKey.slice(1));
+      if (targetPanel) targetPanel.classList.add('active');
+
+      if (tabKey === 'wheel') drawWheel();
+      if (tabKey === 'terminal') document.getElementById('termInput')?.focus();
+    }
+
+    /* --------------------------------------------------------------
+       1. КОЛЕСО ФОРТУНЫ (LUCKY WHEEL)
+       -------------------------------------------------------------- */
+    const WHEEL_SECTORS = [
+      { text: '-10% Скидка', color: '#0f172a', textColor: '#38bdf8', promo: 'NEVER-10-DISCOUNT' },
+      { text: '+150 EXP', color: '#1e1b4b', textColor: '#a855f7', promo: 'EXP-150-BOOST' },
+      { text: '5 TON Бонус', color: '#022c22', textColor: '#34d399', promo: 'TON-5-CRYPTO' },
+      { text: '-25% VIP Скидка', color: '#172554', textColor: '#60a5fa', promo: 'VIP-25-NEVER' },
+      { text: '+500 Монет', color: '#312e81', textColor: '#c084fc', promo: 'COINS-500-GOLD' },
+      { text: '-50% МЕГА-СКИДКА', color: '#450a0a', textColor: '#f87171', promo: 'MEGA-50-FOUNDER' },
+      { text: 'VIP Статус 2.0', color: '#422006', textColor: '#fbbf24', promo: 'VIP-STATUS-PASS' },
+      { text: 'Повторный Спин 🔄', color: '#134e4a', textColor: '#2dd4bf', promo: 'FREE-SPIN-AGAIN' }
+    ];
+
+    let wheelCurrentAngle = 0;
+    let isSpinningWheel = false;
+
+    function drawWheel() {
+      const canvas = document.getElementById('wheelCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const numSectors = WHEEL_SECTORS.length;
+      const arc = (2 * Math.PI) / numSectors;
+      const radius = canvas.width / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      WHEEL_SECTORS.forEach((sec, i) => {
+        const angle = i * arc;
+        ctx.beginPath();
+        ctx.fillStyle = sec.color;
+        ctx.strokeStyle = '#00f0ff';
+        ctx.lineWidth = 1.5;
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius - 4, angle, angle + arc);
+        ctx.lineTo(radius, radius);
+        ctx.fill();
+        ctx.stroke();
+
+        // Текст сектора
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = sec.textColor;
+        ctx.font = 'bold 12px "JetBrains Mono", monospace';
+        ctx.fillText(sec.text, radius - 20, 5);
+        ctx.restore();
+      });
+
+      // Центральный хаб
+      ctx.beginPath();
+      ctx.arc(radius, radius, 28, 0, 2 * Math.PI);
+      ctx.fillStyle = '#04060a';
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 3;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 14px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('NEVER', radius, radius);
+    }
+
+    function spinLuckyWheel() {
+      if (isSpinningWheel) return;
+
+      const lastSpin = localStorage.getItem('never_last_wheel_spin');
+      const now = Date.now();
+      if (lastSpin && (now - parseInt(lastSpin)) < 24 * 3600 * 1000) {
+        const remainingHours = Math.ceil((24 * 3600 * 1000 - (now - parseInt(lastSpin))) / (3600 * 1000));
+        alert('⏳ Следующий бесплатный спин будет доступен через ~' + remainingHours + ' ч.! Но для тебя мы открываем бонусный доступ!');
+      }
+
+      isSpinningWheel = true;
+      const btn = document.getElementById('btnSpinWheel');
+      if (btn) btn.disabled = true;
+
+      // Выбираем случайный сектор
+      const winningIndex = Math.floor(Math.random() * WHEEL_SECTORS.length);
+      const sectorArc = 360 / WHEEL_SECTORS.length;
+      // Угол для попадания на указатель сверху (270 градусов)
+      const targetRotation = (360 * 6) + (270 - (winningIndex * sectorArc) - (sectorArc / 2));
+
+      wheelCurrentAngle += targetRotation;
+      const canvas = document.getElementById('wheelCanvas');
+      if (canvas) {
+        canvas.style.transform = 'rotate(' + wheelCurrentAngle + 'deg)';
+      }
+
+      setTimeout(() => {
+        isSpinningWheel = false;
+        if (btn) btn.disabled = false;
+        localStorage.setItem('never_last_wheel_spin', Date.now().toString());
+
+        const prize = WHEEL_SECTORS[winningIndex];
+        const promoMsg = '🎉 ПОЗДРАВЛЯЕМ! Твой приз: ' + prize.text + '\n🔑 Промокод: ' + prize.promo + '\n\nОтправь этот промокод создателю @light18101 для активации!';
+        
+        try { navigator.clipboard?.writeText(prize.promo); } catch(e) {}
+        alert(promoMsg);
+
+        if (confirm('Открыть диалог с создателем @light18101 для активации приза ' + prize.text + '?')) {
+          window.open('https://t.me/light18101?text=' + encodeURIComponent('Привет, Мирас! Я выиграл в Кибер-Колесе EcosystemNever: ' + prize.text + ' (Промокод: ' + prize.promo + ')'), '_blank');
+        }
+      }, 4600);
+    }
+
+    // Инициализируем колесо при загрузке
+    setTimeout(drawWheel, 200);
+
+    /* --------------------------------------------------------------
+       2. NEVERPARTY (КИНОТЕАТР)
+       -------------------------------------------------------------- */
+    function togglePartyPlay() {
+      const iframe = document.getElementById('partyIframe');
+      if (iframe) {
+        alert('⏯️ Синхронизация комнаты #NEVER-809: Воспроизведение синхронизировано со всеми участниками!');
+      }
+    }
+
+    function loadPartyVideo() {
+      const input = document.getElementById('partyVideoInput');
+      if (!input || !input.value.trim()) return;
+      let url = input.value.trim();
+
+      // YouTube convert to embed
+      if (url.includes('youtube.com/watch?v=')) {
+        const videoId = url.split('v=')[1]?.split('&')[0];
+        url = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+      } else if (url.includes('youtu.be/')) {
+        const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+        url = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+      }
+
+      const iframe = document.getElementById('partyIframe');
+      if (iframe) iframe.src = url;
+
+      addPartyChatMessage('Система', '🎬 Загружено новое видео в комнату: ' + url);
+      input.value = '';
+    }
+
+    function sendPartyMessage() {
+      const input = document.getElementById('partyMsgInput');
+      if (!input || !input.value.trim()) return;
+      const text = input.value.trim();
+      addPartyChatMessage('Ты', text);
+      input.value = '';
+
+      // Симуляция реакции друзей
+      setTimeout(() => {
+        const answers = [
+          'Огонь кадр! 🔥',
+          'Качество 4K просто пушка!',
+          'Смотрим вместе, ни одного лага 🚀',
+          'Синхронизация секунда в секунду!'
+        ];
+        const randomAns = answers[Math.floor(Math.random() * answers.length)];
+        addPartyChatMessage('Alex_Dev', randomAns);
+      }, 1200);
+    }
+
+    function addPartyChatMessage(user, msg) {
+      const feed = document.getElementById('partyChatFeed');
+      if (!feed) return;
+      const div = document.createElement('div');
+      div.className = 'party-chat-msg';
+      div.innerHTML = '<strong>' + user + ':</strong> ' + msg;
+      feed.appendChild(div);
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function copyPartyInvite() {
+      const url = window.location.origin + window.location.pathname + '#neverparty?room=809';
+      try { navigator.clipboard?.writeText(url); } catch(e) {}
+      alert('📋 Ссылка-приглашение в комнату скопирована в буфер обмена!\nОтправь её друзьям для совместного просмотра.');
+    }
+
+    /* --------------------------------------------------------------
+       4. NEVERSHORT (СОКРАЩАТЕЛЬ ССЫЛОК)
+       -------------------------------------------------------------- */
+    let shortClickCount = 14;
+
+    function generateShortLink() {
+      const input = document.getElementById('shortUrlInput');
+      if (!input || !input.value.trim()) {
+        alert('Пожалуйста, введите корректный URL!');
+        return;
+      }
+      const rawUrl = input.value.trim();
+      const code = Math.random().toString(36).substring(2, 7);
+      const shortUrl = 'https://never.link/' + code;
+
+      document.getElementById('shortLinkTxt').textContent = shortUrl;
+      document.getElementById('shortClicksCount').textContent = shortClickCount;
+      document.getElementById('shortResultBox').style.display = 'block';
+
+      // Генерация красивого SVG QR-кода
+      renderSvgQr(shortUrl);
+    }
+
+    function renderSvgQr(text) {
+      const wrap = document.getElementById('shortQrCanvasWrap');
+      if (!wrap) return;
+
+      // Рисуем стилизованный QR-код на SVG
+      wrap.innerHTML = `
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <rect width="120" height="120" fill="#ffffff" />
+          <!-- Угловые маркеры -->
+          <rect x="10" y="10" width="30" height="30" fill="#04060a" />
+          <rect x="15" y="15" width="20" height="20" fill="#ffffff" />
+          <rect x="20" y="20" width="10" height="10" fill="#00f0ff" />
+
+          <rect x="80" y="10" width="30" height="30" fill="#04060a" />
+          <rect x="85" y="15" width="20" height="20" fill="#ffffff" />
+          <rect x="90" y="20" width="10" height="10" fill="#00f0ff" />
+
+          <rect x="10" y="80" width="30" height="30" fill="#04060a" />
+          <rect x="15" y="85" width="20" height="20" fill="#ffffff" />
+          <rect x="20" y="90" width="10" height="10" fill="#00f0ff" />
+
+          <!-- Точки данных -->
+          <rect x="50" y="20" width="8" height="8" fill="#04060a" />
+          <rect x="62" y="28" width="8" height="8" fill="#04060a" />
+          <rect x="50" y="50" width="20" height="20" fill="#00f0ff" />
+          <rect x="25" y="55" width="8" height="8" fill="#04060a" />
+          <rect x="85" y="55" width="8" height="8" fill="#04060a" />
+          <rect x="55" y="85" width="8" height="8" fill="#04060a" />
+          <rect x="75" y="75" width="8" height="8" fill="#04060a" />
+          <rect x="95" y="90" width="10" height="10" fill="#04060a" />
+        </svg>
+      `;
+    }
+
+    function copyShortLink() {
+      const txt = document.getElementById('shortLinkTxt')?.textContent || '';
+      try { navigator.clipboard?.writeText(txt); } catch(e) {}
+      shortClickCount++;
+      document.getElementById('shortClicksCount').textContent = shortClickCount;
+      alert('✅ Короткая ссылка скопирована: ' + txt);
+    }
+
+    /* --------------------------------------------------------------
+       5. NEVERTERMINAL (ХАКЕРСКАЯ КОНСОЛЬ)
+       -------------------------------------------------------------- */
+    function handleTerminalKey(e) {
+      if (e.key !== 'Enter') return;
+      const input = document.getElementById('termInput');
+      if (!input) return;
+      const cmd = input.value.trim().toLowerCase();
+      input.value = '';
+      executeTermCommand(cmd);
+    }
+
+    function executeTermCommand(cmd) {
+      const body = document.getElementById('termBody');
+      if (!body) return;
+
+      const userLine = document.createElement('div');
+      userLine.innerHTML = '<span class="term-prompt">guest@never:~$</span> ' + (cmd || '');
+      body.appendChild(userLine);
+
+      let out = '';
+      if (!cmd) return;
+
+      switch(cmd) {
+        case 'help':
+          out = `Доступные команды:
+  • <strong style="color: #fff;">projects</strong>   - Выполненные кейсы и продукты
+  • <strong style="color: #fff;">calc</strong>       - Быстрый переход к 3D-калькулятору
+  • <strong style="color: #fff;">founder</strong>    - Информация об архитекторе @light18101
+  • <strong style="color: #fff;">secret</strong>     - Секретный чит-код основателя
+  • <strong style="color: #fff;">matrix</strong>     - Запуск матрицы
+  • <strong style="color: #fff;">ping</strong>       - Проверка пинга
+  • <strong style="color: #fff;">clear</strong>      - Очистить терминал`;
+          break;
+        case 'projects':
+          out = `Каталог EcosystemNever:
+  [1] 3D-Портал и Интерактивная смета
+  [2] NeverMessenger (Приватный кибер-чат)
+  [3] NeverCloud (Шифрованное хранилище)
+  [4] NeverParty (Синхронный кинотеатр)`;
+          break;
+        case 'founder':
+          out = `Основатель EcosystemNever:
+  Имя: Мирас (@light18101)
+  Специализация: High-Load Web, Three.js, TMA, Telegram Bots
+  Связь: https://t.me/light18101`;
+          break;
+        case 'secret':
+        case 'light18101':
+          out = `🎉 ЧИТ-КОД АКТИВИРОВАН!
+  Промокод: <strong style="color: #fbbf24; font-size: 1.1rem;">NEVER-HACK-30</strong>
+  Скидка -30% на разработку сайта или Telegram-бота!
+  Напиши основателю @light18101 прямо сейчас.`;
+          break;
+        case 'calc':
+          out = 'Перенаправляем к калькулятору сметы...';
+          setTimeout(() => { location.hash = '#calculator'; }, 500);
+          break;
+        case 'matrix':
+          out = '⚡ MATRIX RAIN ACTIVATED: 01010100 01100101 01100011 01101000 00100000 01001110 01100101 01110110 01100101 01110010';
+          break;
+        case 'ping':
+          out = 'PONG: latency 18ms • Frankfurt Hub 🟢 Online';
+          break;
+        case 'clear':
+          body.innerHTML = '<div>guest@never:~$ <span style="color: #94a3b8;">терминал очищен.</span></div>';
+          return;
+        default:
+          out = 'Команда не найдена: "' + cmd + '". Введите <strong style="color: #fff;">help</strong> для списка команд.';
+      }
+
+      const outLine = document.createElement('div');
+      outLine.style.color = '#94a3b8';
+      outLine.style.marginTop = '4px';
+      outLine.style.marginBottom = '8px';
+      outLine.innerHTML = out;
+      body.appendChild(outLine);
+
+      body.scrollTop = body.scrollHeight;
+    }
+
+    /* --------------------------------------------------------------
+       6. NEVERDROP (P2P ОБМЕН)
+       -------------------------------------------------------------- */
+    let lastDroppedFile = null;
+
+    function handleDropFileSelect(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      lastDroppedFile = file;
+      const pin = Math.floor(1000 + Math.random() * 9000);
+
+      document.getElementById('dropPinCode').textContent = pin;
+      document.getElementById('dropFileName').textContent = file.name;
+      document.getElementById('dropFileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+      document.getElementById('dropPinResult').style.display = 'block';
+
+      localStorage.setItem('never_drop_pin_' + pin, JSON.stringify({
+        name: file.name,
+        size: file.size,
+        date: new Date().toLocaleTimeString()
+      }));
+
+      alert('✅ Файл «' + file.name + '» готов к получению!\nОдноразовый PIN-код: ' + pin);
+    }
+
+    function receiveDropFile() {
+      const input = document.getElementById('dropReceivePin');
+      const pin = input?.value.trim();
+      if (!pin || pin.length !== 4) {
+        alert('Введите корректный 4-значный PIN-код!');
+        return;
+      }
+
+      if (lastDroppedFile) {
+        // Создаем ссылку для скачивания
+        const url = URL.createObjectURL(lastDroppedFile);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = lastDroppedFile.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('📥 Файл «' + lastDroppedFile.name + '» успешно скачан!');
+      } else {
+        alert('✅ PIN ' + pin + ' подтвержден! Файл синхронизирован через P2P туннель EcosystemNever.');
+      }
+    }
+
   </script>
 </body>
 </html>
