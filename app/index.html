@@ -1046,6 +1046,34 @@
       user-select: all;
     }
 
+    .beta-timer-countdown-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 10px;
+      padding: 7px 10px;
+      margin-bottom: 10px;
+    }
+
+    .beta-timer-countdown-row .timer-title {
+      font-size: 0.65rem;
+      color: #cbd5e1;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .beta-timer-countdown-row .timer-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #fbbf24;
+      text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+    }
+
     .beta-perks-list {
       display: flex;
       flex-direction: column;
@@ -1121,8 +1149,8 @@
         <span>⚔️</span> УРОВЕНЬ <span id="lblLevel">1</span>
       </div>
 
-      <div class="vip-beta-pill" id="vipBetaPill" style="display: none;" onclick="openBetaTestModal()" title="Доступ к бета-тесту EcosystemNever 2.0">
-        👑 VIP BETA
+      <div class="vip-beta-pill" id="vipBetaPill" style="display: none;" onclick="openBetaTestModal()" title="Доступ к бета-тесту EcosystemNever 2.0 (7 дней)">
+        👑 BETA: <span id="vipBetaTimerTxt">7 дней</span>
       </div>
 
       <button class="btn-change-hashira" onclick="openHashiraSelect(true)">
@@ -1307,15 +1335,19 @@
       <div class="beta-pass-card">
         <div class="beta-pass-header">
           <span style="font-weight: 800; color: #fff; font-size: 0.78rem;">OFFICIAL VIP PASS</span>
-          <span class="beta-status-live">● ACTIVE</span>
+          <span class="beta-status-live" id="betaStatusBadge">● ACTIVE (7 ДНЕЙ)</span>
         </div>
         <div class="beta-pass-code-box">
-          <div class="beta-code-lbl">ПЕРСОНАЛЬНЫЙ VIP-КЛЮЧ:</div>
+          <div class="beta-code-lbl">ПЕРСОНАЛЬНЫЙ VIP-КЛЮЧ НА 7 ДНЕЙ:</div>
           <div class="beta-code-val" id="betaKeyVal">NEVER-BETA-78X2K9</div>
+        </div>
+        <div class="beta-timer-countdown-row">
+          <div class="timer-title">⏳ Срок действия (7 дней):</div>
+          <div class="timer-val" id="betaCountdownTxt">6д 23ч 59м 59с</div>
         </div>
         <div class="beta-perks-list">
           <div class="beta-perk-item">⚡ Ранний доступ к обновлению «Клинок Never 2.0» (PvP & Кооператив)</div>
-          <div class="beta-perk-item">🤖 Эксклюзивный доступ к новым AI-ботам EcosystemNever</div>
+          <div class="beta-perk-item">🤖 Эксклюзивный доступ к новым AI-ботам EcosystemNever на 7 дней</div>
           <div class="beta-perk-item">🎖️ Персональная отметка в Telegram-сообществе создателя</div>
         </div>
       </div>
@@ -1537,7 +1569,9 @@
       bonusHp: 0,
       bonusDef: 0,
       hasBetaAccess: false,
-      betaKey: ''
+      betaKey: '',
+      betaGrantedAt: 0,
+      betaExpiresAt: 0
     };
 
     try {
@@ -1556,36 +1590,36 @@
 
     let demon = null;
     let demonTimerInterval = null;
-    let demonAttackSpeed = 1.5;
-    let demonTimerLeft = 1.5;
+    let demonAttackSpeed = 0.75;
+    let demonTimerLeft = 0.75;
 
     function getHashira() {
       return HASHIRAS.find(h => h.id === save.hashiraId) || HASHIRAS[0];
     }
 
     /* ==============================================================
-       3. ДЕМОНЫ ПО УРОВНЯМ (ВЫСОКИЙ УРОН И СКОРОСТЬ АТАКИ)
+       3. ДЕМОНЫ ПО УРОВНЯМ (МОЛНИЕНОСНАЯ СКОРОСТЬ АТАКИ БОССОВ)
        ============================================================== */
     function getDemonStats(lvl) {
-      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 3.5, dmg: 85, speed: 0.95 };
-      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 3.0, dmg: 75, speed: 1.05 };
-      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.7, dmg: 66, speed: 1.15 };
-      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.4, dmg: 58, speed: 1.20 };
-      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 2.1, dmg: 50, speed: 1.25 };
-      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.9, dmg: 44, speed: 1.30 };
-      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.7, dmg: 38, speed: 1.35 };
-      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.5, dmg: 32, speed: 1.40 };
-      if (lvl >= 20) return { name: 'Руи', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.35, dmg: 26, speed: 1.45 };
-      if (lvl >= 10) return { name: 'Кёгай', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.25, dmg: 22, speed: 1.50 };
-      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.15, dmg: 19, speed: 1.50 };
-      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0, dmg: 16, speed: 1.50 };
+      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 3.5, dmg: 45, speed: 0.25 };
+      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 3.0, dmg: 40, speed: 0.28 };
+      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.7, dmg: 35, speed: 0.32 };
+      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.4, dmg: 30, speed: 0.36 };
+      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 2.1, dmg: 26, speed: 0.40 };
+      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.9, dmg: 23, speed: 0.45 };
+      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.7, dmg: 20, speed: 0.50 };
+      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.5, dmg: 17, speed: 0.55 };
+      if (lvl >= 20) return { name: 'Руи', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.35, dmg: 14, speed: 0.60 };
+      if (lvl >= 10) return { name: 'Кёгай', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.25, dmg: 12, speed: 0.65 };
+      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.15, dmg: 10, speed: 0.70 };
+      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0, dmg: 9, speed: 0.75 };
     }
 
     function spawnNextDemon() {
       const info = getDemonStats(save.level);
       const maxHp = Math.round(150 + ((save.level - 1) * 60) * info.hpMulti);
-      const attackPower = Math.round(info.dmg + ((save.level - 1) * 1.2));
-      demonAttackSpeed = info.speed || 1.5;
+      const attackPower = Math.round(info.dmg + ((save.level - 1) * 0.9));
+      demonAttackSpeed = info.speed || 0.75;
 
       demon = {
         name: info.name,
@@ -1620,16 +1654,19 @@
     }
 
     /* ==============================================================
-       4. БЫСТРАЯ И ОПАСНАЯ КОНТРАТАКА ДЕМОНА
+       4. МОЛНИЕНОСНЫЙ ЦИКЛ АТАКИ ДЕМОНА (25мс ПЛАВНЫЙ ИМПУЛЬС)
        ============================================================== */
     function startDemonAttackCycle() {
       clearInterval(demonTimerInterval);
       demonTimerLeft = demonAttackSpeed;
 
+      const tickMs = 25;
+      const dt = tickMs / 1000;
+
       demonTimerInterval = setInterval(() => {
         if (!demon || demon.curHp <= 0 || playerCurHp <= 0) return;
 
-        demonTimerLeft -= 0.1;
+        demonTimerLeft -= dt;
         if (demonTimerLeft <= 0) {
           demonStrikePlayer();
           demonTimerLeft = demonAttackSpeed;
@@ -1637,8 +1674,8 @@
 
         const pct = ((demonAttackSpeed - demonTimerLeft) / demonAttackSpeed) * 100;
         document.getElementById('demonTimerFill').style.width = `${Math.min(100, Math.max(0, pct))}%`;
-        document.getElementById('demonTimerTxt').textContent = `${Math.max(0, demonTimerLeft).toFixed(1)}s`;
-      }, 100);
+        document.getElementById('demonTimerTxt').textContent = `${Math.max(0, demonTimerLeft).toFixed(2)}s`;
+      }, tickMs);
     }
 
     function demonStrikePlayer() {
@@ -1655,12 +1692,12 @@
       setTimeout(() => {
         demonEl.classList.remove('demon-attacking');
         playerEl.classList.remove('fighter-hurt');
-      }, 200);
+      }, 100);
 
       const hashira = getHashira();
       const totalDef = hashira.baseDef + save.bonusDef + Math.floor((save.level - 1) * 0.8);
       // Увеличенный опасный урон демона с учетом защиты
-      const incomingDmg = Math.max(7, Math.round(demon.dmg - (totalDef * 0.4)));
+      const incomingDmg = Math.max(4, Math.round(demon.dmg - (totalDef * 0.4)));
 
       playerCurHp -= incomingDmg;
       updatePlayerHp();
@@ -1958,11 +1995,15 @@
       save.coins += 20 + (save.level * 4);
       save.exp += 40;
 
-      // При достижении 100+ уровня разблокируем доступ к Бета-Тесту
+      // При достижении 100+ уровня разблокируем доступ к Бета-Тесту на 7 дней
       if (save.level >= 100) {
         save.hasBetaAccess = true;
         if (!save.betaKey) {
           save.betaKey = 'NEVER-BETA-' + Math.floor(100000 + Math.random() * 900000);
+        }
+        if (!save.betaExpiresAt || save.betaExpiresAt <= Date.now()) {
+          save.betaGrantedAt = Date.now();
+          save.betaExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000); // 7 дней
         }
       }
 
@@ -2069,12 +2110,63 @@
     }
 
     /* ==============================================================
-       9. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА И БЕТА-ТЕСТ СИСТЕМА
+       9. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА И БЕТА-ТЕСТ СИСТЕМА (7 ДНЕЙ)
        ============================================================== */
+    function getBetaTimeLeft() {
+      if (!save.betaExpiresAt) return { expired: true, text: 'Срок истёк', shortText: 'Истёк', days: 0, hours: 0 };
+      const diff = save.betaExpiresAt - Date.now();
+      if (diff <= 0) return { expired: true, text: 'Срок истёк', shortText: 'Истёк', days: 0, hours: 0 };
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const fullText = days > 0
+        ? `${days}д ${hours}ч ${mins}м ${secs}с`
+        : `${hours}ч ${mins}м ${secs}с`;
+
+      const shortText = days > 0 ? `${days}д ${hours}ч` : `${hours}ч ${mins}м`;
+
+      return { expired: false, days, hours, mins, secs, text: fullText, shortText };
+    }
+
+    function updateBetaCountdownUI() {
+      if (!save.hasBetaAccess) return;
+      const t = getBetaTimeLeft();
+      const countdownEl = document.getElementById('betaCountdownTxt');
+      const badgeEl = document.getElementById('betaStatusBadge');
+      const pillTimer = document.getElementById('vipBetaTimerTxt');
+
+      if (countdownEl) {
+        countdownEl.textContent = t.text;
+      }
+      if (pillTimer) {
+        pillTimer.textContent = t.shortText;
+      }
+      if (badgeEl) {
+        if (t.expired) {
+          badgeEl.textContent = '● ИСТЁК';
+          badgeEl.style.color = '#ef4444';
+        } else {
+          badgeEl.textContent = `● ACTIVE (${t.days > 0 ? t.days + ' ДН.' : t.hours + ' Ч.'})`;
+          badgeEl.style.color = '#34d399';
+        }
+      }
+    }
+
+    // Регулярный интервал для живого отсчета времени 7-дневной бетки
+    setInterval(() => {
+      if (save.hasBetaAccess) {
+        updateBetaCountdownUI();
+      }
+    }, 1000);
+
     function updateBetaPill() {
       const pill = document.getElementById('vipBetaPill');
       if (pill) {
         pill.style.display = (save.level >= 100 || save.hasBetaAccess) ? 'flex' : 'none';
+        if (save.hasBetaAccess) updateBetaCountdownUI();
       }
     }
 
@@ -2083,9 +2175,15 @@
       if (!save.betaKey) {
         save.betaKey = 'NEVER-BETA-' + Math.floor(100000 + Math.random() * 900000);
         save.hasBetaAccess = true;
-        persist();
       }
+      if (!save.betaExpiresAt || save.betaExpiresAt <= Date.now()) {
+        save.betaGrantedAt = Date.now();
+        save.betaExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+      }
+      persist();
+
       document.getElementById('betaKeyVal').textContent = save.betaKey;
+      updateBetaCountdownUI();
       document.getElementById('betaTestModal').classList.add('open');
       updateBetaPill();
     }
@@ -2112,7 +2210,9 @@
     function openCreatorWithBetaKey() {
       haptic('medium');
       const key = save.betaKey || 'NEVER-BETA-VIP';
-      const text = encodeURIComponent(`Привет! Я достиг 100 уровня в Клинок Never и победил Музана! Мой VIP-ключ бета-тестера: ${key}. Прошу выдать доступ к закрытому бета-тесту EcosystemNever 2.0 ♾️`);
+      const timeLeft = getBetaTimeLeft();
+      const expiryStr = save.betaExpiresAt ? new Date(save.betaExpiresAt).toLocaleDateString('ru-RU') : '7 дней';
+      const text = encodeURIComponent(`Привет! Я достиг 100 уровня в Клинок Never и победил Музана! Мой временный VIP-ключ на 7 дней: ${key} (активен до ${expiryStr}, осталось: ${timeLeft.text}). Прошу подтвердить доступ к закрытому бета-тесту EcosystemNever 2.0 ♾️`);
       window.open(`https://t.me/light18101?text=${text}`, '_blank');
     }
 
@@ -2132,11 +2232,15 @@
         if (!save.betaKey) {
           save.betaKey = 'NEVER-BETA-' + Math.floor(100000 + Math.random() * 900000);
         }
+        if (!save.betaExpiresAt || save.betaExpiresAt <= Date.now()) {
+          save.betaGrantedAt = Date.now();
+          save.betaExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        }
         persist();
         refreshGameView();
         spawnNextDemon();
         openBetaTestModal();
-        showFlyingToast('⚡ Уровень 100 активирован! Бета-тест открыт! ♾️');
+        showFlyingToast('⚡ Уровень 100 активирован! Бета-тест на 7 дней открыт! ♾️');
       }
     }
 
