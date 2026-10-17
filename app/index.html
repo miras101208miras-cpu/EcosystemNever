@@ -1818,27 +1818,27 @@
             <div class="type-chip-btn selected" onclick="selectCalcType('landing', this)">
               <div class="t-icon">🌐</div>
               <div class="t-name">Landing / Сайт</div>
-              <div class="t-price" id="tPrice_landing">$150</div>
+              <div class="t-price" id="tPrice_landing">$15</div>
             </div>
             <div class="type-chip-btn" onclick="selectCalcType('portal3d', this)">
               <div class="t-icon">🌌</div>
               <div class="t-name">3D Портал</div>
-              <div class="t-price" id="tPrice_portal3d">$350</div>
+              <div class="t-price" id="tPrice_portal3d">$35</div>
             </div>
             <div class="type-chip-btn" onclick="selectCalcType('bot', this)">
               <div class="t-icon">🤖</div>
               <div class="t-name">AI Telegram Бот</div>
-              <div class="t-price" id="tPrice_bot">$220</div>
+              <div class="t-price" id="tPrice_bot">$22</div>
             </div>
             <div class="type-chip-btn" onclick="selectCalcType('miniapp', this)">
               <div class="t-icon">📱</div>
               <div class="t-name">Mini App (TMA)</div>
-              <div class="t-price" id="tPrice_miniapp">$320</div>
+              <div class="t-price" id="tPrice_miniapp">$32</div>
             </div>
             <div class="type-chip-btn" style="grid-column: span 2;" onclick="selectCalcType('ecosystem', this)">
               <div class="t-icon">♾️</div>
               <div class="t-name">Вся Экосистема (Все в 1)</div>
-              <div class="t-price" id="tPrice_ecosystem">$650</div>
+              <div class="t-price" id="tPrice_ecosystem">$65</div>
             </div>
           </div>
 
@@ -1850,49 +1850,49 @@
                 <div class="mod-check-icon">✓</div>
                 <span>💎 3D / Cyber Дизайн</span>
               </div>
-              <div class="mod-cost" id="mPrice_design3d">+$70</div>
+              <div class="mod-cost" id="mPrice_design3d">+$7</div>
             </div>
             <div class="mod-checkbox-item" onclick="toggleModule('webgl', this)">
               <div class="mod-left">
                 <div class="mod-check-icon">✓</div>
                 <span>⚡ Three.js / WebGL эффекты</span>
               </div>
-              <div class="mod-cost" id="mPrice_webgl">+$90</div>
+              <div class="mod-cost" id="mPrice_webgl">+$9</div>
             </div>
             <div class="mod-checkbox-item" onclick="toggleModule('db', this)">
               <div class="mod-left">
                 <div class="mod-check-icon">✓</div>
                 <span>☁️ База данных / Cloud Sync</span>
               </div>
-              <div class="mod-cost" id="mPrice_db">+$60</div>
+              <div class="mod-cost" id="mPrice_db">+$6</div>
             </div>
             <div class="mod-checkbox-item" onclick="toggleModule('pay', this)">
               <div class="mod-left">
                 <div class="mod-check-icon">✓</div>
                 <span>💳 Платежи TON / Stars / Card</span>
               </div>
-              <div class="mod-cost" id="mPrice_pay">+$80</div>
+              <div class="mod-cost" id="mPrice_pay">+$8</div>
             </div>
             <div class="mod-checkbox-item" onclick="toggleModule('ai', this)">
               <div class="mod-left">
                 <div class="mod-check-icon">✓</div>
                 <span>🧠 AI LLM ассистент</span>
               </div>
-              <div class="mod-cost" id="mPrice_ai">+$120</div>
+              <div class="mod-cost" id="mPrice_ai">+$12</div>
             </div>
             <div class="mod-checkbox-item" onclick="toggleModule('admin', this)">
               <div class="mod-left">
                 <div class="mod-check-icon">✓</div>
                 <span>📊 Панель администратора</span>
               </div>
-              <div class="mod-cost" id="mPrice_admin">+$100</div>
+              <div class="mod-cost" id="mPrice_admin">+$10</div>
             </div>
             <div class="mod-checkbox-item" onclick="toggleModule('lang', this)">
               <div class="mod-left">
                 <div class="mod-check-icon">✓</div>
                 <span>🌍 Мультиязычность (RU/EN/JP)</span>
               </div>
-              <div class="mod-cost" id="mPrice_lang">+$50</div>
+              <div class="mod-cost" id="mPrice_lang">+$5</div>
             </div>
           </div>
 
@@ -1929,7 +1929,7 @@
 
               <div class="calc-total-box">
                 <div class="calc-total-sub" data-i18n="est_total_lbl">ИТОГОВАЯ СМЕТА:</div>
-                <div class="calc-total-amount" id="miniTotalAmount">$150</div>
+                <div class="calc-total-amount" id="miniTotalAmount">$15</div>
                 <div class="calc-days-pill" id="miniDaysVal">⏱️ Срок готовности: ~7 дней</div>
               </div>
 
@@ -3259,22 +3259,22 @@
     let currentCurrency = 'USD';
 
     const PROJECT_TYPES = {
-      landing: { name: 'Landing Page / Сайт', baseUSD: 150, days: 7, icon: '🌐', stack: ['HTML5 / Modern CSS', 'JavaScript ES2024', 'SEO Optimized'] },
-      portal3d: { name: '3D Кибер-Портал', baseUSD: 350, days: 12, icon: '🌌', stack: ['Three.js', 'WebGL Canvas', 'Custom Shaders', '3D Audio'] },
-      bot: { name: 'Telegram AI-Бот', baseUSD: 220, days: 9, icon: '🤖', stack: ['Node.js / grammY', 'OpenAI / Claude API', 'Webhook Cloud', 'PostgreSQL'] },
-      miniapp: { name: 'Telegram Mini App (TMA)', baseUSD: 320, days: 12, icon: '📱', stack: ['Telegram TMA SDK', 'Haptic API', 'Telegram Pay / Stars', 'Responsive UI'] },
-      ecosystem: { name: 'Вся Экосистема (Все в 1)', baseUSD: 650, days: 21, icon: '♾️', stack: ['3D Web Portal', 'Telegram TMA App', 'AI Telegram Bot', 'Cloud Storage'] }
+      landing: { name: 'Landing Page / Сайт', baseUSD: 15, days: 7, icon: '🌐', stack: ['HTML5 / Modern CSS', 'JavaScript ES2024', 'SEO Optimized'] },
+      portal3d: { name: '3D Кибер-Портал', baseUSD: 35, days: 12, icon: '🌌', stack: ['Three.js', 'WebGL Canvas', 'Custom Shaders', '3D Audio'] },
+      bot: { name: 'Telegram AI-Бот', baseUSD: 22, days: 9, icon: '🤖', stack: ['Node.js / grammY', 'OpenAI / Claude API', 'Webhook Cloud', 'PostgreSQL'] },
+      miniapp: { name: 'Telegram Mini App (TMA)', baseUSD: 32, days: 12, icon: '📱', stack: ['Telegram TMA SDK', 'Haptic API', 'Telegram Pay / Stars', 'Responsive UI'] },
+      ecosystem: { name: 'Вся Экосистема (Все в 1)', baseUSD: 65, days: 21, icon: '♾️', stack: ['3D Web Portal', 'Telegram TMA App', 'AI Telegram Bot', 'Cloud Storage'] }
     };
     let selectedTypeKey = 'landing';
 
     const MODULES = {
-      design3d: { name: '💎 3D / Cyber Дизайн', costUSD: 70, days: 2, stack: 'Blender 3D Models' },
-      webgl: { name: '⚡ Three.js / WebGL эффекты', costUSD: 90, days: 3, stack: 'Shader Effects' },
-      db: { name: '☁️ База данных / Cloud', costUSD: 60, days: 2, stack: 'Cloud DB & Storage' },
-      pay: { name: '💳 Платежи TON / Stars / Card', costUSD: 80, days: 2, stack: 'TON / Stars Gate' },
-      ai: { name: '🧠 AI LLM ассистент', costUSD: 120, days: 3, stack: 'LLM Neural Bot' },
-      admin: { name: '📊 Панель администратора', costUSD: 100, days: 3, stack: 'Admin Dashboard' },
-      lang: { name: '🌍 Мультиязычность (RU/EN/JP)', costUSD: 50, days: 1, stack: 'i18n Localization' }
+      design3d: { name: '💎 3D / Cyber Дизайн', costUSD: 7, days: 2, stack: 'Blender 3D Models' },
+      webgl: { name: '⚡ Three.js / WebGL эффекты', costUSD: 9, days: 3, stack: 'Shader Effects' },
+      db: { name: '☁️ База данных / Cloud', costUSD: 6, days: 2, stack: 'Cloud DB & Storage' },
+      pay: { name: '💳 Платежи TON / Stars / Card', costUSD: 8, days: 2, stack: 'TON / Stars Gate' },
+      ai: { name: '🧠 AI LLM ассистент', costUSD: 12, days: 3, stack: 'LLM Neural Bot' },
+      admin: { name: '📊 Панель администратора', costUSD: 10, days: 3, stack: 'Admin Dashboard' },
+      lang: { name: '🌍 Мультиязычность (RU/EN/JP)', costUSD: 5, days: 1, stack: 'i18n Localization' }
     };
     const activeModules = new Set();
 
@@ -3404,7 +3404,7 @@
 
       const typeInfo = PROJECT_TYPES[selectedTypeKey];
       const activeModsNames = Array.from(activeModules).map(k => MODULES[k]?.name || k);
-      const totalAmountTxt = document.getElementById('miniTotalAmount')?.textContent || '$150';
+      const totalAmountTxt = document.getElementById('miniTotalAmount')?.textContent || '$15';
       const daysTxt = document.getElementById('miniDaysVal')?.textContent || '7 дней';
 
       const orderData = {
