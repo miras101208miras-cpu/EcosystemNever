@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>EcosystemNever Mini App</title>
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #070a12;
+      --bg-card: rgba(18, 26, 40, 0.75);
+      --bg-card-hover: rgba(26, 38, 58, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(56, 189, 248, 0.35);
+      --accent-blue: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --nav-height: 68px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--nav-height) + 20px);
+      position: relative;
+    }
+
+    /* Фоновые градиенты */
+    .bg-ambient {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 40vh;
+      background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12) 0%, rgba(30, 41, 59, 0.08) 50%, transparent 80%);
+      filter: blur(50px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 16px 20px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ШАПКА ХАБА */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0 20px;
+    }
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid var(--border-active);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .user-status-dot {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      border: 2px solid var(--bg-color);
+    }
+
+    .user-info h2 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .user-rank {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent-blue);
+      letter-spacing: 0.5px;
+    }
+
+    .header-logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .header-logo-svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .header-logo-text {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* 3D HERO БАННЕР С ЛОГОТИПОМ MÖBIUS */
+    .hero-banner {
+      background: linear-gradient(145deg, rgba(22, 33, 50, 0.8), rgba(11, 16, 26, 0.9));
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px 20px;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    }
+
+    .mobius-3d-wrap {
+      width: 90px;
+      height: 90px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      animation: floatLogo 4s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0) rotateX(0deg); }
+      50% { transform: translateY(-6px) rotateX(8deg); }
+    }
+
+    .mobius-3d-wrap svg {
+      width: 80px;
+      height: 80px;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 15px var(--accent-glow));
+    }
+
+    .hero-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .hero-title span {
+      color: var(--accent-blue);
+    }
+
+    .hero-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 320px;
+      margin-bottom: 18px;
+    }
+
+    .hero-stats-row {
+      display: flex;
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 14px;
+      justify-content: space-around;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #fff;
+    }
+
+    .stat-lbl {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* РАЗДЕЛЫ */
+    .section-title {
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title span {
+      color: var(--accent-blue);
+    }
+
+    /* СЕТКА ПРОДУКТОВ ЭКОСИСТЕМЫ */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card:active {
+      transform: scale(0.97);
+      background: var(--bg-card-hover);
+      border-color: var(--border-active);
+    }
+
+    .product-badge-live {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 2px 7px;
+      border-radius: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .product-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    .product-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .product-tag {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+      margin-bottom: 12px;
+      flex-grow: 1;
+    }
+
+    .product-action-btn {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* БАННЕР ЗАКАЗА У СТУДИИ */
+    .order-banner {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .order-info h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .order-info p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .btn-order-cta {
+      padding: 10px 18px;
+      background: var(--accent-blue);
+      color: #040711;
+      font-weight: 800;
+      font-size: 0.82rem;
+      border-radius: 25px;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-order-cta:active {
+      transform: scale(0.95);
+    }
+
+    /* НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (TAB BAR) */
+    .tabbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: rgba(8, 12, 20, 0.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      padding: 6px 12px;
+      border-radius: 12px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-blue);
+    }
+
+    .tab-btn.active .tab-icon {
+      transform: translateY(-2px);
+      color: var(--accent-blue);
+    }
+
+    .tab-icon {
+      font-size: 1.25rem;
+      transition: transform 0.2s;
+    }
+
+    /* МОДАЛЬНЫЕ ОКНА И ДЕТАЛИ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: none;
+      align-items: flex-end;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-sheet {
+      background: #0f1624;
+      border-top: 1px solid var(--border-active);
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.open .modal-sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 0 auto 18px;
+    }
+
+    /* СТИЛИ КВЕСТА EXP */
+    .tap-quest-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .exp-bar-wrap {
+      flex: 1;
+      margin: 0 16px;
+    }
+
+    .exp-bar-bg {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .exp-bar-fill {
+      height: 100%;
+      width: 35%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-ambient"></div>
+
+  <div class="container">
+    
+    <!-- 1. ШАПКА ХАБА -->
+    <header class="header">
+      <div class="header-user">
+        <div class="user-avatar-wrap">
+          <span id="tgUserEmoji">⚔️</span>
+          <div class="user-status-dot"></div>
+        </div>
+        <div class="user-info">
+          <h2 id="tgUserName">Гость</h2>
+          <div class="user-rank" id="tgUserRank">Столп Кисацутай • 1 ур.</div>
+        </div>
+      </div>
+
+      <div class="header-logo-badge">
+        <svg class="header-logo-svg" viewBox="0 0 120 120" fill="none">
+          <ellipse cx="60" cy="60" rx="52" ry="32" stroke="#334155" stroke-width="1" stroke-dasharray="2 4" opacity="0.6" />
+          <path d="M 38 60 C 20 60 14 44 26 34 C 40 22 55 45 60 60 C 55 75 40 98 26 86 C 14 76 20 60 38 60 Z" fill="#94a3b8" stroke="#475569" stroke-width="1" />
+          <path d="M 82 60 C 100 60 106 76 94 86 C 80 98 65 75 60 60 C 65 45 80 22 94 34 C 106 44 100 60 82 60 Z" fill="#334155" stroke="#475569" stroke-width="1" />
+          <circle cx="60" cy="60" r="4.5" fill="#0f172a" stroke="#64748b" stroke-width="1" />
+          <circle cx="60" cy="60" r="2" fill="#38bdf8" />
+        </svg>
+        <span class="header-logo-text">NEVER</span>
+      </div>
+    </header>
+
+    <!-- 2. ГЛАВНЫЙ БАННЕР С ПАРЯЩИМ ЛОГОТИПОМ MÖBIUS -->
+    <div class="hero-banner">
+      <div class="mobius-3d-wrap" onclick="triggerEasterEgg()">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="tmaMobiusDark" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#334155" />
+              <stop offset="50%" stop-color="#1e293b" />
+              <stop offset="100%" stop-color="#0f172a" />
+            </linearGradient>
+            <linearGradient id="tmaMobiusChrome" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#cbd5e1" />
+              <stop offset="40%" stop-color="#64748b" />
+              <stop offset="70%" stop-color="#334155" />
+              <stop offset="100%" stop-color="#0f172a" />
+            </linearGradient>
+            <linearGradient id="tmaMobiusBevel" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+              <stop offset="100%" stop-color="#475569" stop-opacity="0.1" />
+            </linearGradient>
+          </defs>
+          <ellipse cx="60" cy="60" rx="52" ry="32" stroke="#334155" stroke-width="0.75" stroke-dasharray="2 4" opacity="0.4" />
+          <path d="M 38 60 C 20 60 14 44 26 34 C 40 22 55 45 60 60 C 55 75 40 98 26 86 C 14 76 20 60 38 60 Z" fill="url(#tmaMobiusChrome)" stroke="#475569" stroke-width="0.8" />
+          <path d="M 82 60 C 100 60 106 76 94 86 C 80 98 65 75 60 60 C 65 45 80 22 94 34 C 106 44 100 60 82 60 Z" fill="url(#tmaMobiusDark)" stroke="#475569" stroke-width="0.8" />
+          <path d="M 38 60 C 20 60 14 44 26 34 C 40 22 55 45 60 60" stroke="url(#tmaMobiusBevel)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+          <path d="M 82 60 C 100 60 106 76 94 86 C 80 98 65 75 60 60" stroke="url(#tmaMobiusBevel)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+          <circle cx="60" cy="60" r="4.5" fill="#0f172a" stroke="#64748b" stroke-width="1" />
+          <circle cx="60" cy="60" r="2" fill="#38bdf8" />
+        </svg>
+      </div>
+
+      <h1 class="hero-title">ECOSYSTEM<span>NEVER</span></h1>
+      <p class="hero-desc">Единый центр управления продуктами студии, сервисами и личными файлами.</p>
+
+      <div class="hero-stats-row">
+        <div class="stat-item">
+          <div class="stat-val" id="statProducts">5</div>
+          <div class="stat-lbl">Сервисов</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statExp">350</div>
+          <div class="stat-lbl">Очков EXP</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statPing">24ms</div>
+          <div class="stat-lbl">Пинг API</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ЕЖЕДНЕВНЫЙ КВЕСТ / ТАП EXP -->
+    <div class="tap-quest-box" onclick="earnDailyExp()">
+      <div style="font-size: 1.8rem;">⚡</div>
+      <div class="exp-bar-wrap">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700;">
+          <span>Энергия Самурая</span>
+          <span id="expText" style="color: var(--accent-blue);">350 / 1000 EXP</span>
+        </div>
+        <div class="exp-bar-bg">
+          <div class="exp-bar-fill" id="expFill"></div>
+        </div>
+      </div>
+      <button style="padding: 6px 12px; background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); border-radius: 8px; font-size: 0.75rem; font-weight: 800;">
+        +50 💎
+      </button>
+    </div>
+
+    <!-- 4. СЕКЦИЯ: ПРОДУКТЫ ЭКОСИСТЕМЫ -->
+    <div class="section-title">
+      <span>//</span> Продукты Экосистемы
+    </div>
+
+    <div class="products-grid">
+      
+      <!-- 1. Demon Slayer -->
+      <div class="product-card" onclick="openProduct('slayer')">
+        <span class="product-badge-live">ONLINE</span>
+        <div class="product-icon">⛩️</div>
+        <div class="product-name">Demon Slayer</div>
+        <div class="product-tag">14 стилей дыхания & 9 Столпов Кисацутай с фото</div>
+        <div class="product-action-btn">Открыть архив ➔</div>
+      </div>
+
+      <!-- 2. Главный веб-сайт -->
+      <div class="product-card" onclick="openProduct('portal')">
+        <span class="product-badge-live">LIVE</span>
+        <div class="product-icon">🌐</div>
+        <div class="product-name">Флагман Портал</div>
+        <div class="product-tag">Центральный сайт студии с кейсами и услугами</div>
+        <div class="product-action-btn">Перейти на сайт ➔</div>
+      </div>
+
+      <!-- 3. NeverCloud -->
+      <div class="product-card" onclick="openModal('cloud')">
+        <div class="product-icon">☁️</div>
+        <div class="product-name">NeverCloud</div>
+        <div class="product-tag">Личное облачное зашифрованное хранилище</div>
+        <div class="product-action-btn">Управление ➔</div>
+      </div>
+
+      <!-- 4. NeverMessenger -->
+      <div class="product-card" onclick="openModal('messenger')">
+        <div class="product-icon">💬</div>
+        <div class="product-name">NeverMessenger</div>
+        <div class="product-tag">Защищенный приватный мессенджер</div>
+        <div class="product-action-btn">Бета-доступ ➔</div>
+      </div>
+
+    </div>
+
+    <!-- 5. БАННЕР СВЯЗИ С СОЗДАТЕЛЕМ / ЗАКАЗ СТУДИИ -->
+    <div class="order-banner">
+      <div class="order-info">
+        <h3>Заказать разработку</h3>
+        <p>Создаем быстрые сайты, 3D веб-порталы и ботов для твоего бизнеса.</p>
+      </div>
+      <a href="https://t.me/light18101" target="_blank" class="btn-order-cta" onclick="haptic('heavy')">
+        Написать 💬
+      </a>
+    </div>
+
+  </div>
+
+  <!-- НИЖНИЙ TABBAR -->
+  <nav class="tabbar">
+    <button class="tab-btn active" onclick="switchTab('hub')">
+      <span class="tab-icon">♾️</span>
+      <span>Хаб</span>
+    </button>
+    <button class="tab-btn" onclick="openProduct('slayer')">
+      <span class="tab-icon">⛩️</span>
+      <span>Слейер</span>
+    </button>
+    <button class="tab-btn" onclick="openProduct('portal')">
+      <span class="tab-icon">🌐</span>
+      <span>Портал</span>
+    </button>
+    <button class="tab-btn" onclick="openModal('order')">
+      <span class="tab-icon">💼</span>
+      <span>Заказ</span>
+    </button>
+  </nav>
+
+  <!-- МОДАЛЬНОЕ ОКНО ДЛЯ СЕРВИСОВ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal-sheet" id="modalSheet">
+      <div class="sheet-handle"></div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Инициализация Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      tg.setHeaderColor('#070a12');
+      tg.setBackgroundColor('#070a12');
+    }
+
+    // Данные пользователя Telegram
+    let currentExp = 350;
+    const user = tg?.initDataUnsafe?.user;
+    if (user) {
+      document.getElementById('tgUserName').textContent = user.first_name || 'Самурай';
+      document.getElementById('tgUserEmoji').textContent = '👤';
+      if (user.username) {
+        document.getElementById('tgUserRank').textContent = `@${user.username} • Хашира`;
+      }
+    }
+
+    // Тактильный отклик (Haptic Feedback)
+    function haptic(style = 'light') {
+      try {
+        if (tg?.HapticFeedback) {
+          if (style === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
+          else if (style === 'medium') tg.HapticFeedback.impactOccurred('medium');
+          else if (style === 'success') tg.HapticFeedback.notificationOccurred('success');
+          else tg.HapticFeedback.impactOccurred('light');
+        }
+      } catch (e) {}
+    }
+
+    // Начисление EXP
+    function earnDailyExp() {
+      haptic('success');
+      currentExp = Math.min(1000, currentExp + 50);
+      document.getElementById('statExp').textContent = currentExp;
+      document.getElementById('expText').textContent = `${currentExp} / 1000 EXP`;
+      document.getElementById('expFill').style.width = `${(currentExp / 1000) * 100}%`;
+      
+      if (currentExp >= 1000) {
+        alert('🎉 Поздравляем! Ты достиг ранга «Высший Столп EcosystemNever»!');
+      }
+    }
+
+    // Переходы по продуктам
+    function openProduct(prod) {
+      haptic('medium');
+      if (prod === 'slayer') {
+        window.open('https://miras101208miras-cpu.github.io/NeverProduct-Demon-Slayer/', '_blank');
+      } else if (prod === 'portal') {
+        window.open('https://miras101208miras-cpu.github.io/EcosystemNever/', '_blank');
+      }
+    }
+
+    // Модальные окна
+    function openModal(type) {
+      haptic('light');
+      const overlay = document.getElementById('modalOverlay');
+      const content = document.getElementById('modalContent');
+
+      if (type === 'cloud') {
+        content.innerHTML = `
+          <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">☁️ NeverCloud Хранилище</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 18px;">
+            Личное зашифрованное облако EcosystemNever. Все файлы, отправленные боту @ecosystem_never_bot, автоматически синхронизируются здесь.
+          </p>
+          <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; margin-bottom: 16px; border: 1px dashed var(--border-active);">
+            <div style="font-size: 0.85rem; font-weight: 700;">📂 Статус хранилища:</div>
+            <div style="font-size: 0.75rem; color: #34d399; margin-top: 4px;">• 100 GB бесплатно в бета-версии</div>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">• Доступно отправкой файлов в чат с ботом</div>
+          </div>
+          <button onclick="closeSheet()" style="width: 100%; padding: 12px; border-radius: 12px; background: var(--accent-blue); color: #000; font-weight: 800; border: none;">Понятно 👍</button>
+        `;
+      } else if (type === 'messenger') {
+        content.innerHTML = `
+          <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">💬 NeverMessenger</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 18px;">
+            Приватный квантовый мессенджер с поддержкой сквозного шифрования и интеграцией с ботом EcosystemNever.
+          </p>
+          <div style="background: rgba(56, 189, 248, 0.08); padding: 14px; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border-active);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #fff;">Заявка на закрытый Бета-тест</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Ты уже внесен в белый список участников раннего доступа.</div>
+          </div>
+          <button onclick="closeSheet()" style="width: 100%; padding: 12px; border-radius: 12px; background: var(--accent-blue); color: #000; font-weight: 800; border: none;">Отлично 🚀</button>
+        `;
+      } else if (type === 'order') {
+        content.innerHTML = `
+          <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">💼 Заказать разработку</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 18px;">
+            EcosystemNever создает премиальные веб-сайты, 3D-интерфейсы, Telegram-приложения и ботов любой сложности.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <div style="padding: 10px 14px; background: rgba(255,255,255,0.04); border-radius: 10px; font-size: 0.8rem;">⚡ <b>Telegram Mini Apps:</b> интерактивные сервисы прямо в мессенджере</div>
+            <div style="padding: 10px 14px; background: rgba(255,255,255,0.04); border-radius: 10px; font-size: 0.8rem;">⚡ <b>3D & Web Сайты:</b> современные интерактивные проекты нового поколения</div>
+            <div style="padding: 10px 14px; background: rgba(255,255,255,0.04); border-radius: 10px; font-size: 0.8rem;">⚡ <b>Умные Боты:</b> автоматизация процессов, базы данных и платежи</div>
+          </div>
+          <a href="https://t.me/light18101" target="_blank" style="display: block; text-align: center; width: 100%; padding: 14px; border-radius: 12px; background: var(--accent-blue); color: #000; font-weight: 800; text-decoration: none;">Написать Создателю (@light18101) ✈️</a>
+        `;
+      }
+
+      overlay.classList.add('open');
+    }
+
+    function closeSheet() {
+      haptic('light');
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    function closeModal(e) {
+      if (e.target.id === 'modalOverlay') {
+        closeSheet();
+      }
+    }
+
+    function triggerEasterEgg() {
+      haptic('heavy');
+      alert('♾️ EcosystemNever: Бесконечные возможности цифрового мира!');
+    }
+  </script>
+</body>
+</html>
