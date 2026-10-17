@@ -1679,6 +1679,184 @@
       transform: scale(0.95);
     }
 
+
+    /* MINI APP CYBER TOOLS */
+    .mini-tool-subpanel {
+      animation: tabFadeIn 0.2s ease-out;
+    }
+    .wheel-stage {
+      position: relative;
+      width: 280px;
+      height: 280px;
+    }
+    .wheel-pointer {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 24px solid #ff0055;
+      filter: drop-shadow(0 0 8px rgba(255, 0, 85, 0.8));
+      z-index: 10;
+    }
+    .wheel-canvas {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 0, 0, 0.8);
+      transition: transform 4.5s cubic-bezier(0.17, 0.97, 0.12, 1);
+    }
+    .top-podium {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 12px;
+    }
+    .podium-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .podium-avatar {
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .slot-1 .podium-avatar { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
+    .slot-2 .podium-avatar { border-color: #94a3b8; box-shadow: 0 0 10px rgba(148, 163, 184, 0.4); }
+    .slot-3 .podium-avatar { border-color: #b45309; box-shadow: 0 0 10px rgba(180, 83, 9, 0.4); }
+    .podium-pedestal {
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      color: #000;
+      margin-top: 6px;
+    }
+    .slot-1 .podium-pedestal { background: linear-gradient(180deg, #fbbf24, #d97706); }
+    .slot-2 .podium-pedestal { background: linear-gradient(180deg, #cbd5e1, #64748b); }
+    .slot-3 .podium-pedestal { background: linear-gradient(180deg, #d97706, #78350f); }
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .leaderboard-table td {
+      padding: 8px 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+    .terminal-window {
+      background: #03060c;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .terminal-header {
+      background: #090e18;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .term-dots { display: flex; gap: 4px; }
+    .term-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .term-body {
+      padding: 10px;
+      overflow-y: auto;
+      color: #00ff88;
+      line-height: 1.4;
+    }
+    .term-input-line { display: flex; align-items: center; gap: 6px; }
+    .term-prompt { color: var(--accent); font-weight: 800; }
+    .term-input {
+      flex-grow: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+      font-size: 0.75rem;
+    }
+    .drop-zone {
+      border: 1.5px dashed var(--accent);
+      background: rgba(0, 240, 255, 0.04);
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+    }
+    .drop-pin-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 900;
+      color: var(--accent);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+    .short-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .party-chat-box {
+      background: #060912;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+    .party-chat-feed {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .party-chat-msg {
+      font-size: 0.68rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .party-chat-msg strong { color: var(--accent); }
+    .party-chat-input-row {
+      padding: 6px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 6px;
+    }
+    .party-input-url {
+      flex-grow: 1;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 4px 8px;
+      color: #fff;
+      font-size: 0.7rem;
+      outline: none;
+    }
+
   </style>
 </head>
 <body>
@@ -2001,6 +2179,171 @@
       </div>
     </div> <!-- /viewMessenger -->
 
+
+    <!-- VIEW 4: КИБЕР-ХАБ (6 ИНСТРУМЕНТОВ БЕЗ КРД) -->
+    <div id="viewTools" class="app-tab-view" style="display: none;">
+      <div class="calc-app-wrap">
+        <div class="calc-card-box">
+          <div class="calc-section-header">
+            <div class="calc-tag">05 // КИБЕР-СЕРВИСЫ</div>
+            <h2 class="calc-title">Кибер-Хаб EcosystemNever</h2>
+            <p class="calc-desc">Интерактивные прикладные сервисы экосистемы.</p>
+          </div>
+
+          <!-- СЕЛЕКТОР ИНСТРУМЕНТОВ -->
+          <div class="chat-channel-bar" id="miniToolsTabBar">
+            <button class="chat-chan-btn active" onclick="switchMiniToolSubTab('wheel', this)">🎰 Колесо</button>
+            <button class="chat-chan-btn" onclick="switchMiniToolSubTab('top', this)">🏆 Топ</button>
+            <button class="chat-chan-btn" onclick="switchMiniToolSubTab('term', this)">💻 Терминал</button>
+            <button class="chat-chan-btn" onclick="switchMiniToolSubTab('short', this)">🔗 Ссылки</button>
+            <button class="chat-chan-btn" onclick="switchMiniToolSubTab('party', this)">🍿 Party</button>
+            <button class="chat-chan-btn" onclick="switchMiniToolSubTab('drop', this)">📁 Drop</button>
+          </div>
+
+          <!-- 1. ПОД-ТАБ: КОЛЕСО ФОРТУНЫ -->
+          <div class="mini-tool-subpanel" id="subPanelWheel">
+            <div style="text-align: center; margin: 15px 0;">
+              <div class="wheel-stage" style="margin: 0 auto;">
+                <div class="wheel-pointer"></div>
+                <canvas id="miniWheelCanvas" class="wheel-canvas" width="280" height="280"></canvas>
+              </div>
+              <div style="font-size: 0.72rem; color: #94a3b8; margin: 12px 0 6px;">Вращайте колесо и получайте скидки до -50% у @light18101!</div>
+              <button class="btn-submit-order" id="btnMiniSpinWheel" onclick="spinMiniLuckyWheel()">
+                🎰 КРУТИТЬ КОЛЕСО ФОРТУНЫ
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. ПОД-ТАБ: ЛИДЕРБОРД -->
+          <div class="mini-tool-subpanel" id="subPanelTop" style="display: none;">
+            <div class="top-podium" style="margin: 15px 0 20px;">
+              <div class="podium-slot slot-2" style="width: 95px;">
+                <div class="podium-avatar" style="width: 48px; height: 48px; font-size: 1.3rem;">🥈</div>
+                <div style="font-size: 0.7rem; font-weight: 800; color: #fff;">CyberHunter</div>
+                <div style="font-size: 0.58rem; color: #94a3b8;">1,850 EXP</div>
+                <div class="podium-pedestal" style="height: 60px;">2</div>
+              </div>
+              <div class="podium-slot slot-1" style="width: 105px;">
+                <div class="podium-avatar" style="width: 55px; height: 55px; font-size: 1.5rem;">👑</div>
+                <div style="font-size: 0.75rem; font-weight: 900; color: #fbbf24;">@light18101</div>
+                <div style="font-size: 0.6rem; color: #fde68a;">FOUNDER</div>
+                <div class="podium-pedestal" style="height: 85px;">1</div>
+              </div>
+              <div class="podium-slot slot-3" style="width: 95px;">
+                <div class="podium-avatar" style="width: 48px; height: 48px; font-size: 1.3rem;">🥉</div>
+                <div style="font-size: 0.7rem; font-weight: 800; color: #fff;">NeonKitsune</div>
+                <div style="font-size: 0.58rem; color: #94a3b8;">1,420 EXP</div>
+                <div class="podium-pedestal" style="height: 45px;">3</div>
+              </div>
+            </div>
+            <table class="leaderboard-table" style="font-size: 0.72rem;">
+              <tbody>
+                <tr>
+                  <td><span class="badge-user-rank" style="color: #fbbf24;">#1</span></td>
+                  <td><strong>Miras (@light18101)</strong></td>
+                  <td><strong style="color: #fbbf24;">5,400 EXP</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="badge-user-rank">#2</span></td>
+                  <td><strong>CyberHunter</strong></td>
+                  <td>1,850 EXP</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-user-rank">#3</span></td>
+                  <td><strong>NeonKitsune</strong></td>
+                  <td>1,420 EXP</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-user-rank">#4</span></td>
+                  <td><strong>Ты (Игрок)</strong></td>
+                  <td><strong style="color: var(--accent);"><span id="lblUserExpRank">100</span> EXP</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 3. ПОД-ТАБ: ТЕРМИНАЛ -->
+          <div class="mini-tool-subpanel" id="subPanelTerm" style="display: none;">
+            <div class="terminal-window" style="margin-top: 10px;">
+              <div class="terminal-header">
+                <div class="term-dots">
+                  <div class="term-dot" style="background: #ef4444;"></div>
+                  <div class="term-dot" style="background: #eab308;"></div>
+                  <div class="term-dot" style="background: #22c55e;"></div>
+                </div>
+                <div style="font-size: 0.65rem; color: #64748b;">guest@never: ~</div>
+              </div>
+              <div class="term-body" id="miniTermBody" style="height: 200px; font-size: 0.75rem;">
+                <div>⚡ ECOSYSTEMNEVER SHELL v2.4</div>
+                <div>Команды: <strong style="color:#fff;">help</strong>, <strong style="color:#fff;">secret</strong>, <strong style="color:#fff;">projects</strong>, <strong style="color:#fff;">clear</strong></div>
+              </div>
+              <div style="padding: 8px 10px; background: #060912; border-top: 1px solid var(--border-subtle);">
+                <div class="term-input-line">
+                  <span class="term-prompt" style="font-size: 0.75rem;">$</span>
+                  <input type="text" class="term-input" id="miniTermInput" placeholder="help, secret..." onkeydown="handleMiniTerminalKey(event)">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. ПОД-ТАБ: NEVERSHORT -->
+          <div class="mini-tool-subpanel" id="subPanelShort" style="display: none;">
+            <div style="text-align: center; margin: 10px 0;">
+              <div style="font-size: 0.75rem; color: #cbd5e1; margin-bottom: 8px;">Сокращатель ссылок и генератор QR:</div>
+              <input type="url" class="calc-input-field" id="miniShortInput" placeholder="Вставьте длинный URL...">
+              <button class="btn-submit-order" style="margin-top: 8px; padding: 10px;" onclick="generateMiniShortLink()">
+                ⚡ СОКРАТИТЬ И СОЗДАТЬ QR
+              </button>
+              <div id="miniShortResultBox" style="display: none; margin-top: 12px; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; border: 1px solid var(--accent);">
+                <div class="short-link-pill" style="font-size: 0.85rem; padding: 6px 14px;">
+                  <span id="miniShortTxt">never.link/x7k9</span>
+                  <button class="btn-glass" style="padding: 2px 6px; font-size: 0.65rem;" onclick="copyMiniShort()">📋</button>
+                </div>
+                <div id="miniShortQrWrap" style="background: #fff; padding: 6px; border-radius: 8px; display: inline-block; margin-top: 8px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. ПОД-ТАБ: NEVERPARTY -->
+          <div class="mini-tool-subpanel" id="subPanelParty" style="display: none;">
+            <div style="margin-top: 10px;">
+              <div style="font-size: 0.75rem; color: #fff; font-weight: 800; margin-bottom: 6px;">🍿 Комната синхронного просмотра:</div>
+              <div style="font-size: 0.68rem; color: #94a3b8; margin-bottom: 10px;">Комната #NEVER-809 (3 самурая онлайн)</div>
+              <div class="party-chat-box" style="height: 180px;">
+                <div class="party-chat-feed" id="miniPartyFeed">
+                  <div class="party-chat-msg"><strong>Miras:</strong> Комната открыта, воспроизведение синхронизировано!</div>
+                  <div class="party-chat-msg"><strong>CyberHunter:</strong> Звук и картинка супер 🔥</div>
+                </div>
+                <div class="party-chat-input-row">
+                  <input type="text" class="party-input-url" id="miniPartyInput" placeholder="Чат..." onkeydown="if(event.key==='Enter') sendMiniPartyMsg()">
+                  <button class="btn-primary" style="padding: 4px 10px; font-size: 0.72rem;" onclick="sendMiniPartyMsg()">Отпр.</button>
+                </div>
+              </div>
+              <button class="btn-glass" style="width: 100%; margin-top: 8px; padding: 8px; font-size: 0.75rem;" onclick="openExternalUrl('https://miras101208miras-cpu.github.io/EcosystemNever/#tools')">
+                🎬 Открыть полноэкранный плеер
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. ПОД-ТАБ: NEVERDROP -->
+          <div class="mini-tool-subpanel" id="subPanelDrop" style="display: none;">
+            <div style="text-align: center; margin: 15px 0;">
+              <div class="drop-zone" onclick="document.getElementById('miniDropFileInput').click()" style="padding: 20px 10px;">
+                <input type="file" id="miniDropFileInput" style="display: none;" onchange="handleMiniDropFile(event)">
+                <div style="font-size: 1.8rem;">📦</div>
+                <div style="font-size: 0.8rem; font-weight: 800; color: #fff;">Выбрать файл для передачи</div>
+              </div>
+              <div id="miniDropPinResult" style="display: none;">
+                <div style="font-size: 0.7rem; color: #94a3b8;">ПИН-КОД ПОЛУЧЕНИЯ:</div>
+                <div class="drop-pin-badge" id="miniDropPinVal" style="font-size: 1.8rem; padding: 6px 16px;">8294</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div> <!-- /viewTools -->
+
   </div>
 
   <!-- МОДАЛЬНЫЙ СУНДУК ЗА ПОБЕДУ -->
@@ -2133,6 +2476,10 @@
       <span style="font-size: 1.15rem;">🧮</span>
       <span data-i18n="tab_calc">Смета 3D</span>
     </button>
+    <button class="tab-btn" id="tabBtnTools" onclick="switchAppTab('tools')">
+      <span style="font-size: 1.15rem;">🛠️</span>
+      <span>Хаб</span>
+    </button>
     <button class="tab-btn" id="tabBtnChat" onclick="switchAppTab('chat')">
       <span style="font-size: 1.15rem;">💬</span>
       <span data-i18n="tab_chat">Чат</span>
@@ -2140,10 +2487,6 @@
     <button class="tab-btn" id="tabBtnHashira" onclick="openHashiraSelect(true)">
       <span style="font-size: 1.15rem;">⛩️</span>
       <span data-i18n="tab_hashira">Столпы</span>
-    </button>
-    <button class="tab-btn" onclick="openExternalUrl('https://miras101208miras-cpu.github.io/EcosystemNever/')">
-      <span style="font-size: 1.15rem;">🌐</span>
-      <span data-i18n="tab_portal">Портал</span>
     </button>
   </nav>
 
@@ -3250,6 +3593,11 @@
         if (view) { view.style.display = 'block'; view.classList.add('active'); }
         document.getElementById('tabBtnCalc')?.classList.add('active');
         updateMiniCalcSummary();
+      } else if (tabName === 'tools') {
+        const view = document.getElementById('viewTools');
+        if (view) { view.style.display = 'block'; view.classList.add('active'); }
+        document.getElementById('tabBtnTools')?.classList.add('active');
+        setTimeout(drawMiniWheel, 100);
       } else if (tabName === 'chat') {
         const view = document.getElementById('viewMessenger');
         if (view) { view.style.display = 'block'; view.classList.add('active'); }
@@ -3629,6 +3977,216 @@
     // Инициализация языка при старте
     setAppLanguage(appLang);
     updatePriceLabels();
+
+  
+
+    /* ==============================================================
+       15. КИБЕР-ХАБ В MINI APP (ЛОГИКА 6 ИНСТРУМЕНТОВ)
+       ============================================================== */
+    function switchMiniToolSubTab(subTabKey, btn) {
+      document.querySelectorAll('#miniToolsTabBar .chat-chan-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.mini-tool-subpanel').forEach(p => p.style.display = 'none');
+
+      btn.classList.add('active');
+      const target = document.getElementById('subPanel' + subTabKey.charAt(0).toUpperCase() + subTabKey.slice(1));
+      if (target) target.style.display = 'block';
+
+      if (subTabKey === 'wheel') setTimeout(drawMiniWheel, 50);
+      if (subTabKey === 'top') {
+        const expEl = document.getElementById('lblUserExpRank');
+        if (expEl) expEl.textContent = save?.exp || 100;
+      }
+      haptic('light');
+    }
+
+    // КОЛЕСО В MINI APP
+    const MINI_WHEEL_SECTORS = [
+      { text: '-10% Скидка', color: '#0f172a', textColor: '#38bdf8', promo: 'NEVER-10-DISCOUNT' },
+      { text: '+150 EXP', color: '#1e1b4b', textColor: '#a855f7', promo: 'EXP-150-BOOST' },
+      { text: '5 TON Бонус', color: '#022c22', textColor: '#34d399', promo: 'TON-5-CRYPTO' },
+      { text: '-25% VIP Скидка', color: '#172554', textColor: '#60a5fa', promo: 'VIP-25-NEVER' },
+      { text: '+500 Монет', color: '#312e81', textColor: '#c084fc', promo: 'COINS-500-GOLD' },
+      { text: '-50% МЕГА-СКИДКА', color: '#450a0a', textColor: '#f87171', promo: 'MEGA-50-FOUNDER' },
+      { text: 'VIP Статус 2.0', color: '#422006', textColor: '#fbbf24', promo: 'VIP-STATUS-PASS' },
+      { text: 'Повторный Спин 🔄', color: '#134e4a', textColor: '#2dd4bf', promo: 'FREE-SPIN-AGAIN' }
+    ];
+    let miniWheelAngle = 0;
+    let isSpinningMiniWheel = false;
+
+    function drawMiniWheel() {
+      const canvas = document.getElementById('miniWheelCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const numSectors = MINI_WHEEL_SECTORS.length;
+      const arc = (2 * Math.PI) / numSectors;
+      const radius = canvas.width / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      MINI_WHEEL_SECTORS.forEach((sec, i) => {
+        const angle = i * arc;
+        ctx.beginPath();
+        ctx.fillStyle = sec.color;
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1.5;
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius - 4, angle, angle + arc);
+        ctx.lineTo(radius, radius);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = sec.textColor;
+        ctx.font = 'bold 11px "JetBrains Mono", monospace';
+        ctx.fillText(sec.text, radius - 15, 4);
+        ctx.restore();
+      });
+
+      ctx.beginPath();
+      ctx.arc(radius, radius, 24, 0, 2 * Math.PI);
+      ctx.fillStyle = '#04060a';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('NEVER', radius, radius);
+    }
+
+    function spinMiniLuckyWheel() {
+      if (isSpinningMiniWheel) return;
+      isSpinningMiniWheel = true;
+      haptic('heavy');
+
+      const btn = document.getElementById('btnMiniSpinWheel');
+      if (btn) btn.disabled = true;
+
+      const winningIndex = Math.floor(Math.random() * MINI_WHEEL_SECTORS.length);
+      const sectorArc = 360 / MINI_WHEEL_SECTORS.length;
+      const targetRotation = (360 * 6) + (270 - (winningIndex * sectorArc) - (sectorArc / 2));
+
+      miniWheelAngle += targetRotation;
+      const canvas = document.getElementById('miniWheelCanvas');
+      if (canvas) {
+        canvas.style.transform = 'rotate(' + miniWheelAngle + 'deg)';
+      }
+
+      setTimeout(() => {
+        isSpinningMiniWheel = false;
+        if (btn) btn.disabled = false;
+        const prize = MINI_WHEEL_SECTORS[winningIndex];
+
+        // Применяем призы в игре
+        if (prize.promo === 'EXP-150-BOOST') {
+          save.exp += 150;
+          document.getElementById('lblCoins').textContent = save.coins;
+          document.getElementById('lblExp').textContent = save.exp;
+        } else if (prize.promo === 'COINS-500-GOLD') {
+          save.coins += 500;
+          document.getElementById('lblCoins').textContent = save.coins;
+        }
+
+        try { navigator.clipboard?.writeText(prize.promo); } catch(e) {}
+        showFlyingToast('🎉 Приз: ' + prize.text + '! Код скопирован: ' + prize.promo);
+
+        setTimeout(() => {
+          openExternalUrl('https://t.me/light18101?text=' + encodeURIComponent('Привет, Мирас! Я выиграл в Кибер-Колесе: ' + prize.text + ' (Промокод: ' + prize.promo + ')'));
+        }, 1200);
+      }, 4600);
+    }
+
+    // ТЕРМИНАЛ В MINI APP
+    function handleMiniTerminalKey(e) {
+      if (e.key !== 'Enter') return;
+      const input = document.getElementById('miniTermInput');
+      if (!input) return;
+      const cmd = input.value.trim().toLowerCase();
+      input.value = '';
+      executeMiniTerm(cmd);
+    }
+
+    function executeMiniTerm(cmd) {
+      const body = document.getElementById('miniTermBody');
+      if (!body || !cmd) return;
+
+      const line = document.createElement('div');
+      line.innerHTML = '<span style="color:var(--accent);">$</span> ' + cmd;
+      body.appendChild(line);
+
+      let out = '';
+      if (cmd === 'help') out = 'Команды: help, secret, projects, calc, founder, clear';
+      else if (cmd === 'secret' || cmd === 'light18101') out = '🔥 ЧИТ-КОД: NEVER-HACK-30 (-30% на проекты у @light18101)';
+      else if (cmd === 'projects') out = 'Проекты: 3D Порталы, TMA Mini Apps, AI Боты, NeverCloud';
+      else if (cmd === 'calc') { switchAppTab('calc'); return; }
+      else if (cmd === 'founder') out = 'Создатель: Мирас @light18101';
+      else if (cmd === 'clear') { body.innerHTML = '<div>⚡ Терминал очищен.</div>'; return; }
+      else out = 'Команда не найдена: ' + cmd;
+
+      const outEl = document.createElement('div');
+      outEl.style.color = '#94a3b8';
+      outEl.innerHTML = out;
+      body.appendChild(outEl);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    // NEVERSHORT В MINI APP
+    function generateMiniShortLink() {
+      const input = document.getElementById('miniShortInput');
+      if (!input?.value.trim()) return;
+      const code = Math.random().toString(36).substring(2, 6);
+      const url = 'https://never.link/' + code;
+      document.getElementById('miniShortTxt').textContent = url;
+      document.getElementById('miniShortResultBox').style.display = 'block';
+
+      const wrap = document.getElementById('miniShortQrWrap');
+      if (wrap) {
+        wrap.innerHTML = '<svg width="90" height="90" viewBox="0 0 90 90"><rect width="90" height="90" fill="#fff"/><rect x="8" y="8" width="24" height="24" fill="#000"/><rect x="12" y="12" width="16" height="16" fill="#fff"/><rect x="16" y="16" width="8" height="8" fill="#38bdf8"/><rect x="58" y="8" width="24" height="24" fill="#000"/><rect x="8" y="58" width="24" height="24" fill="#000"/><rect x="40" y="40" width="12" height="12" fill="#38bdf8"/></svg>';
+      }
+      haptic('light');
+    }
+
+    function copyMiniShort() {
+      const txt = document.getElementById('miniShortTxt')?.textContent || '';
+      try { navigator.clipboard?.writeText(txt); } catch(e) {}
+      showFlyingToast('📋 Скопировано: ' + txt);
+      haptic('light');
+    }
+
+    // PARTY В MINI APP
+    function sendMiniPartyMsg() {
+      const input = document.getElementById('miniPartyInput');
+      if (!input?.value.trim()) return;
+      const text = input.value.trim();
+      input.value = '';
+
+      const feed = document.getElementById('miniPartyFeed');
+      if (feed) {
+        const div = document.createElement('div');
+        div.className = 'party-chat-msg';
+        div.innerHTML = '<strong>Ты:</strong> ' + text;
+        feed.appendChild(div);
+        feed.scrollTop = feed.scrollHeight;
+      }
+      haptic('light');
+    }
+
+    // DROP В MINI APP
+    function handleMiniDropFile(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const pin = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('miniDropPinVal').textContent = pin;
+      document.getElementById('miniDropPinResult').style.display = 'block';
+      showFlyingToast('✅ PIN-код для получения файла: ' + pin);
+      haptic('success');
+    }
 
   </script>
 </body>
