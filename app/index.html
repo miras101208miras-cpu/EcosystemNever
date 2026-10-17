@@ -2458,6 +2458,23 @@
                   </div>
                 </div>
 
+                
+                <!-- БЛОК: МАРАФОН КРД В MINI APP -->
+                <div style="margin: 8px 0; padding: 10px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 10px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <div style="font-size: 0.75rem; font-weight: 800; color: #f87171;">⚔️ МАРАФОН КРД</div>
+                    <div style="display: flex; gap: 4px;">
+                      <button type="button" class="btn-submit-order" style="padding: 4px 8px; font-size: 0.68rem; background: #ef4444; color: #fff; width: auto;" onclick="startMiniKrdMarathon()">
+                        ▶️ 1 сезон 1 серия
+                      </button>
+                      <button type="button" class="btn-glass" style="padding: 4px 8px; font-size: 0.68rem;" onclick="playNextMiniKrd()">
+                        След. ⏭️
+                      </button>
+                    </div>
+                  </div>
+                  <div style="font-size: 0.65rem; color: #cbd5e1;" id="lblMiniKrdEpTitle">Нажмите чтобы смотреть Клинок, рассекающий демонов с 1 серии по порядку</div>
+                </div>
+
                 <div class="party-screen" style="border-radius: 8px; margin-bottom: 8px;">
                   <iframe id="miniPartyIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
@@ -4653,6 +4670,37 @@
       showFlyingToast('🎬 Видео ' + file.name + ' запущено!');
       addMiniPartyMsg('Ты', '📁 Запустил видео с устройства: ' + file.name);
       haptic('success');
+    }
+
+
+
+    let miniKrdIndex = 0;
+    const MINI_KRD_EPS = [
+      { ep: 1, title: '1 серия: Жестокость', url: 'https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1' },
+      { ep: 2, title: '2 серия: Учитель Урокодаки', url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1' },
+      { ep: 3, title: '3 серия: Сабито и Макомо', url: 'https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1' },
+      { ep: 4, title: '4 серия: Финальный отбор', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1' },
+      { ep: 5, title: '5 серия: Клинок нитирин', url: 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1' }
+    ];
+
+    function startMiniKrdMarathon() {
+      playMiniKrd(0);
+    }
+
+    function playMiniKrd(index) {
+      miniKrdIndex = index % MINI_KRD_EPS.length;
+      const item = MINI_KRD_EPS[miniKrdIndex];
+      const iframe = document.getElementById('miniPartyIframe');
+      if (iframe) iframe.src = item.url;
+      const lbl = document.getElementById('lblMiniKrdEpTitle');
+      if (lbl) lbl.textContent = '⚔️ Играет: ' + item.title;
+      showFlyingToast('⚔️ ' + item.title);
+      addMiniPartyMsg('Ты', '⚔️ Включил КРД: ' + item.title);
+      haptic('success');
+    }
+
+    function playNextMiniKrd() {
+      playMiniKrd(miniKrdIndex + 1);
     }
 
 </script>

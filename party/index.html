@@ -549,6 +549,32 @@
           <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1', 'Cyberpunk 2077 Night City')">🏙️ Cyberpunk Showcase</button>
           <button class="quick-btn" onclick="setQuickVideo('https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1', 'Demon Slayer OST Highlights')">⚔️ Demon Slayer OST</button>
         </div>
+
+        <!-- БЛОК: МАРАФОН КРД (DEMON SLAYER ПО СЕРИЯМ ПО ОЧЕРЕДИ) -->
+        <div class="krd-marathon-box" style="margin-top: 14px; padding: 14px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.3rem;">⚔️</span>
+              <div>
+                <strong style="color: #f87171; font-size: 0.95rem; font-family: 'Montserrat', sans-serif;">МАРАФОН DEMON SLAYER (КРД)</strong>
+                <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 2px;" id="lblKrdCurrentEp">Сезон 1 • Смотри все серии подряд по очереди</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn btn-primary" id="btnStartKrdMarathon" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; padding: 8px 16px; font-size: 0.78rem; font-weight: 800; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);" onclick="startKrdFromStart()">
+                ▶️ Начать с 1 сезона 1 серии
+              </button>
+              <button type="button" class="btn btn-glass" style="padding: 8px 14px; font-size: 0.78rem;" onclick="playNextKrdEpisode()">
+                Следующая серия ⏭️
+              </button>
+            </div>
+          </div>
+
+          <!-- СЕРИИ 1 СЕЗОНА ПО ПОРЯДКУ -->
+          <div class="krd-episodes-bar" id="krdEpisodesBar" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px;">
+            <!-- Серии генерируются JS -->
+          </div>
+        </div>
       </div>
     </div>
 
@@ -953,6 +979,67 @@
       const file = event.dataTransfer?.files?.[0];
       if (file) playLocalFile(file);
     }
+
+
+
+    // 8. МАРАФОН КРД: ДАННЫЕ И ПЕРЕКЛЮЧЕНИЕ СЕРИЙ ПО ОЧЕРЕДИ
+    const KRD_EPISODES = [
+      { s: 1, ep: 1, title: 'Серия 1: Жестокость (Cruelty)', url: 'https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1', desc: 'Тандзиро находит свою семью и спасает Незуко' },
+      { s: 1, ep: 2, title: 'Серия 2: Учитель Сакондзи Урокодаки', url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1', desc: 'Путь к горе Сагири и первая встреча с Урокодаки' },
+      { s: 1, ep: 3, title: 'Серия 3: Сабито и Макомо', url: 'https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1', desc: 'Тренировка рассечения огромного валуна клинком' },
+      { s: 1, ep: 4, title: 'Серия 4: Финальный отбор', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1', desc: 'Гора Фудзикасанэ среди цветущей глицинии' },
+      { s: 1, ep: 5, title: 'Серия 5: Собственная сталь', url: 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1', desc: 'Выбор руды тамахаганэ и ковка клинка нитирин' },
+      { s: 1, ep: 6, title: 'Серия 6: Мечник в сопровождении демона', url: 'https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1', desc: 'Первое задание и битва с Болотным демоном' },
+      { s: 1, ep: 7, title: 'Серия 7: Мудзан Кибуцудзи', url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1', desc: 'Встреча в Токио Асакуса с прародителем демонов' },
+      { s: 1, ep: 8, title: 'Серия 8: Запах чарующей крови', url: 'https://www.youtube.com/embed/bNm_LdD1fW0?autoplay=1', desc: 'Тамаё и Юсиро приходят на помощь Тандзиро' },
+      { s: 1, ep: 9, title: 'Серия 9: Демон с темари и Демон со стрелами', url: 'https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1', desc: 'Ожесточенная битва с приспешниками Мудзана' },
+      { s: 1, ep: 10, title: 'Серия 10: Вместе навсегда', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1', desc: 'Победа и отправка на юг, встреча с Дзэницу' }
+    ];
+
+    let currentKrdIndex = 0;
+
+    function startKrdFromStart() {
+      playKrdEpisode(0);
+    }
+
+    function playKrdEpisode(index) {
+      if (index < 0 || index >= KRD_EPISODES.length) index = 0;
+      currentKrdIndex = index;
+      const ep = KRD_EPISODES[index];
+
+      loadVideoEmbed(ep.url, '⚔️ КРД: ' + ep.title, true, false);
+
+      const badge = document.getElementById('lblKrdCurrentEp');
+      if (badge) badge.textContent = 'Сейчас играет: ' + ep.title + ' • ' + ep.desc;
+
+      renderSystemBubble('⚔️ ' + userName + ' включил КРД: <strong>' + ep.title + '</strong>');
+
+      broadcastPacket({
+        type: 'chat',
+        user: userName,
+        text: '⚔️ Смотрим КРД: ' + ep.title
+      });
+
+      renderKrdButtons();
+    }
+
+    function playNextKrdEpisode() {
+      const nextIdx = (currentKrdIndex + 1) % KRD_EPISODES.length;
+      playKrdEpisode(nextIdx);
+    }
+
+    function renderKrdButtons() {
+      const bar = document.getElementById('krdEpisodesBar');
+      if (!bar) return;
+      bar.innerHTML = KRD_EPISODES.map((ep, i) => {
+        const isAct = i === currentKrdIndex;
+        const bg = isAct ? 'background: #ef4444; color: #fff; font-weight: 800; border-color: #f87171;' : 'background: rgba(255,255,255,0.05); color: #cbd5e1;';
+        return '<button type="button" class="quick-btn" style="' + bg + ' white-space: nowrap; padding: 6px 12px; font-size: 0.75rem;" onclick="playKrdEpisode(' + i + ')">' + (isAct ? '▶ ' : '') + (i + 1) + ' серия</button>';
+      }).join('');
+    }
+
+    // Рендерим кнопки серий при загрузке
+    setTimeout(renderKrdButtons, 200);
 
 </script>
 </body>
