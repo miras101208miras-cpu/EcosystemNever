@@ -450,6 +450,87 @@
       flex-direction: column;
       cursor: pointer;
       transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-btn-card.on-cooldown {
+      filter: saturate(0.5);
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      cursor: not-allowed;
+    }
+
+    .cd-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 8, 14, 0.82);
+      backdrop-filter: blur(3px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      border-radius: 11px;
+      pointer-events: none;
+    }
+
+    .cd-timer-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 900;
+      color: #fbbf24;
+      text-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .cd-progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    @keyframes shakeCd {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+
+    .cd-shake {
+      animation: shakeCd 0.3s ease-in-out;
+    }
+
+    .flying-toast {
+      position: fixed;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fde68a;
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      z-index: 999;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8), 0 0 12px rgba(245, 158, 11, 0.3);
+      animation: toastAnim 1.6s forwards;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    @keyframes toastAnim {
+      0% { opacity: 0; transform: translate(-50%, 12px) scale(0.9); }
+      15% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      75% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -12px) scale(0.95); }
     }
 
     .form-btn-card.unlocked {
@@ -800,6 +881,232 @@
     .tab-btn.active {
       color: var(--accent);
     }
+
+    /* VIP БЕТА-ТЕСТ БЕЙДЖ И ОКНО */
+    .vip-beta-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3));
+      border: 1px solid #f59e0b;
+      color: #fbbf24;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+      animation: pulseGold 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseGold {
+      0%, 100% { box-shadow: 0 0 8px rgba(245, 158, 11, 0.3); transform: scale(1); }
+      50% { box-shadow: 0 0 16px rgba(245, 158, 11, 0.65); transform: scale(1.04); }
+    }
+
+    .beta-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 12, 0.94);
+      backdrop-filter: blur(18px);
+      z-index: 1050;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .beta-modal-overlay.open {
+      display: flex;
+      animation: fadeIn 0.3s forwards;
+    }
+
+    .beta-window {
+      width: 100%;
+      max-width: 400px;
+      background: linear-gradient(160deg, #131d2e 0%, #090e18 100%);
+      border: 2px solid #f59e0b;
+      border-radius: 24px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 0 55px rgba(245, 158, 11, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .beta-window::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 110px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 70%);
+      filter: blur(25px);
+      pointer-events: none;
+    }
+
+    .beta-infinity-glow {
+      font-size: 3.5rem;
+      color: #38bdf8;
+      text-shadow: 0 0 25px rgba(56, 189, 248, 0.8), 0 0 50px rgba(245, 158, 11, 0.4);
+      margin-bottom: 6px;
+      animation: floatInf 3s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes floatInf {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.06); }
+    }
+
+    .beta-badge-ribbon {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .beta-header-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .beta-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .beta-pass-card {
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 12px 14px;
+      text-align: left;
+      margin-bottom: 16px;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .beta-pass-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 6px;
+    }
+
+    .beta-status-live {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .beta-pass-code-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .beta-code-lbl {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .beta-code-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #fbbf24;
+      letter-spacing: 2px;
+      margin-top: 2px;
+      user-select: all;
+    }
+
+    .beta-perks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .beta-perk-item {
+      font-size: 0.72rem;
+      color: #e2e8f0;
+      line-height: 1.35;
+    }
+
+    .beta-actions-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-beta-copy {
+      width: 100%;
+      padding: 11px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-beta-copy:active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-beta-activate {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #38bdf8, #2563eb);
+      border: none;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-beta-activate:active {
+      transform: scale(0.98);
+    }
+
+    .btn-beta-close {
+      width: 100%;
+      padding: 9px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -810,8 +1117,12 @@
     
     <!-- 1. ВЕРХНЯЯ СТАТИСТИКА И КНОПКА СМЕНЫ СТОЛПА -->
     <div class="top-header-bar">
-      <div class="stage-badge">
+      <div class="stage-badge" id="stageBadgeWrap" onclick="handleStageBadgeClick()" title="⚔️ Уровень дуэли">
         <span>⚔️</span> УРОВЕНЬ <span id="lblLevel">1</span>
+      </div>
+
+      <div class="vip-beta-pill" id="vipBetaPill" style="display: none;" onclick="openBetaTestModal()" title="Доступ к бета-тесту EcosystemNever 2.0">
+        👑 VIP BETA
       </div>
 
       <button class="btn-change-hashira" onclick="openHashiraSelect(true)">
@@ -980,6 +1291,46 @@
         <button onclick="closeAllFormsModal()" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; font-size: 0.9rem; cursor: pointer;">✕</button>
       </div>
       <div class="all-forms-list-container" id="allFormsList"></div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: БЕТА-ТЕСТ ПОСЛЕ 100 УРОВНЯ -->
+  <div class="beta-modal-overlay" id="betaTestModal">
+    <div class="beta-window">
+      <div class="beta-infinity-glow">♾️</div>
+      <div class="beta-badge-ribbon">🏆 ВЫСШИЙ РАНГ: БЕТА-ТЕСТЕР NEVER 2.0</div>
+      <h2 class="beta-header-title">ДОСТУП К БЕТА-ТЕСТУ РАЗБЛОКИРОВАН!</h2>
+      <p class="beta-sub">
+        Поздравляем! Ты достиг <b>100+ уровня</b> и сразил Владыку Демонов Музана Кибуцудзи! Твое имя навсегда вписано в Зал Славы Кисацутай & EcosystemNever.
+      </p>
+
+      <div class="beta-pass-card">
+        <div class="beta-pass-header">
+          <span style="font-weight: 800; color: #fff; font-size: 0.78rem;">OFFICIAL VIP PASS</span>
+          <span class="beta-status-live">● ACTIVE</span>
+        </div>
+        <div class="beta-pass-code-box">
+          <div class="beta-code-lbl">ПЕРСОНАЛЬНЫЙ VIP-КЛЮЧ:</div>
+          <div class="beta-code-val" id="betaKeyVal">NEVER-BETA-78X2K9</div>
+        </div>
+        <div class="beta-perks-list">
+          <div class="beta-perk-item">⚡ Ранний доступ к обновлению «Клинок Never 2.0» (PvP & Кооператив)</div>
+          <div class="beta-perk-item">🤖 Эксклюзивный доступ к новым AI-ботам EcosystemNever</div>
+          <div class="beta-perk-item">🎖️ Персональная отметка в Telegram-сообществе создателя</div>
+        </div>
+      </div>
+
+      <div class="beta-actions-col">
+        <button class="btn-beta-copy" onclick="copyBetaKey()">
+          📋 СКОПИРОВАТЬ КЛЮЧ
+        </button>
+        <button class="btn-beta-activate" onclick="openCreatorWithBetaKey()">
+          🚀 АКТИВИРОВАТЬ У СОЗДАТЕЛЯ @light18101
+        </button>
+        <button class="btn-beta-close" onclick="closeBetaTestModal()">
+          ⚔️ ПРОДОЛЖИТЬ БИТВУ
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1184,7 +1535,9 @@
       exp: 100,
       bonusDmg: 0,
       bonusHp: 0,
-      bonusDef: 0
+      bonusDef: 0,
+      hasBetaAccess: false,
+      betaKey: ''
     };
 
     try {
@@ -1203,36 +1556,36 @@
 
     let demon = null;
     let demonTimerInterval = null;
-    let demonTimerLeft = 2.8;
-    const DEMON_ATTACK_SPEED = 2.8;
+    let demonAttackSpeed = 1.5;
+    let demonTimerLeft = 1.5;
 
     function getHashira() {
       return HASHIRAS.find(h => h.id === save.hashiraId) || HASHIRAS[0];
     }
 
     /* ==============================================================
-       3. ДЕМОНЫ ПО УРОВНЯМ (РЕАЛИСТИЧНЫЙ БАЛАНС HP И УРОНА)
+       3. ДЕМОНЫ ПО УРОВНЯМ (ВЫСОКИЙ УРОН И СКОРОСТЬ АТАКИ)
        ============================================================== */
     function getDemonStats(lvl) {
-      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 2.6, dmg: 35 };
-      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 2.4, dmg: 31 };
-      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.2, dmg: 27 };
-      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.0, dmg: 24 };
-      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 1.8, dmg: 21 };
-      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.6, dmg: 18 };
-      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.5, dmg: 16 };
-      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.4, dmg: 14 };
-      if (lvl >= 20) return { name: 'Руи', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.3, dmg: 12 };
-      if (lvl >= 10) return { name: 'Кёгай', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.2, dmg: 10 };
-      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.1, dmg: 9 };
-      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0, dmg: 7 };
+      if (lvl >= 100) return { name: 'Музан Кибуцудзи', jp: '鬼舞辻 無惨 • Владыка Демонов', emoji: '👑', hpMulti: 3.5, dmg: 85, speed: 0.95 };
+      if (lvl >= 90) return { name: 'Кокушибо', jp: '黒死牟 • Первая Высшая Луна', emoji: '⚔️', hpMulti: 3.0, dmg: 75, speed: 1.05 };
+      if (lvl >= 80) return { name: 'Доума', jp: '童磨 • Вторая Высшая Луна', emoji: '🪭', hpMulti: 2.7, dmg: 66, speed: 1.15 };
+      if (lvl >= 70) return { name: 'Аказа', jp: '猗窩座 • Третья Высшая Луна', emoji: '🥋', hpMulti: 2.4, dmg: 58, speed: 1.20 };
+      if (lvl >= 60) return { name: 'Хантенгу', jp: '半天狗 • Четвертая Высшая Луна', emoji: '👺', hpMulti: 2.1, dmg: 50, speed: 1.25 };
+      if (lvl >= 50) return { name: 'Гёкко', jp: '玉壺 • Пятая Высшая Луна', emoji: '🏺', hpMulti: 1.9, dmg: 44, speed: 1.30 };
+      if (lvl >= 40) return { name: 'Гютаро и Даки', jp: '妓夫太郎 • Шестая Высшая Луна', emoji: '🩸', hpMulti: 1.7, dmg: 38, speed: 1.35 };
+      if (lvl >= 30) return { name: 'Энму', jp: '魘夢 • Первая Низшая Луна', emoji: '🚂', hpMulti: 1.5, dmg: 32, speed: 1.40 };
+      if (lvl >= 20) return { name: 'Руи', jp: '累 • Пятая Низшая Луна', emoji: '🕸️', hpMulti: 1.35, dmg: 26, speed: 1.45 };
+      if (lvl >= 10) return { name: 'Кёгай', jp: '響凱 • Бывшая Низшая Луна', emoji: '🥁', hpMulti: 1.25, dmg: 22, speed: 1.50 };
+      if (lvl >= 5) return { name: 'Демон Рук', jp: '手鬼 • Гора Фудзикасане', emoji: '🖐️', hpMulti: 1.15, dmg: 19, speed: 1.50 };
+      return { name: 'Бродячий Демон', jp: '鬼 • Рядовой демон ночи', emoji: '👹', hpMulti: 1.0, dmg: 16, speed: 1.50 };
     }
 
     function spawnNextDemon() {
       const info = getDemonStats(save.level);
-      // Сбалансированное здоровье демона (требуется 12-16 ударов на 1 уровне)
       const maxHp = Math.round(150 + ((save.level - 1) * 60) * info.hpMulti);
       const attackPower = Math.round(info.dmg + ((save.level - 1) * 1.2));
+      demonAttackSpeed = info.speed || 1.5;
 
       demon = {
         name: info.name,
@@ -1240,7 +1593,8 @@
         emoji: info.emoji,
         maxHp: maxHp,
         curHp: maxHp,
-        dmg: attackPower
+        dmg: attackPower,
+        speed: demonAttackSpeed
       };
 
       document.getElementById('demonName').textContent = demon.name;
@@ -1266,11 +1620,11 @@
     }
 
     /* ==============================================================
-       4. КОНТРАТАКА ДЕМОНА
+       4. БЫСТРАЯ И ОПАСНАЯ КОНТРАТАКА ДЕМОНА
        ============================================================== */
     function startDemonAttackCycle() {
       clearInterval(demonTimerInterval);
-      demonTimerLeft = DEMON_ATTACK_SPEED;
+      demonTimerLeft = demonAttackSpeed;
 
       demonTimerInterval = setInterval(() => {
         if (!demon || demon.curHp <= 0 || playerCurHp <= 0) return;
@@ -1278,11 +1632,11 @@
         demonTimerLeft -= 0.1;
         if (demonTimerLeft <= 0) {
           demonStrikePlayer();
-          demonTimerLeft = DEMON_ATTACK_SPEED;
+          demonTimerLeft = demonAttackSpeed;
         }
 
-        const pct = ((DEMON_ATTACK_SPEED - demonTimerLeft) / DEMON_ATTACK_SPEED) * 100;
-        document.getElementById('demonTimerFill').style.width = `${pct}%`;
+        const pct = ((demonAttackSpeed - demonTimerLeft) / demonAttackSpeed) * 100;
+        document.getElementById('demonTimerFill').style.width = `${Math.min(100, Math.max(0, pct))}%`;
         document.getElementById('demonTimerTxt').textContent = `${Math.max(0, demonTimerLeft).toFixed(1)}s`;
       }, 100);
     }
@@ -1305,8 +1659,8 @@
 
       const hashira = getHashira();
       const totalDef = hashira.baseDef + save.bonusDef + Math.floor((save.level - 1) * 0.8);
-      // Защита блокирует урон
-      const incomingDmg = Math.max(5, demon.dmg - Math.floor(totalDef * 0.5));
+      // Увеличенный опасный урон демона с учетом защиты
+      const incomingDmg = Math.max(7, Math.round(demon.dmg - (totalDef * 0.4)));
 
       playerCurHp -= incomingDmg;
       updatePlayerHp();
@@ -1406,9 +1760,47 @@
       }
     }
 
-    // Использование формы дыхания со сбалансированным множителем
+    // КД (Перезарядка) стилей дыхания
+    const styleCooldowns = {}; // formNumber -> { endTime, totalSec }
+
+    function getStyleCooldownDuration(formNum) {
+      // КД: от 3.5s (1 форма) до 6.5s (11 форма)
+      return +(3.2 + (formNum * 0.3)).toFixed(1);
+    }
+
+    function showFlyingToast(text) {
+      const existing = document.querySelector('.flying-toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = 'flying-toast';
+      toast.textContent = text;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 1600);
+    }
+
+    // Использование формы дыхания со сбалансированным множителем и КД
     function useBreathingSkill(idx, formName) {
       if (!demon || demon.curHp <= 0 || playerCurHp <= 0) return;
+
+      const now = Date.now();
+      if (styleCooldowns[idx] && styleCooldowns[idx].endTime > now) {
+        const leftSec = ((styleCooldowns[idx].endTime - now) / 1000).toFixed(1);
+        haptic('medium');
+        showFlyingToast(`⏳ Перезарядка: еще ${leftSec}s!`);
+        const card = document.querySelector(`.form-btn-card[data-form="${idx}"]`);
+        if (card) {
+          card.classList.add('cd-shake');
+          setTimeout(() => card.classList.remove('cd-shake'), 300);
+        }
+        return;
+      }
+
+      // Устанавливаем КД на этот стиль
+      const totalSec = getStyleCooldownDuration(idx);
+      styleCooldowns[idx] = {
+        endTime: now + (totalSec * 1000),
+        totalSec: totalSec
+      };
 
       playKatanaSound();
       haptic('heavy');
@@ -1438,6 +1830,46 @@
         onDemonKilled();
       }
     }
+
+    // Постоянный цикл обновления визуальных КД стилей (10 кадров в секунду)
+    setInterval(() => {
+      const now = Date.now();
+      for (const key in styleCooldowns) {
+        const cd = styleCooldowns[key];
+        if (!cd) continue;
+        const leftMs = cd.endTime - now;
+        const card = document.querySelector(`.form-btn-card[data-form="${key}"]`);
+        if (leftMs > 0) {
+          const leftSec = (leftMs / 1000).toFixed(1);
+          const pct = Math.min(100, Math.max(0, ((cd.totalSec * 1000 - leftMs) / (cd.totalSec * 1000)) * 100));
+          if (card) {
+            card.classList.add('on-cooldown');
+            let overlay = card.querySelector('.cd-overlay');
+            if (!overlay) {
+              overlay = document.createElement('div');
+              overlay.className = 'cd-overlay';
+              overlay.innerHTML = `
+                <div class="cd-timer-badge">⏳ <span class="cd-txt"></span></div>
+                <div class="cd-progress-bar"></div>
+              `;
+              card.appendChild(overlay);
+            }
+            const txt = overlay.querySelector('.cd-txt');
+            if (txt) txt.textContent = `${leftSec}s`;
+            const bar = overlay.querySelector('.cd-progress-bar');
+            if (bar) bar.style.width = `${pct}%`;
+          }
+        } else {
+          // КД завершился!
+          delete styleCooldowns[key];
+          if (card) {
+            card.classList.remove('on-cooldown');
+            const overlay = card.querySelector('.cd-overlay');
+            if (overlay) overlay.remove();
+          }
+        }
+      }
+    }, 100);
 
     function showFlyingDamage(dmg, isCrit, onPlayer) {
       const arena = document.getElementById('battleField');
@@ -1516,7 +1948,7 @@
     }
 
     /* ==============================================================
-       7. ПОБЕДА И СУНДУК
+       7. ПОБЕДА И СУНДУК (РАЗБЛОКИРОВКА БЕТА-ТЕСТА НА 100+ УР.)
        ============================================================== */
     function onDemonKilled() {
       clearInterval(demonTimerInterval);
@@ -1525,6 +1957,14 @@
       save.level += 1;
       save.coins += 20 + (save.level * 4);
       save.exp += 40;
+
+      // При достижении 100+ уровня разблокируем доступ к Бета-Тесту
+      if (save.level >= 100) {
+        save.hasBetaAccess = true;
+        if (!save.betaKey) {
+          save.betaKey = 'NEVER-BETA-' + Math.floor(100000 + Math.random() * 900000);
+        }
+      }
 
       // Сбалансированные награды
       const addDmg = 1 + (save.level % 3 === 0 ? 1 : 0);
@@ -1570,6 +2010,15 @@
       refreshGameView();
       playerCurHp = playerMaxHp;
       updatePlayerHp();
+
+      // Если уровень 100+ или только что разблокирован, показываем модалку бета-теста!
+      if (save.level >= 100 && !window.betaShownOnce) {
+        window.betaShownOnce = true;
+        setTimeout(() => {
+          openBetaTestModal();
+        }, 350);
+      }
+
       spawnNextDemon();
     }
 
@@ -1620,8 +2069,77 @@
     }
 
     /* ==============================================================
-       9. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+       9. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА И БЕТА-ТЕСТ СИСТЕМА
        ============================================================== */
+    function updateBetaPill() {
+      const pill = document.getElementById('vipBetaPill');
+      if (pill) {
+        pill.style.display = (save.level >= 100 || save.hasBetaAccess) ? 'flex' : 'none';
+      }
+    }
+
+    function openBetaTestModal() {
+      haptic('heavy');
+      if (!save.betaKey) {
+        save.betaKey = 'NEVER-BETA-' + Math.floor(100000 + Math.random() * 900000);
+        save.hasBetaAccess = true;
+        persist();
+      }
+      document.getElementById('betaKeyVal').textContent = save.betaKey;
+      document.getElementById('betaTestModal').classList.add('open');
+      updateBetaPill();
+    }
+
+    function closeBetaTestModal() {
+      haptic('light');
+      document.getElementById('betaTestModal').classList.remove('open');
+    }
+
+    function copyBetaKey() {
+      haptic('success');
+      const key = save.betaKey || document.getElementById('betaKeyVal').textContent;
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(key).then(() => {
+          showFlyingToast('📋 VIP-Ключ скопирован в буфер!');
+        }).catch(() => {
+          showFlyingToast(`Ключ: ${key}`);
+        });
+      } else {
+        showFlyingToast(`Ключ: ${key}`);
+      }
+    }
+
+    function openCreatorWithBetaKey() {
+      haptic('medium');
+      const key = save.betaKey || 'NEVER-BETA-VIP';
+      const text = encodeURIComponent(`Привет! Я достиг 100 уровня в Клинок Never и победил Музана! Мой VIP-ключ бета-тестера: ${key}. Прошу выдать доступ к закрытому бета-тесту EcosystemNever 2.0 ♾️`);
+      window.open(`https://t.me/light18101?text=${text}`, '_blank');
+    }
+
+    // Секретный быстрый тап (5 раз подряд) по надписи УРОВЕНЬ для моментального теста 100 лвл
+    let badgeTapCount = 0;
+    let badgeTapTimer = null;
+    function handleStageBadgeClick() {
+      badgeTapCount++;
+      clearTimeout(badgeTapTimer);
+      badgeTapTimer = setTimeout(() => { badgeTapCount = 0; }, 1200);
+
+      if (badgeTapCount >= 5) {
+        badgeTapCount = 0;
+        haptic('heavy');
+        save.level = Math.max(save.level, 100);
+        save.hasBetaAccess = true;
+        if (!save.betaKey) {
+          save.betaKey = 'NEVER-BETA-' + Math.floor(100000 + Math.random() * 900000);
+        }
+        persist();
+        refreshGameView();
+        spawnNextDemon();
+        openBetaTestModal();
+        showFlyingToast('⚡ Уровень 100 активирован! Бета-тест открыт! ♾️');
+      }
+    }
+
     function refreshGameView() {
       const h = getHashira();
 
@@ -1644,6 +2162,7 @@
       document.getElementById('lblCoins').textContent = save.coins;
       document.getElementById('lblExp').textContent = save.exp;
 
+      updateBetaPill();
       renderBreathingButtons(h);
     }
 
@@ -1656,14 +2175,16 @@
 
       h.forms.forEach((name, idx) => {
         const isUnlocked = idx < unlockedCount;
+        const formNumber = idx + 1;
         const reqLvl = idx === 0 ? 1 : idx * 10;
         const bonusPct = Math.round((0.25 + (idx * 0.1)) * 100);
 
         const btn = document.createElement('div');
         btn.className = `form-btn-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+        btn.setAttribute('data-form', formNumber);
 
         btn.innerHTML = `
-          <div class="form-lvl-tag">${isUnlocked ? `ФОРМА ${idx + 1} ⚡` : `УР. ${reqLvl} 🔒`}</div>
+          <div class="form-lvl-tag">${isUnlocked ? `ФОРМА ${formNumber} ⚡` : `УР. ${reqLvl} 🔒`}</div>
           <div class="form-title-txt" title="${name}">${name}</div>
           <div class="form-bonus-txt">${isUnlocked ? `+${bonusPct}% Урона` : 'Заблокировано'}</div>
         `;
@@ -1671,7 +2192,7 @@
         if (isUnlocked) {
           btn.onclick = (e) => {
             e.stopPropagation();
-            useBreathingSkill(idx + 1, name);
+            useBreathingSkill(formNumber, name);
           };
         }
 
